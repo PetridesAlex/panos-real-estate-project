@@ -1,3 +1,30 @@
+.section-header--featured {
+  margin-bottom: 1.4rem;
+}
+
+.section-header--featured .section-header__eyebrow {
+  color: #8b8b8b;
+  letter-spacing: 0.15em;
+}
+
+.section-header--featured h2 {
+  font-family: var(--font-sans);
+  font-size: clamp(2.2rem, 4.1vw, 3.6rem);
+  font-weight: 800;
+  color: #1b2f6b;
+  letter-spacing: -0.02em;
+}
+
+.section-header--featured .section-header__description {
+  max-width: 42rem;
+  color: #667085;
+  font-size: 1.02rem;
+}
+
+.home-featured-grid {
+  gap: 1.6rem;
+}
+
 .home-region-grid {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }

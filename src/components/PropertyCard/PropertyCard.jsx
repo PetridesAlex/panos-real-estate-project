@@ -10,16 +10,24 @@ function formatPrice(value, status) {
     : `EUR ${formatter.format(value)}`
 }
 
-function PropertyCard({ property }) {
+function PropertyCard({
+  property,
+  variant = 'default',
+  showDescription = true,
+  showButton = true,
+}) {
+  const isSignature = variant === 'signature'
+
   return (
     <motion.article
-      className="property-card card-luxury"
+      className={`property-card ${isSignature ? 'property-card--signature' : 'card-luxury'}`}
       whileHover={{ y: -4 }}
       transition={{ duration: 0.25 }}
     >
       <div className="property-card__media">
         <img src={property.image} alt={`${property.title} in ${property.location}`} />
         <span className="property-card__badge">{property.status}</span>
+        {isSignature && <span className="property-card__signature">AURA CYPRUS. Signature</span>}
       </div>
       <div className="property-card__content">
         <p className="property-card__price">{formatPrice(property.price, property.status)}</p>
@@ -27,7 +35,7 @@ function PropertyCard({ property }) {
         <p className="property-card__location">
           <MapPin size={15} /> {property.location}
         </p>
-        <p className="property-card__description">{property.description}</p>
+        {showDescription && <p className="property-card__description">{property.description}</p>}
         <div className="property-card__meta">
           <span>
             <BedDouble size={16} /> {property.bedrooms} Beds
@@ -39,9 +47,11 @@ function PropertyCard({ property }) {
             <Ruler size={16} /> {property.sqm} sqm
           </span>
         </div>
-        <Link className="btn btn-outline-dark" to={`/properties/${property.slug}`}>
-          View Details
-        </Link>
+        {showButton && (
+          <Link className="btn btn-outline-dark" to={`/properties/${property.slug}`}>
+            View Details
+          </Link>
+        )}
       </div>
     </motion.article>
   )

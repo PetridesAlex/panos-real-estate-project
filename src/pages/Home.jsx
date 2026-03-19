@@ -35,13 +35,20 @@ function Home() {
       <section className="section section--light" id="featured-properties">
         <div className="container">
           <SectionHeader
-            eyebrow="Featured Portfolio"
-            title="Signature Properties Across Cyprus"
-            description="A handpicked portfolio of exceptional homes and investment opportunities in prime locations."
+            eyebrow="Featured Properties"
+            title="Featured Properties"
+            description="Check out some of our most exclusive houses, apartments, townhomes, penthouses, and more."
+            className="section-header--featured"
           />
-          <div className="grid-3">
+          <div className="grid-3 home-featured-grid">
             {featuredProperties.map((property) => (
-              <PropertyCard key={property.id} property={property} />
+              <PropertyCard
+                key={property.id}
+                property={property}
+                variant="signature"
+                showDescription={false}
+                showButton={false}
+              />
             ))}
           </div>
         </div>

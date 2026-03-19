@@ -54,9 +54,9 @@ export const properties = [
       'Staff quarters',
     ],
     image:
-      'https://images.unsplash.com/photo-1613977257592-487ecd136cc3?auto=format&fit=crop&w=1600&q=80',
+      'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1600&q=80',
     gallery: [
-      'https://images.unsplash.com/photo-1613977257592-487ecd136cc3?auto=format&fit=crop&w=1600&q=80',
+      'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1600&q=80',
       'https://images.unsplash.com/photo-1616594039964-3c2f2a8f1e0e?auto=format&fit=crop&w=1600&q=80',
       'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=80',
     ],

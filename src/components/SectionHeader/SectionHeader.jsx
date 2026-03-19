@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion'
 import './SectionHeader.css'
 
-function SectionHeader({ eyebrow, title, description, center = false }) {
+function SectionHeader({ eyebrow, title, description, center = false, className = '' }) {
+  const classes = `section-header ${center ? 'section-header--center' : ''} ${className}`.trim()
+
   return (
     <motion.header
-      className={`section-header ${center ? 'section-header--center' : ''}`}
+      className={classes}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.4 }}

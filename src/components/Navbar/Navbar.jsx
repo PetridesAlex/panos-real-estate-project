@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ChevronDown, MessageCircle } from 'lucide-react'
+import { Menu, X, ChevronDown, MessageCircle, ChevronRight, Sparkles } from 'lucide-react'
 import './Navbar.css'
 
 const navItems = [
@@ -11,6 +11,11 @@ const navItems = [
   { to: '/developments', label: 'Developments' },
   { to: '/agents', label: 'Agents' },
   { to: '/contact', label: 'Contact' },
+]
+
+const mobileLinks = [
+  { to: '/properties', label: 'Properties' },
+  ...navItems,
 ]
 
 function Navbar() {
@@ -100,19 +105,47 @@ function Navbar() {
         {isOpen && (
           <motion.nav
             className="navbar__mobile"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -14, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -12, scale: 0.98 }}
+            transition={{ duration: 0.25 }}
           >
-            <Link to="/properties">Properties</Link>
-            {navItems.map((item) => (
-              <Link key={item.to} to={item.to}>
-                {item.label}
-              </Link>
-            ))}
-            <a href="https://wa.me/35700000000" target="_blank" rel="noreferrer">
+            <div className="navbar__mobile-head">
+              <span>
+                <Sparkles size={14} />
+                Navigation
+              </span>
+              <p>Discover premium Cyprus listings and services</p>
+            </div>
+
+            <div className="navbar__mobile-links">
+              {mobileLinks.map((item, index) => (
+                <motion.div
+                  key={item.to}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.03 * index, duration: 0.2 }}
+                >
+                  <Link to={item.to} className="navbar__mobile-link">
+                    <span>{item.label}</span>
+                    <ChevronRight size={16} />
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.a
+              href="https://wa.me/35700000000"
+              target="_blank"
+              rel="noreferrer"
+              className="navbar__mobile-whatsapp"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.25 }}
+            >
+              <MessageCircle size={16} />
               WhatsApp Inquiry
-            </a>
+            </motion.a>
           </motion.nav>
         )}
       </AnimatePresence>
