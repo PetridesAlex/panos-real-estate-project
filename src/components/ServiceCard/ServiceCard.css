@@ -1,0 +1,32 @@
+.service-card {
+  padding: 1.25rem;
+}
+
+.service-card__icon {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--color-accent-strong);
+  background: rgba(196, 156, 92, 0.12);
+}
+
+.service-card h3 {
+  margin: 1rem 0 0.75rem;
+  font-size: 1.25rem;
+}
+
+.service-card p {
+  color: var(--color-muted);
+  margin: 0 0 1rem;
+}
+
+.service-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--color-ink);
+  font-weight: 600;
+}

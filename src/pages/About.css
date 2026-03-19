@@ -1,0 +1,26 @@
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.3rem;
+  align-items: center;
+}
+
+.about-grid img {
+  border-radius: var(--radius-md);
+  height: 530px;
+  object-fit: cover;
+}
+
+.about-point {
+  padding: 1rem;
+}
+
+@media (max-width: 900px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-grid img {
+    height: 320px;
+  }
+}

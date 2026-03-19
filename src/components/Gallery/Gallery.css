@@ -1,0 +1,36 @@
+.gallery {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.gallery__main {
+  width: 100%;
+  height: min(70vh, 560px);
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
+.gallery__thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 0.65rem;
+}
+
+.gallery__thumb {
+  border: 1px solid var(--color-line);
+  padding: 0;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: transparent;
+  cursor: pointer;
+}
+
+.gallery__thumb.is-active {
+  border-color: var(--color-accent-strong);
+}
+
+.gallery__thumb img {
+  width: 100%;
+  height: 74px;
+  object-fit: cover;
+}

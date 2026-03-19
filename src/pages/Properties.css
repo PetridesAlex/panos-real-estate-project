@@ -1,0 +1,14 @@
+.properties__result-count {
+  color: var(--color-muted);
+  margin-bottom: 1rem;
+}
+
+.properties__loadmore {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.properties__empty {
+  padding: 1.3rem;
+}

@@ -1,0 +1,43 @@
+.region-card {
+  position: relative;
+  min-height: 330px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.region-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.region-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72), transparent 65%);
+}
+
+.region-card__content {
+  position: absolute;
+  left: 1.2rem;
+  right: 1.2rem;
+  bottom: 1.1rem;
+  color: var(--color-white);
+}
+
+.region-card__content p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.region-card__content h3 {
+  margin: 0.35rem 0 0.75rem;
+  font-size: 1.58rem;
+}
+
+.region-card__content span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+}

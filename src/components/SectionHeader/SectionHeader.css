@@ -1,0 +1,28 @@
+.section-header {
+  margin-bottom: 2rem;
+}
+
+.section-header--center {
+  text-align: center;
+  max-width: 52rem;
+  margin: 0 auto 2rem;
+}
+
+.section-header__eyebrow {
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.74rem;
+  margin-bottom: 0.75rem;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 3.25rem);
+}
+
+.section-header__description {
+  margin-top: 1rem;
+  max-width: 42rem;
+  color: var(--color-muted);
+}

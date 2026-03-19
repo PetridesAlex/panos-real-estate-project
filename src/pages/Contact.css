@@ -1,0 +1,28 @@
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.contact-grid__details {
+  display: grid;
+  gap: 1rem;
+}
+
+.contact-card {
+  padding: 1rem;
+}
+
+.contact-card p {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-right: 1rem;
+  color: var(--color-muted);
+}
+
+@media (max-width: 900px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}

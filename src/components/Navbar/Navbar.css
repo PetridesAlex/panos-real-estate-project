@@ -1,0 +1,123 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 80;
+  transition: background var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.navbar--transparent {
+  background: transparent;
+}
+
+.navbar--solid {
+  background: rgba(17, 17, 17, 0.93);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.26);
+}
+
+.navbar__inner {
+  min-height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar__logo {
+  font-family: var(--font-serif);
+  letter-spacing: 0.08em;
+  color: var(--color-white);
+}
+
+.navbar__desktop {
+  display: flex;
+  align-items: center;
+  gap: 1.05rem;
+}
+
+.navbar__desktop a {
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.95rem;
+}
+
+.navbar__desktop .active {
+  color: var(--color-accent-light);
+}
+
+.navbar__dropdown {
+  position: relative;
+}
+
+.navbar__dropdown > a {
+  display: inline-flex;
+  gap: 0.2rem;
+  align-items: center;
+}
+
+.navbar__dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.7rem);
+  left: 0;
+  min-width: 150px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: var(--color-bg-dark-soft);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem;
+  display: grid;
+}
+
+.navbar__dropdown-menu a {
+  color: rgba(255, 255, 255, 0.92);
+  padding: 0.4rem 0.45rem;
+}
+
+.navbar__ctas {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.navbar__wa {
+  padding-inline: 0.75rem;
+}
+
+.navbar__menu-btn {
+  display: none;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  color: var(--color-white);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
+
+.navbar__mobile {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .navbar__desktop,
+  .navbar .btn.btn-gold {
+    display: none;
+  }
+
+  .navbar__menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .navbar__mobile {
+    display: grid;
+    background: var(--color-bg-dark-soft);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.8rem 1.1rem 1rem;
+    gap: 0.45rem;
+  }
+
+  .navbar__mobile a {
+    color: var(--color-white);
+    padding: 0.4rem 0;
+  }
+}

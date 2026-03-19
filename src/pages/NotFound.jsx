@@ -1,0 +1,24 @@
+import { Helmet } from 'react-helmet-async'
+import { Link } from 'react-router-dom'
+
+function NotFound() {
+  return (
+    <>
+      <Helmet>
+        <title>Page Not Found | AURA CYPRUS</title>
+      </Helmet>
+      <section className="section section--light" style={{ paddingTop: '9rem' }}>
+        <div className="container" style={{ textAlign: 'center' }}>
+          <p>404</p>
+          <h1>Page Not Found</h1>
+          <p>The page you are looking for does not exist or has moved.</p>
+          <Link to="/" className="btn btn-gold">
+            Back to Home
+          </Link>
+        </div>
+      </section>
+    </>
+  )
+}
+
+export default NotFound
