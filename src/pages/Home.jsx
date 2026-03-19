@@ -10,6 +10,7 @@ import ServiceCard from '../components/ServiceCard/ServiceCard'
 import AgentCard from '../components/AgentCard/AgentCard'
 import TestimonialCard from '../components/TestimonialCard/TestimonialCard'
 import CTASection from '../components/CTASection/CTASection'
+import ScrollStack, { ScrollStackItem } from '../components/ScrollStack/ScrollStack'
 import { properties } from '../data/properties'
 import { regions } from '../data/regions'
 import { services } from '../data/services'
@@ -33,7 +34,7 @@ function Home() {
       <StatsStrip />
 
       <section className="section section--light" id="featured-properties">
-        <div className="container">
+        <div className="container home-featured-container">
           <SectionHeader
             eyebrow="Featured Properties"
             title="Featured Properties"
@@ -51,6 +52,42 @@ function Home() {
               />
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section section--alt home-scroll-stack-section">
+        <div className="container">
+          <SectionHeader
+            eyebrow="Signature Collection"
+            title="Scroll Through Our Most Exclusive Addresses"
+            description="A cinematic stacked showcase powered by smooth motion interactions and premium storytelling."
+          />
+          <ScrollStack
+            className="home-scroll-stack"
+            useWindowScroll
+            itemDistance={90}
+            itemScale={0.05}
+            itemStackDistance={26}
+            stackPosition="22%"
+            scaleEndPosition="12%"
+            baseScale={0.82}
+            rotationAmount={0}
+          >
+            {featuredProperties.map((property) => (
+              <ScrollStackItem key={`stack-${property.id}`} itemClassName="home-scroll-stack-card">
+                <img src={property.image} alt={property.title} />
+                <div className="home-scroll-stack-card__overlay" />
+                <div className="home-scroll-stack-card__content">
+                  <p>{property.location}</p>
+                  <h3>{property.title}</h3>
+                  <span>EUR {property.price.toLocaleString()}</span>
+                  <Link to={`/properties/${property.slug}`} className="btn btn-outline-light">
+                    View Property
+                  </Link>
+                </div>
+              </ScrollStackItem>
+            ))}
+          </ScrollStack>
         </div>
       </section>
 

@@ -9,17 +9,34 @@
 .hero-section__media {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(130deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.2)),
-    url('https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=2000&q=80');
-  background-size: cover;
-  background-position: center;
+  overflow: hidden;
+}
+
+.hero-section__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1) contrast(1.03) brightness(0.92);
+}
+
+.hero-section__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.38),
+    rgba(0, 0, 0, 0.24) 34%,
+    rgba(0, 0, 0, 0.5)
+  );
 }
 
 .hero-section__overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 20% 25%, rgba(196, 156, 92, 0.18), transparent 40%);
+  background:
+    radial-gradient(circle at 22% 26%, rgba(196, 156, 92, 0.12), transparent 42%),
+    linear-gradient(to top, rgba(0, 0, 0, 0.42), transparent 42%);
 }
 
 .hero-section__inner {

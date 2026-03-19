@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ChevronDown, MessageCircle, ChevronRight, Sparkles } from 'lucide-react'
+import { ChevronDown, MessageCircle } from 'lucide-react'
+import StaggeredMenu from '../StaggeredMenu/StaggeredMenu'
 import './Navbar.css'
 
 const navItems = [
@@ -13,13 +14,7 @@ const navItems = [
   { to: '/contact', label: 'Contact' },
 ]
 
-const mobileLinks = [
-  { to: '/properties', label: 'Properties' },
-  ...navItems,
-]
-
 function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [showPropertiesDropdown, setShowPropertiesDropdown] = useState(false)
   const location = useLocation()
@@ -33,7 +28,6 @@ function Navbar() {
   }, [])
 
   useEffect(() => {
-    setIsOpen(false)
     setShowPropertiesDropdown(false)
   }, [location.pathname])
 
@@ -90,65 +84,33 @@ function Navbar() {
           <Link to="/contact" className="btn btn-gold">
             Book a Consultation
           </Link>
-          <button
-            type="button"
-            className="navbar__menu-btn"
-            aria-label="Toggle menu"
-            onClick={() => setIsOpen((prev) => !prev)}
-          >
-            {isOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
+          <StaggeredMenu
+            className="navbar__staggered"
+            position="right"
+            items={[
+              { label: 'Home', link: '/' },
+              { label: 'Properties', link: '/properties' },
+              { label: 'About', link: '/about' },
+              { label: 'Services', link: '/services' },
+              { label: 'Developments', link: '/developments' },
+              { label: 'Agents', link: '/agents' },
+              { label: 'Contact', link: '/contact' },
+            ]}
+            socialItems={[
+              { label: 'Instagram', link: '#' },
+              { label: 'LinkedIn', link: '#' },
+              { label: 'WhatsApp', link: 'https://wa.me/35700000000' },
+            ]}
+            displaySocials
+            displayItemNumbering={false}
+            menuButtonColor="#ffffff"
+            openMenuButtonColor="#ffffff"
+            changeMenuColorOnOpen
+            colors={['#B19EEF', '#5227FF']}
+            accentColor="#5227FF"
+          />
         </div>
       </div>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.nav
-            className="navbar__mobile"
-            initial={{ opacity: 0, y: -14, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -12, scale: 0.98 }}
-            transition={{ duration: 0.25 }}
-          >
-            <div className="navbar__mobile-head">
-              <span>
-                <Sparkles size={14} />
-                Navigation
-              </span>
-              <p>Discover premium Cyprus listings and services</p>
-            </div>
-
-            <div className="navbar__mobile-links">
-              {mobileLinks.map((item, index) => (
-                <motion.div
-                  key={item.to}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.03 * index, duration: 0.2 }}
-                >
-                  <Link to={item.to} className="navbar__mobile-link">
-                    <span>{item.label}</span>
-                    <ChevronRight size={16} />
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-
-            <motion.a
-              href="https://wa.me/35700000000"
-              target="_blank"
-              rel="noreferrer"
-              className="navbar__mobile-whatsapp"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.25 }}
-            >
-              <MessageCircle size={16} />
-              WhatsApp Inquiry
-            </motion.a>
-          </motion.nav>
-        )}
-      </AnimatePresence>
     </header>
   )
 }

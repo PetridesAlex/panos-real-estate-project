@@ -1,0 +1,217 @@
+.staggered-menu-wrapper {
+  position: relative;
+  pointer-events: auto;
+  z-index: 90;
+}
+
+.smenu-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  color: #fff;
+  border-radius: 999px;
+  height: 42px;
+  padding: 0 0.72rem;
+  cursor: pointer;
+  overflow: visible;
+}
+
+.smenu-toggle-textWrap {
+  position: relative;
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.smenu-toggle-textInner {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.smenu-toggle-line {
+  display: block;
+  height: 1em;
+  line-height: 1;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.smenu-icon {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+.smenu-icon-line {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transform: translate(-50%, -50%);
+}
+
+.smenu-prelayers {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: clamp(260px, 42vw, 460px);
+  pointer-events: none;
+  z-index: 85;
+}
+
+[data-position='left'] .smenu-prelayers {
+  right: auto;
+  left: 0;
+}
+
+.smenu-prelayer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.staggered-menu-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: clamp(260px, 42vw, 460px);
+  height: 100vh;
+  background: #fff;
+  padding: 7rem 2rem 2rem;
+  z-index: 88;
+  overflow-y: auto;
+}
+
+[data-position='left'] .staggered-menu-panel {
+  right: auto;
+  left: 0;
+}
+
+.smenu-panel-inner {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.smenu-panel-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.smenu-panel-itemWrap {
+  overflow: hidden;
+}
+
+.smenu-panel-item {
+  position: relative;
+  display: inline-block;
+  color: #0e0e0f;
+  text-decoration: none;
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: clamp(2rem, 4.7vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  padding-right: 1.5em;
+}
+
+.smenu-panel-item:hover {
+  color: var(--smenu-accent, #5227ff);
+}
+
+.smenu-panel-itemLabel {
+  display: inline-block;
+}
+
+.smenu-panel-list[data-numbering] {
+  counter-reset: smenuItem;
+}
+
+.smenu-panel-list[data-numbering] .smenu-panel-item::after {
+  counter-increment: smenuItem;
+  content: counter(smenuItem, decimal-leading-zero);
+  position: absolute;
+  top: 0.15em;
+  right: 0;
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: var(--smenu-accent, #5227ff);
+  opacity: var(--smenu-num-opacity, 0);
+}
+
+.smenu-socials {
+  margin-top: auto;
+  padding-top: 1.8rem;
+}
+
+.smenu-socials-title {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-sans);
+  font-size: 0.94rem;
+  color: #666;
+}
+
+.smenu-socials-list {
+  list-style: none;
+  display: flex;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.smenu-socials-link {
+  color: #151515;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.smenu-socials-link:hover {
+  color: var(--smenu-accent, #5227ff);
+}
+
+@media (max-width: 1000px) {
+  .smenu-toggle-textWrap {
+    display: none;
+  }
+
+  .smenu-toggle {
+    width: 42px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .smenu-prelayers,
+  .staggered-menu-panel {
+    width: min(560px, 68vw);
+  }
+}
+
+@media (max-width: 640px) {
+  .smenu-prelayers,
+  .staggered-menu-panel {
+    width: min(420px, 88vw);
+  }
+}

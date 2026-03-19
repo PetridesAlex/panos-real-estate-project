@@ -7,7 +7,18 @@ import './Hero.css'
 function Hero() {
   return (
     <section className="hero-section">
-      <div className="hero-section__media" aria-hidden="true" />
+      <div className="hero-section__media" aria-hidden="true">
+        <video
+          className="hero-section__video"
+          src="/video/real-estate-hero.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=2000&q=80"
+        />
+      </div>
       <div className="hero-section__overlay" />
       <div className="container hero-section__inner">
         <motion.div
