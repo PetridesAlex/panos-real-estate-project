@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Hero from '../components/Hero/Hero'
-import StatsStrip from '../components/StatsStrip/StatsStrip'
 import SectionHeader from '../components/SectionHeader/SectionHeader'
 import PropertyCard from '../components/PropertyCard/PropertyCard'
 import RegionCard from '../components/RegionCard/RegionCard'
@@ -116,12 +115,12 @@ function Home() {
 
       <Hero />
 
-      <section className="section section--alt">
+      <section className="section section--alt home-after-hero-shape">
         <div className="container">
           <SectionHeader
-            eyebrow="Explore by Location"
+            eyebrow="OUR LOCATION"
             title="Prime Cyprus Regions"
-            description="Discover opportunities in coastal and city markets shaped by lifestyle and long-term value."
+            description="Discover the home you’ve been waiting for."
           />
           <div className="grid-3 home-region-grid">
             {regions.map((region) => (
@@ -130,8 +129,6 @@ function Home() {
           </div>
         </div>
       </section>
-
-      <StatsStrip />
 
       <section className="section section--light" id="featured-properties">
         <div className="container home-featured-container">

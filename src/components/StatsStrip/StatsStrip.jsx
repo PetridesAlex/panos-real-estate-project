@@ -1,7 +1,7 @@
 import './StatsStrip.css'
 
 function StatsStrip() {
-  const metrics = ['1,200+', '18', '96%']
+  const metrics = ['1,200+', '18']
 
   return (
     <section className="stats-strip">

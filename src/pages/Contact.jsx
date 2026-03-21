@@ -21,7 +21,7 @@ function Contact() {
         </div>
       </section>
 
-      <section className="section section--light">
+      <section className="section section--light contact-section">
         <div className="container contact-grid">
           <div className="contact-grid__details">
             <article className="card-luxury contact-card">

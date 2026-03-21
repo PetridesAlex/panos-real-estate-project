@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useLocation } from 'react-router-dom'
 import PropertyCard from '../components/PropertyCard/PropertyCard'
 import FilterBar from '../components/FilterBar/FilterBar'
 import SectionHeader from '../components/SectionHeader/SectionHeader'
@@ -17,10 +18,27 @@ const initialFilters = {
   keyword: '',
 }
 
+function getFiltersFromSearch(search) {
+  const params = new URLSearchParams(search)
+  return {
+    ...initialFilters,
+    location: params.get('location') || '',
+    type: params.get('type') || '',
+    status: params.get('status') || '',
+    keyword: params.get('keyword') || '',
+  }
+}
+
 function Properties() {
-  const [filters, setFilters] = useState(initialFilters)
+  const location = useLocation()
+  const [filters, setFilters] = useState(() => getFiltersFromSearch(location.search))
   const [sort, setSort] = useState('newest')
   const [visibleCount, setVisibleCount] = useState(6)
+
+  useEffect(() => {
+    setFilters(getFiltersFromSearch(location.search))
+    setVisibleCount(6)
+  }, [location.search])
 
   const filtered = useMemo(() => {
     const keyword = filters.keyword.toLowerCase()

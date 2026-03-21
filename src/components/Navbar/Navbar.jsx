@@ -1,22 +1,19 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown, MessageCircle } from 'lucide-react'
+import { Instagram, MapPin, Menu, MessageCircle, Search, Send } from 'lucide-react'
 import StaggeredMenu from '../StaggeredMenu/StaggeredMenu'
 import './Navbar.css'
 
-const navItems = [
-  { to: '/', label: 'Home' },
-  { to: '/about', label: 'About' },
-  { to: '/services', label: 'Services' },
-  { to: '/developments', label: 'Developments' },
-  { to: '/agents', label: 'Agents' },
-  { to: '/contact', label: 'Contact' },
+const navTabs = [
+  { key: 'buy', label: 'Buy', to: '/properties?status=For+Sale' },
+  { key: 'rent', label: 'Rent', to: '/properties?status=For+Rent' },
+  { key: 'sell', label: 'Sell', to: '/properties' },
+  { key: 'development', label: 'New Development', to: '/properties' },
+  { key: 'agents', label: 'Agents', to: '/properties' },
 ]
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
-  const [showPropertiesDropdown, setShowPropertiesDropdown] = useState(false)
   const location = useLocation()
   const isHome = location.pathname === '/'
 
@@ -27,50 +24,50 @@ function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  useEffect(() => {
-    setShowPropertiesDropdown(false)
-  }, [location.pathname])
-
   const navClass = `navbar ${isScrolled || !isHome ? 'navbar--solid' : 'navbar--transparent'}`
 
   return (
     <header className={navClass}>
-      <div className="container navbar__inner">
+      <div className="container navbar__topline navbar__inner--wide" aria-label="Top bar">
+        <span className="navbar__topline-spacer" aria-hidden="true" />
+        <p className="navbar__topline-text">UNITED PROPERTIES</p>
+        <div className="navbar__topline-socials">
+          <a href="https://wa.me/35700000000" target="_blank" rel="noreferrer" aria-label="WhatsApp">
+            <MessageCircle size={14} />
+          </a>
+          <a href="#" aria-label="Telegram">
+            <Send size={14} />
+          </a>
+          <a href="#" aria-label="Instagram">
+            <Instagram size={14} />
+          </a>
+        </div>
+      </div>
+
+      <div className="container navbar__inner navbar__inner--wide">
         <Link to="/" className="navbar__logo">
-          AURA CYPRUS
+          <img src="/images/logo/987%20(1).svg" alt="United Properties" />
         </Link>
 
         <nav className="navbar__desktop">
-          <div
-            className="navbar__dropdown"
-            onMouseEnter={() => setShowPropertiesDropdown(true)}
-            onMouseLeave={() => setShowPropertiesDropdown(false)}
-          >
-            <NavLink to="/properties" className={({ isActive }) => (isActive ? 'active' : '')}>
-              Properties <ChevronDown size={14} />
-            </NavLink>
-            <AnimatePresence>
-              {showPropertiesDropdown && (
-                <motion.div
-                  className="navbar__dropdown-menu"
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 8 }}
-                >
-                  <Link to="/properties">All Listings</Link>
-                  <Link to="/properties?status=For+Sale">For Sale</Link>
-                  <Link to="/properties?status=For+Rent">For Rent</Link>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {navItems.map((item) => (
-            <NavLink key={item.to} to={item.to} className={({ isActive }) => (isActive ? 'active' : '')}>
-              {item.label}
+          {navTabs.map((tab) => (
+            <NavLink
+              key={tab.key}
+              to={tab.to}
+              className={({ isActive }) => `navbar__nav-trigger ${isActive ? 'active' : ''}`.trim()}
+            >
+              {tab.label}
             </NavLink>
           ))}
         </nav>
+
+        <button type="button" className="navbar__search-pill" aria-label="Search homes and agents">
+          <Search size={14} />
+          <span>Homes &amp; Agents</span>
+          <span className="navbar__search-pill-map" aria-hidden="true">
+            <MapPin size={13} />
+          </span>
+        </button>
 
         <div className="navbar__ctas">
           <a
@@ -81,8 +78,8 @@ function Navbar() {
           >
             <MessageCircle size={16} />
           </a>
-          <Link to="/contact" className="btn btn-gold">
-            Book a Consultation
+          <Link to="/contact" className="navbar__menu-pill">
+            Menu <Menu size={14} />
           </Link>
           <StaggeredMenu
             className="navbar__staggered"

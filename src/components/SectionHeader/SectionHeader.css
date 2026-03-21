@@ -20,10 +20,12 @@
 .section-header h2 {
   margin: 0;
   font-size: clamp(2rem, 3vw, 3.25rem);
+  color: rgba(248, 246, 241, 0.96);
+  text-wrap: balance;
 }
 
 .section-header__description {
   margin-top: 1rem;
   max-width: 42rem;
-  color: var(--color-muted);
+  color: rgba(248, 246, 241, 0.78);
 }

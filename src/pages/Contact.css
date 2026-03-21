@@ -1,28 +1,112 @@
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 1.1rem;
 }
 
 .contact-grid__details {
   display: grid;
-  gap: 1rem;
+  gap: 1.1rem;
 }
 
 .contact-card {
-  padding: 1rem;
+  padding: 1.05rem;
+  border-radius: 14px;
+  border: 1px solid rgba(248, 246, 241, 0.22);
+  background:
+    radial-gradient(circle at 12% 10%, rgba(217, 182, 128, 0.11), transparent 42%),
+    linear-gradient(145deg, rgba(19, 18, 16, 0.88), rgba(12, 11, 10, 0.82));
+  backdrop-filter: blur(8px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
+}
+
+.contact-card h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+  color: #f5ecdd;
+  letter-spacing: -0.01em;
 }
 
 .contact-card p {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  margin-right: 1rem;
-  color: var(--color-muted);
+  margin: 0.75rem 1rem 0 0;
+  color: rgba(248, 246, 241, 0.82);
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+
+.contact-card a {
+  color: rgba(248, 246, 241, 0.88);
+}
+
+.contact-section .inquiry-form {
+  border-radius: 14px;
+  border: 1px solid rgba(248, 246, 241, 0.22);
+  background:
+    radial-gradient(circle at 12% 10%, rgba(217, 182, 128, 0.11), transparent 42%),
+    linear-gradient(145deg, rgba(19, 18, 16, 0.88), rgba(12, 11, 10, 0.82));
+  backdrop-filter: blur(8px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
+}
+
+.contact-section .inquiry-form h3 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  color: #f5ecdd;
+}
+
+.contact-section .inquiry-form label {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(248, 246, 241, 0.74);
+}
+
+.contact-section .inquiry-form input,
+.contact-section .inquiry-form select,
+.contact-section .inquiry-form textarea {
+  border: 1px solid rgba(248, 246, 241, 0.2);
+  border-radius: 999px;
+  padding: 0.68rem 0.9rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8f6f1;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.contact-section .inquiry-form textarea {
+  border-radius: 14px;
+  min-height: 128px;
+  resize: vertical;
+}
+
+.contact-section .inquiry-form input:focus,
+.contact-section .inquiry-form select:focus,
+.contact-section .inquiry-form textarea:focus {
+  outline: none;
+  border-color: rgba(217, 182, 128, 0.6);
+  box-shadow: 0 0 0 3px rgba(217, 182, 128, 0.16);
+}
+
+.contact-section .inquiry-form .btn.btn-gold {
+  min-height: 48px;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 @media (max-width: 900px) {
   .contact-grid {
     grid-template-columns: 1fr;
+  }
+
+  .contact-section .inquiry-form input,
+  .contact-section .inquiry-form select,
+  .contact-section .inquiry-form textarea {
+    border-radius: 12px;
   }
 }

@@ -42,6 +42,18 @@
   background: #fff;
 }
 
+.filter-bar label:nth-child(1) select {
+  min-width: 122px;
+}
+
+.filter-bar label:nth-child(2) select {
+  min-width: 168px;
+}
+
+.filter-bar label:nth-child(3) select {
+  min-width: 118px;
+}
+
 .filter-bar label:nth-child(8) input {
   min-width: 122px;
 }

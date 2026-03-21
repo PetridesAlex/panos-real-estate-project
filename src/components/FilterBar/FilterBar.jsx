@@ -12,7 +12,7 @@ function FilterBar({ filters, setFilters, sort, setSort }) {
         <label>
           Location
           <select value={filters.location} onChange={(e) => updateFilter('location', e.target.value)}>
-            <option value="">All</option>
+            <option value="">Location</option>
             <option value="Limassol">Limassol</option>
             <option value="Nicosia">Nicosia</option>
             <option value="Larnaca">Larnaca</option>
@@ -23,7 +23,7 @@ function FilterBar({ filters, setFilters, sort, setSort }) {
         <label>
           Property Type
           <select value={filters.type} onChange={(e) => updateFilter('type', e.target.value)}>
-            <option value="">All</option>
+            <option value="">Type of Building</option>
             {propertyTypes.map((type) => (
               <option key={type} value={type}>
                 {type}
@@ -34,7 +34,7 @@ function FilterBar({ filters, setFilters, sort, setSort }) {
         <label>
           Status
           <select value={filters.status} onChange={(e) => updateFilter('status', e.target.value)}>
-            <option value="">All</option>
+            <option value="">Status</option>
             {propertyStatuses.map((status) => (
               <option key={status} value={status}>
                 {status}
