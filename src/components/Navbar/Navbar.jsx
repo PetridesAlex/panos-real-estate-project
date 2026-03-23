@@ -5,11 +5,11 @@ import StaggeredMenu from '../StaggeredMenu/StaggeredMenu'
 import './Navbar.css'
 
 const navTabs = [
-  { key: 'buy', label: 'Buy', to: '/properties?mode=buy&status=For+Sale' },
-  { key: 'rent', label: 'Rent', to: '/properties?mode=rent&status=For+Rent' },
-  { key: 'sell', label: 'Sell', to: '/properties' },
-  { key: 'development', label: 'New Development', to: '/properties?mode=new-development' },
-  { key: 'agents', label: 'Agents', to: '/properties' },
+  { key: 'buy', label: 'Buy', to: '/buy' },
+  { key: 'rent', label: 'Rent', to: '/rent' },
+  { key: 'sell', label: 'Sell', to: '/contact' },
+  { key: 'development', label: 'New Development', to: '/new-developments' },
+  { key: 'agents', label: 'Agents', to: '/agents' },
 ]
 
 function WhatsAppIcon(props) {
@@ -122,10 +122,10 @@ function Navbar() {
             className="navbar__staggered"
             position="right"
             items={[
-                { label: 'Buy', link: '/properties?mode=buy&status=For+Sale' },
-                { label: 'Rent', link: '/properties?mode=rent&status=For+Rent' },
-                { label: 'New Development', link: '/properties?mode=new-development' },
-                { label: 'Agents', link: '/properties' },
+              { label: 'Buy', link: '/buy' },
+              { label: 'Rent', link: '/rent' },
+              { label: 'New Development', link: '/new-developments' },
+              { label: 'Agents', link: '/agents' },
               { label: 'Contact', link: '/contact' },
             ]}
             socialItems={[

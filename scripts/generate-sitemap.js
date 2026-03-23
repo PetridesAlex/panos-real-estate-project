@@ -9,7 +9,15 @@ const TODAY = new Date().toISOString().split('T')[0]
 const staticRoutes = [
   { path: '/', changefreq: 'daily', priority: '1.0' },
   { path: '/properties', changefreq: 'weekly', priority: '0.9' },
+  { path: '/buy', changefreq: 'weekly', priority: '0.9' },
+  { path: '/rent', changefreq: 'weekly', priority: '0.9' },
+  { path: '/new-developments', changefreq: 'weekly', priority: '0.9' },
+  { path: '/featured-properties', changefreq: 'weekly', priority: '0.8' },
+  { path: '/signature-listings', changefreq: 'weekly', priority: '0.8' },
   { path: '/about', changefreq: 'monthly', priority: '0.6' },
+  { path: '/services', changefreq: 'monthly', priority: '0.6' },
+  { path: '/developments', changefreq: 'weekly', priority: '0.7' },
+  { path: '/agents', changefreq: 'weekly', priority: '0.7' },
   { path: '/contact', changefreq: 'monthly', priority: '0.6' },
 ]
 
@@ -51,7 +59,7 @@ function getPropertyEntries() {
   return properties
     .filter((property) => typeof property?.slug === 'string' && property.slug.trim().length > 0)
     .map((property) => ({
-      loc: buildUrl(`/property/${property.slug}`),
+      loc: buildUrl(`/properties/${property.slug}`),
       changefreq: 'weekly',
       priority: '0.7',
     }))

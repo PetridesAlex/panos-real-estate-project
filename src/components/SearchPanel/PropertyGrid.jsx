@@ -5,7 +5,7 @@ const categoryCards = [
     id: 'featured',
     title: 'Featured Properties',
     description: 'Discover our highlighted homes and investment picks.',
-    to: '/properties?mode=buy&status=For+Sale&featured=true',
+    to: '/featured-properties',
     group: 'Featured Properties',
     image:
       'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80',
@@ -14,7 +14,7 @@ const categoryCards = [
     id: 'buy',
     title: 'Buy',
     description: 'Explore premium homes available for purchase across Cyprus.',
-    to: '/properties?mode=buy&status=For+Sale',
+    to: '/buy',
     group: 'All Listings',
     image:
       'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1600&q=80',
@@ -23,7 +23,7 @@ const categoryCards = [
     id: 'rent',
     title: 'Rent',
     description: 'Browse luxury rentals tailored for flexible living.',
-    to: '/properties?mode=rent&status=For+Rent',
+    to: '/rent',
     group: 'All Listings',
     image:
       'https://images.unsplash.com/photo-1493666438817-866a91353ca9?auto=format&fit=crop&w=1600&q=80',
@@ -32,7 +32,7 @@ const categoryCards = [
     id: 'new-dev',
     title: 'New Developments',
     description: 'View the latest projects and upcoming residential launches.',
-    to: '/properties?mode=new-development',
+    to: '/new-developments',
     group: 'New Developments',
     image:
       'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1600&q=80',
@@ -41,7 +41,7 @@ const categoryCards = [
     id: 'signature',
     title: 'Signature Listings',
     description: 'Enter our exclusive portfolio of iconic residences.',
-    to: '/properties?keyword=signature',
+    to: '/signature-listings',
     group: 'Signature Listings',
     image:
       'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1600&q=80',

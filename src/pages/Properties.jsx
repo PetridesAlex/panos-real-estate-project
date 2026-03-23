@@ -47,10 +47,19 @@ const discoveryLocations = [
 ]
 
 const buyRegions = ['Limassol', 'Nicosia', 'Paphos', 'Larnaca', 'Protaras']
+const citySlugToName = {
+  limassol: 'Limassol',
+  paphos: 'Paphos',
+  nicosia: 'Nicosia',
+  larnaca: 'Larnaca',
+  protaras: 'Protaras',
+  'ayia-napa': 'Ayia Napa',
+}
 
-function getFiltersFromSearch(search) {
+function getFiltersFromLocation(location) {
+  const { pathname, search } = location
   const params = new URLSearchParams(search)
-  return {
+  const filters = {
     ...initialFilters,
     location: params.get('location') || '',
     type: params.get('type') || '',
@@ -58,6 +67,39 @@ function getFiltersFromSearch(search) {
     featured: params.get('featured') || '',
     keyword: params.get('keyword') || '',
   }
+
+  if (pathname === '/buy') {
+    filters.status = 'For Sale'
+  } else if (pathname === '/rent') {
+    filters.status = 'For Rent'
+  } else if (pathname === '/featured-properties') {
+    filters.status = 'For Sale'
+    filters.featured = 'true'
+  } else if (pathname === '/signature-listings') {
+    filters.keyword = 'signature'
+  }
+
+  const citySlug = pathname.startsWith('/properties/')
+    ? pathname.replace('/properties/', '').trim().toLowerCase()
+    : ''
+  if (citySlug && citySlugToName[citySlug]) {
+    filters.location = citySlugToName[citySlug]
+  }
+
+  return filters
+}
+
+function getModeFromRoute(location) {
+  const params = new URLSearchParams(location.search)
+  const searchMode = params.get('mode') || ''
+  const { pathname } = location
+
+  if (pathname === '/rent') return 'rent'
+  if (pathname === '/new-developments') return 'new-development'
+  if (pathname === '/buy' || pathname === '/featured-properties') return 'buy'
+  if (searchMode) return searchMode
+  if (params.get('status') === 'For Rent') return 'rent'
+  return 'buy'
 }
 
 function getHeroContent(mode, status) {
@@ -97,13 +139,10 @@ function getHeroContent(mode, status) {
 }
 
 function Properties() {
-  const location = useLocation()
-  const [filters, setFilters] = useState(() => getFiltersFromSearch(location.search))
+  const routeLocation = useLocation()
+  const [filters, setFilters] = useState(() => getFiltersFromLocation(routeLocation))
   const [visibleCount, setVisibleCount] = useState(6)
-  const mode = useMemo(
-    () => new URLSearchParams(location.search).get('mode') || '',
-    [location.search],
-  )
+  const mode = useMemo(() => getModeFromRoute(routeLocation), [routeLocation])
   const heroContent = useMemo(
     () => getHeroContent(mode, filters.status),
     [mode, filters.status],
@@ -111,9 +150,9 @@ function Properties() {
   const isBuyMode = mode === 'buy' || filters.status === 'For Sale'
 
   useEffect(() => {
-    setFilters(getFiltersFromSearch(location.search))
+    setFilters(getFiltersFromLocation(routeLocation))
     setVisibleCount(6)
-  }, [location.search])
+  }, [routeLocation])
 
   const filtered = useMemo(() => {
     const keyword = filters.keyword.toLowerCase()
