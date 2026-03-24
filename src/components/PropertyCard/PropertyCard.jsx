@@ -67,7 +67,7 @@ function PropertyCard({
       <div className="property-card__media">
         <img src={property.image} alt={`${property.title} in ${property.location}`} />
         {!isCover && <span className="property-card__badge">{property.status}</span>}
-        {isSignature && <span className="property-card__signature">UNITED PROPERTIES. Signature</span>}
+        {isSignature && <span className="property-card__signature">United Properties. Signature</span>}
         {isCover && (
           <>
             <div className="property-card__cover-overlay">

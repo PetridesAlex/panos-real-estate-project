@@ -215,6 +215,25 @@
   min-height: 44px;
 }
 
+/* Modal sits on a light panel — global .btn-outline-dark uses white text for dark heroes */
+.cookie-preferences__actions .btn-outline-dark {
+  color: #132a4c;
+  background: #ffffff;
+  border: 1px solid rgba(19, 42, 76, 0.38);
+  font-weight: 600;
+}
+
+.cookie-preferences__actions .btn-outline-dark:hover {
+  color: #0b1a30;
+  background: #f4f7fb;
+  border-color: rgba(19, 42, 76, 0.55);
+}
+
+.cookie-preferences__actions .btn-gold {
+  color: #0c1626;
+  font-weight: 600;
+}
+
 .cookie-preferences__note {
   margin: 0.85rem 0 0;
   color: #5b7290;

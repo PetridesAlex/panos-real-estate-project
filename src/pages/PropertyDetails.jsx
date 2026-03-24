@@ -29,7 +29,7 @@ function PropertyDetails() {
   return (
     <>
       <Helmet>
-        <title>{property.title} | UNITED PROPERTIES</title>
+        <title>{property.title} | United Properties</title>
       </Helmet>
 
       <section className="page-hero page-hero--property">

@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { GoogleMap, MarkerF, useJsApiLoader } from '@react-google-maps/api'
 
 const cyprusMapDefaults = {
@@ -18,6 +18,8 @@ const cityCoordinates = {
 const mapContainerStyle = {
   width: '100%',
   height: '100%',
+  minWidth: 0,
+  minHeight: 0,
 }
 
 function getMapViewport(activeCity) {
@@ -29,12 +31,59 @@ function getMapViewport(activeCity) {
   }
 }
 
+function triggerMapResize(map) {
+  if (!map || typeof google === 'undefined') return
+  google.maps.event.trigger(map, 'resize')
+}
+
 function SearchMap({ properties, activeCity }) {
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+  const containerRef = useRef(null)
+  const mapRef = useRef(null)
+  const mapListenersCleanupRef = useRef(null)
+  const [mapInstance, setMapInstance] = useState(null)
   const { isLoaded, loadError } = useJsApiLoader({
     id: 'google-map-script-search-panel',
     googleMapsApiKey: apiKey || '',
   })
+
+  const onMapLoad = useCallback((map) => {
+    mapRef.current = map
+    setMapInstance(map)
+    const resize = () => triggerMapResize(mapRef.current)
+    resize()
+    requestAnimationFrame(resize)
+    const t1 = window.setTimeout(resize, 120)
+    const t2 = window.setTimeout(resize, 400)
+    const onWinResize = () => resize()
+    window.addEventListener('resize', onWinResize)
+    window.addEventListener('orientationchange', onWinResize)
+    window.visualViewport?.addEventListener('resize', onWinResize)
+    mapListenersCleanupRef.current = () => {
+      window.clearTimeout(t1)
+      window.clearTimeout(t2)
+      window.removeEventListener('resize', onWinResize)
+      window.removeEventListener('orientationchange', onWinResize)
+      window.visualViewport?.removeEventListener('resize', onWinResize)
+    }
+  }, [])
+
+  const onMapUnmount = useCallback(() => {
+    mapListenersCleanupRef.current?.()
+    mapListenersCleanupRef.current = null
+    mapRef.current = null
+    setMapInstance(null)
+  }, [])
+
+  useEffect(() => {
+    if (!mapInstance || !containerRef.current) return undefined
+    const el = containerRef.current
+    const ro = new ResizeObserver(() => {
+      triggerMapResize(mapRef.current)
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [mapInstance])
 
   const markers = useMemo(
     () =>
@@ -84,19 +133,22 @@ function SearchMap({ properties, activeCity }) {
   }
 
   return (
-    <div className="search-panel-map" aria-label="Cyprus locations map">
+    <div ref={containerRef} className="search-panel-map search-panel-map--live" aria-label="Cyprus locations map">
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         center={viewport.center}
         zoom={viewport.zoom}
+        onLoad={onMapLoad}
+        onUnmount={onMapUnmount}
         options={{
           mapTypeControl: false,
           streetViewControl: false,
-          fullscreenControl: false,
+          fullscreenControl: true,
           clickableIcons: false,
-          gestureHandling: 'none',
+          /* One-finger drags scroll the parent panel; two fingers pan/zoom the map (native app-like). */
+          gestureHandling: 'cooperative',
           scrollwheel: false,
-          draggable: false,
+          draggable: true,
           zoomControl: true,
         }}
       >

@@ -7,7 +7,7 @@ function Contact() {
   return (
     <>
       <Helmet>
-        <title>Contact | UNITED PROPERTIES</title>
+        <title>Contact | United Properties</title>
       </Helmet>
 
       <section className="page-hero">

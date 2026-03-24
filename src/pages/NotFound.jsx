@@ -5,7 +5,7 @@ function NotFound() {
   return (
     <>
       <Helmet>
-        <title>Page Not Found | UNITED PROPERTIES</title>
+        <title>Page Not Found | United Properties</title>
       </Helmet>
       <section className="section section--light" style={{ paddingTop: '9rem' }}>
         <div className="container" style={{ textAlign: 'center' }}>

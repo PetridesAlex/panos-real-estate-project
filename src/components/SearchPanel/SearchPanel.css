@@ -3,25 +3,66 @@
   inset: 0;
   z-index: 125;
   background: rgba(10, 13, 20, 0.64);
-  backdrop-filter: blur(4px);
-  padding: 1rem;
-  display: grid;
-  place-items: center;
+  /* Lighter blur = less repaint jank while the panel scrolls */
+  backdrop-filter: blur(3px);
+  padding: max(0.75rem, env(safe-area-inset-top, 0px)) max(0.75rem, env(safe-area-inset-right, 0px))
+    max(0.75rem, env(safe-area-inset-bottom, 0px)) max(0.75rem, env(safe-area-inset-left, 0px));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Single scroll surface: only .search-panel scrolls — avoids touch fighting the overlay */
+  overflow: hidden;
+  overscroll-behavior: none;
+  /* Backdrop must not claim vertical pans; those belong to .search-panel (iOS / touch). */
+  touch-action: none;
 }
 
 .search-panel {
   width: min(1280px, 96vw);
-  max-height: calc(100dvh - 2rem);
+  /* min-height: 0 lets this flex/grid child shrink so overflow-y creates a real scroll area */
+  min-height: 0;
+  max-height: min(92dvh, calc(100dvh - 2rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)));
+  flex: 0 1 auto;
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
+  /* Explicit vertical pan so touch drags scroll this layer (not the scrollbar) */
+  touch-action: pan-y;
+  /* Avoid extra compositor tricks here — they can interfere with touch scroll hit-testing on iOS */
   border-radius: 20px;
   border: 1px solid #dee3ea;
   background: linear-gradient(165deg, #f9fafc, #f2f4f7);
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.22);
-  padding: 1.5rem 1.35rem 1.35rem;
+  padding: 1.5rem 1.35rem calc(1.35rem + env(safe-area-inset-bottom, 0px));
   position: relative;
+  isolation: isolate;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(25, 52, 88, 0.45) rgba(15, 35, 58, 0.08);
+  /* Native scroll — Lenis is opted out via data-lenis-prevent on the overlay */
+  scroll-behavior: auto;
+}
+
+/* Clearer scroll affordance on supporting browsers */
+.search-panel::-webkit-scrollbar {
+  width: 10px;
+}
+
+.search-panel::-webkit-scrollbar-track {
+  background: rgba(15, 35, 58, 0.06);
+  border-radius: 999px;
+}
+
+.search-panel::-webkit-scrollbar-thumb {
+  background: rgba(25, 52, 88, 0.35);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.search-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(25, 52, 88, 0.5);
+  background-clip: padding-box;
 }
 
 .search-panel__close {
@@ -170,16 +211,33 @@
 
 .search-panel__map-wrap {
   margin-top: 0.95rem;
+  width: 100%;
+  min-width: 0;
 }
 
 .search-panel-map {
   margin-top: 0.55rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   height: 300px;
   min-height: 250px;
   border: 1px solid #dfe5ed;
   border-radius: 12px;
   overflow: hidden;
   background: #eef2f7;
+  position: relative;
+  isolation: isolate;
+  /* Prefer passing vertical drags to the panel scroll; map still zooms via controls / cooperative gestures */
+  touch-action: pan-y;
+}
+
+/* Google injects nested divs; keep them filling the box on narrow viewports */
+.search-panel-map--live > div {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
 }
 
 .search-panel-map--fallback {
@@ -425,14 +483,17 @@
 
 @media (max-width: 700px) {
   .search-panel-overlay {
-    padding: 0.58rem;
+    align-items: stretch;
+    padding: 0.5rem;
+    padding-top: max(0.5rem, env(safe-area-inset-top, 0px));
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
   }
 
   .search-panel {
     width: 100%;
-    max-height: calc(100dvh - 1.16rem);
+    max-height: min(94dvh, calc(100dvh - 1rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)));
     border-radius: 14px;
-    padding: 1rem 0.85rem 0.9rem;
+    padding: 1rem 0.85rem calc(0.9rem + env(safe-area-inset-bottom, 0px));
   }
 
   .search-panel__close {
@@ -475,9 +536,18 @@
     grid-template-columns: 1fr;
   }
 
+  .search-panel__map-wrap {
+    margin-top: 0.75rem;
+  }
+
   .search-panel-map {
-    height: 240px;
-    min-height: 210px;
+    /* Fluid height: readable on phones, capped so the panel still scrolls comfortably */
+    height: clamp(200px, 42vmin, 300px);
+    min-height: 200px;
+    max-height: 300px;
+    border-radius: 10px;
+    /* Let the map receive pinch/pan; panel scroll uses Lenis opt-out + cooperative gestures */
+    touch-action: auto;
   }
 
   .search-panel-category-card {

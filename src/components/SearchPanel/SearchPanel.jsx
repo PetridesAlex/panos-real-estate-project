@@ -12,7 +12,7 @@ import PropertyGrid from './PropertyGrid'
 import SearchMap from './SearchMap'
 import './SearchPanel.css'
 
-function SearchPanel({ open, onClose }) {
+function SearchPanel({ open, onClose, seed = null, seedKey = 0 }) {
   const [query, setQuery] = useState('')
   const [activeCity, setActiveCity] = useState('All Cyprus')
   const [activeCategory, setActiveCategory] = useState('All Listings')
@@ -54,22 +54,63 @@ function SearchPanel({ open, onClose }) {
 
   useEffect(() => {
     if (!open) return undefined
-    const previousOverflow = document.body.style.overflow
+    const scrollY = window.scrollY
+    const previous = {
+      position: document.body.style.position,
+      top: document.body.style.top,
+      left: document.body.style.left,
+      right: document.body.style.right,
+      width: document.body.style.width,
+      overflow: document.body.style.overflow,
+    }
     const onKeyDown = (event) => {
       if (event.key === 'Escape') onClose()
     }
+    /* iOS/Safari: overflow:hidden on html/body often breaks momentum scroll inside fixed modals.
+       Locking the page with position:fixed preserves scroll position and lets the panel scroll with touch. */
+    document.body.style.position = 'fixed'
+    document.body.style.top = `-${scrollY}px`
+    document.body.style.left = '0'
+    document.body.style.right = '0'
+    document.body.style.width = '100%'
     document.body.style.overflow = 'hidden'
     window.addEventListener('keydown', onKeyDown)
     return () => {
-      document.body.style.overflow = previousOverflow
+      document.body.style.position = previous.position
+      document.body.style.top = previous.top
+      document.body.style.left = previous.left
+      document.body.style.right = previous.right
+      document.body.style.width = previous.width
+      document.body.style.overflow = previous.overflow
+      window.scrollTo(0, scrollY)
       window.removeEventListener('keydown', onKeyDown)
     }
   }, [open, onClose])
 
+  useEffect(() => {
+    if (!open) return
+    if (seed) {
+      setQuery(seed.query ?? '')
+      setActiveCity(seed.city ?? 'All Cyprus')
+      setActiveCategory(seed.category ?? 'All Listings')
+    } else {
+      setQuery('')
+      setActiveCity('All Cyprus')
+      setActiveCategory('All Listings')
+    }
+    // seedKey is bumped whenever the hero opens the panel; seed matches that open
+  }, [open, seedKey, seed])
+
   if (!open) return null
 
   return (
-    <div className="search-panel-overlay" role="dialog" aria-modal="true" onClick={onClose}>
+    <div
+      className="search-panel-overlay"
+      role="dialog"
+      aria-modal="true"
+      data-lenis-prevent
+      onClick={onClose}
+    >
       <section className="search-panel" onClick={(event) => event.stopPropagation()}>
         <button type="button" className="search-panel__close" aria-label="Close search panel" onClick={onClose}>
           <X size={18} />

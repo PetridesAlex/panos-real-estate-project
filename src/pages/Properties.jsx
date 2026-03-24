@@ -111,7 +111,7 @@ function getHeroContent(mode, status) {
       title: 'Exclusive Rental Homes',
       description:
         'Browse premium apartments, villas, and furnished residences available for short and long-term living.',
-      pageTitle: 'Rent Properties | UNITED PROPERTIES',
+      pageTitle: 'Rent Properties | United Properties',
     }
   }
 
@@ -123,7 +123,7 @@ function getHeroContent(mode, status) {
       title: 'Cyprus New Developments',
       description:
         'Explore off-plan and newly launched residences with strong design vision, premium amenities, and long-term value.',
-      pageTitle: 'New Developments | UNITED PROPERTIES',
+      pageTitle: 'New Developments | United Properties',
     }
   }
 
@@ -134,7 +134,7 @@ function getHeroContent(mode, status) {
     title: 'Your New Home Awaits',
     description:
       'Explore curated residences by location and discover properties that match your lifestyle and investment goals.',
-    pageTitle: 'Properties | UNITED PROPERTIES',
+    pageTitle: 'Properties | United Properties',
   }
 }
 

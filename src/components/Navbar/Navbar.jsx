@@ -73,7 +73,7 @@ function Navbar() {
     <header className={navClass}>
       <div className="container navbar__topline navbar__inner--wide" aria-label="Top bar">
         <span className="navbar__topline-spacer" aria-hidden="true" />
-        <p className="navbar__topline-text">UNITED PROPERTIES</p>
+        <p className="navbar__topline-text">United Properties</p>
         <div className="navbar__topline-socials">
           <a href="https://wa.me/35700000000" target="_blank" rel="noreferrer" aria-label="WhatsApp">
             <WhatsAppIcon />

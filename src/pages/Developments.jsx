@@ -9,7 +9,7 @@ function Developments() {
   return (
     <>
       <Helmet>
-        <title>Developments | UNITED PROPERTIES</title>
+        <title>Developments | United Properties</title>
       </Helmet>
 
       <section className="page-hero">

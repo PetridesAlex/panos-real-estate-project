@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ChevronDown, MapPin, Search } from 'lucide-react'
+import { ChevronDown, Search, Sparkles } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { heroSearchSuggestionGroups } from '../../data/heroSearchSuggestions'
 import SearchPanel from '../SearchPanel/SearchPanel'
 import './Hero.css'
 
@@ -9,8 +10,16 @@ function Hero() {
   const sectionRef = useRef(null)
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [searchSeed, setSearchSeed] = useState(null)
+  const [searchSeedKey, setSearchSeedKey] = useState(0)
   const location = useLocation()
   const navigate = useNavigate()
+
+  const openSearchPanel = useCallback((nextSeed) => {
+    setSearchSeed(nextSeed)
+    setSearchSeedKey((key) => key + 1)
+    setIsSearchOpen(true)
+  }, [])
 
   useEffect(() => {
     if (typeof window === 'undefined') return undefined
@@ -34,19 +43,19 @@ function Hero() {
   }, [])
 
   useEffect(() => {
-    const onOpenSearch = () => setIsSearchOpen(true)
+    const onOpenSearch = () => openSearchPanel(null)
     window.addEventListener('open-property-search-panel', onOpenSearch)
     return () => window.removeEventListener('open-property-search-panel', onOpenSearch)
-  }, [])
+  }, [openSearchPanel])
 
   useEffect(() => {
     const params = new URLSearchParams(location.search)
     if (params.get('openSearch') !== '1') return
-    setIsSearchOpen(true)
+    openSearchPanel(null)
     params.delete('openSearch')
     const nextSearch = params.toString()
     navigate(`${location.pathname}${nextSearch ? `?${nextSearch}` : ''}`, { replace: true })
-  }, [location.pathname, location.search, navigate])
+  }, [location.pathname, location.search, navigate, openSearchPanel])
 
   return (
     <>
@@ -73,42 +82,93 @@ function Hero() {
         </div>
         <div className="hero-section__overlay" />
         <div className="container hero-section__inner">
-          <motion.div
-            className="hero-section__trigger"
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75 }}
-            role="button"
-            tabIndex={0}
-            onClick={() => setIsSearchOpen(true)}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault()
-                setIsSearchOpen(true)
-              }
-            }}
-            aria-label="Open property search panel"
-          >
-            <button
-              type="button"
-              className="hero-section__trigger-input"
-              aria-label="Open search panel"
-              onClick={() => setIsSearchOpen(true)}
+          <div className="hero-section__search-stack">
+            <motion.div
+              className="hero-section__trigger-shell"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75 }}
             >
-              <span>Search properties, locations, agents...</span>
-              <span className="hero-section__trigger-map-icon" aria-hidden="true">
-                <MapPin size={14} />
-              </span>
-            </button>
-            <button
-              type="button"
-              className="hero-section__trigger-location"
-              onClick={() => setIsSearchOpen(true)}
-              aria-label="Search by location"
-            >
-              <Search size={16} />
-            </button>
-          </motion.div>
+              <div
+                className="hero-section__trigger"
+                role="button"
+                tabIndex={0}
+                onClick={() => openSearchPanel(null)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    openSearchPanel(null)
+                  }
+                }}
+                aria-label="Open smart property search"
+              >
+                <button
+                  type="button"
+                  className="hero-section__trigger-input"
+                  aria-label="Open search panel"
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    openSearchPanel(null)
+                  }}
+                >
+                  <span className="hero-section__trigger-ai-orb" aria-hidden="true">
+                    <Sparkles size={18} strokeWidth={2.2} />
+                  </span>
+                  <span className="hero-section__trigger-copy">
+                    <span className="hero-section__trigger-eyebrow">Smart search</span>
+                    <span className="hero-section__trigger-placeholder">
+                      Ask anything — villas, areas, rentals, new developments…
+                    </span>
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  className="hero-section__ai-pill"
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    openSearchPanel({ category: 'Featured Properties' })
+                  }}
+                  aria-label="Open featured property picks"
+                  title="Featured listings"
+                >
+                  <Sparkles size={14} strokeWidth={2} aria-hidden />
+                  <span>Featured</span>
+                </button>
+                <button
+                  type="button"
+                  className="hero-section__trigger-location"
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    openSearchPanel(null)
+                  }}
+                  aria-label="Open search"
+                >
+                  <Search size={17} strokeWidth={2.2} />
+                </button>
+              </div>
+            </motion.div>
+
+            <div className="hero-section__smart-groups" aria-label="Suggested searches">
+              {heroSearchSuggestionGroups.map((group) => (
+                <div key={group.id} className="hero-section__smart-group">
+                  <span className="hero-section__smart-group-label">{group.label}</span>
+                  <div className="hero-section__chips" role="list">
+                    {group.items.map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        role="listitem"
+                        className={`hero-section__chip hero-section__chip--${item.variant}`.trim()}
+                        onClick={() => openSearchPanel(item.seed)}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <a className="hero-section__indicator" href="#featured-properties" aria-label="Scroll">
@@ -116,7 +176,12 @@ function Hero() {
         </a>
       </section>
 
-      <SearchPanel open={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <SearchPanel
+        open={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        seed={searchSeed}
+        seedKey={searchSeedKey}
+      />
     </>
   )
 }

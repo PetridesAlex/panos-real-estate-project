@@ -86,7 +86,7 @@ function Footer() {
       </div>
 
       <div className="container footer__bottom">
-        <p>Copyright {new Date().getFullYear()} UNITED PROPERTIES. All rights reserved.</p>
+        <p>Copyright {new Date().getFullYear()} United Properties. All rights reserved.</p>
       </div>
     </footer>
   )

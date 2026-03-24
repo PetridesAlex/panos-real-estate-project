@@ -8,7 +8,7 @@ function Services() {
   return (
     <>
       <Helmet>
-        <title>Services | UNITED PROPERTIES</title>
+        <title>Services | United Properties</title>
       </Helmet>
 
       <section className="page-hero">
