@@ -55,7 +55,9 @@ function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const navClass = `navbar ${isScrolled || !isHome ? 'navbar--solid' : 'navbar--transparent'}`
+  const navClass = `navbar ${isScrolled || !isHome ? 'navbar--solid' : 'navbar--transparent'} ${
+    isHome && isScrolled ? 'navbar--home-scrolled' : ''
+  }`.trim()
   const isPropertiesActive =
     location.pathname === '/properties' ||
     location.pathname === '/buy' ||
@@ -71,25 +73,27 @@ function Navbar() {
 
   return (
     <header className={navClass}>
-      <div className="container navbar__topline navbar__inner--wide" aria-label="Top bar">
-        <span className="navbar__topline-spacer" aria-hidden="true" />
-        <p className="navbar__topline-text">United Properties</p>
-        <div className="navbar__topline-socials">
-          <a href="https://wa.me/35700000000" target="_blank" rel="noreferrer" aria-label="WhatsApp">
-            <WhatsAppIcon />
-          </a>
-          <a href="#" aria-label="Telegram">
-            <TelegramIcon />
-          </a>
-          <a href="#" aria-label="Instagram">
-            <InstagramIcon />
-          </a>
+      {isHome && !isScrolled && (
+        <div className="container navbar__topline navbar__inner--wide" aria-label="Top bar">
+          <span className="navbar__topline-spacer" aria-hidden="true" />
+          <p className="navbar__topline-text">United Properties</p>
+          <div className="navbar__topline-socials">
+            <a href="https://wa.me/35700000000" target="_blank" rel="noreferrer" aria-label="WhatsApp">
+              <WhatsAppIcon />
+            </a>
+            <a href="#" aria-label="Telegram">
+              <TelegramIcon />
+            </a>
+            <a href="#" aria-label="Instagram">
+              <InstagramIcon />
+            </a>
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="container navbar__inner navbar__inner--wide">
         <Link to="/" className="navbar__logo">
-          <img src="/images/logo/united-properties-logo.svg" alt="United Properties" />
+          <img src="/images/logo/logo-panos.svg" alt="United Properties" />
         </Link>
 
         <nav className="navbar__desktop">

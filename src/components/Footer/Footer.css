@@ -29,19 +29,24 @@
 
 .footer__brand img {
   display: block;
-  height: clamp(96px, 11vw, 148px);
+  height: clamp(110px, 12vw, 172px);
   width: auto;
   object-fit: contain;
   max-width: min(360px, 78vw);
-  filter: contrast(1.2) saturate(1.08) drop-shadow(0 2px 5px rgba(6, 20, 38, 0.18));
+  filter: contrast(1.34) saturate(1.16) brightness(1.02) drop-shadow(0 5px 10px rgba(6, 20, 38, 0.22));
 }
 
 .footer p {
   margin: 0.3rem 0 0;
-  color: #4c6787;
+  color: #2e4f74;
   line-height: 1.72;
-  font-size: 0.95rem;
+  font-size: 1rem;
   max-width: 42ch;
+}
+
+.footer__grid > div:first-child p {
+  color: #1f4268;
+  font-weight: 600;
 }
 
 .footer h4 {
@@ -170,7 +175,7 @@
   }
 
   .footer__brand img {
-    height: clamp(82px, 24vw, 118px);
+    height: clamp(96px, 28vw, 138px);
   }
 
   .footer__newsletter {

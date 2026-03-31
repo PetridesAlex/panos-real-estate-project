@@ -12,8 +12,8 @@
 }
 
 .navbar--solid {
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 10px 26px rgba(8, 20, 36, 0.12);
+  background: transparent;
+  box-shadow: none;
 }
 
 .navbar__topline {
@@ -128,6 +128,16 @@
   padding: 0.14rem 0.3rem 0.14rem 0.46rem;
 }
 
+.navbar--home-scrolled .navbar__inner {
+  border: 1px solid rgba(255, 255, 255, 0.78) !important;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 16% 18%, rgba(184, 146, 100, 0.16), transparent 42%),
+    linear-gradient(145deg, rgba(11, 20, 33, 0.78), rgba(18, 30, 46, 0.72));
+  backdrop-filter: blur(10px);
+  box-shadow: 0 14px 32px rgba(6, 16, 28, 0.26);
+}
+
 .navbar--solid .navbar__inner::after {
   display: none;
 }
@@ -201,8 +211,8 @@
 }
 
 .navbar--solid .navbar__nav-trigger {
-  color: #0b2f57;
-  text-shadow: none;
+  color: #f6fbff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
 }
 
 .navbar__nav-trigger:hover {
@@ -210,7 +220,7 @@
 }
 
 .navbar--solid .navbar__nav-trigger:hover {
-  background: rgba(15, 41, 69, 0.08);
+  background: rgba(255, 255, 255, 0.16);
 }
 
 .navbar__nav-trigger.active {
@@ -219,8 +229,8 @@
 }
 
 .navbar--solid .navbar__nav-trigger.active {
-  color: #0f4f8b;
-  background: rgba(15, 79, 139, 0.14);
+  color: #ffd79f;
+  background: rgba(255, 226, 178, 0.14);
 }
 
 .navbar__nav-dropdown {
@@ -562,8 +572,8 @@
 
   .navbar {
     top: 0;
-    background: rgba(255, 255, 255, 0.96);
-    box-shadow: 0 8px 18px rgba(8, 20, 36, 0.1);
+    background: transparent;
+    box-shadow: none;
   }
 
   .navbar__topline {
