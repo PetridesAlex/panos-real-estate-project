@@ -10,7 +10,7 @@ function Contact() {
         <title>Contact | United Properties</title>
       </Helmet>
 
-      <section className="page-hero">
+      <section className="page-hero page-hero--contact">
         <div className="container">
           <p>Contact</p>
           <h1>Start a Private Real Estate Consultation</h1>

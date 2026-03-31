@@ -1,3 +1,10 @@
+.page-hero--contact {
+  background:
+    radial-gradient(circle at 14% 16%, rgba(168, 126, 82, 0.26), transparent 40%),
+    radial-gradient(circle at 84% 82%, rgba(171, 178, 188, 0.2), transparent 38%),
+    linear-gradient(160deg, #0e0f12 0%, #1a1d22 52%, #090a0c 100%);
+}
+
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
