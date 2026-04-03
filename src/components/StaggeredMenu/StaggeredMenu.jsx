@@ -38,14 +38,9 @@ function StaggeredMenu({
   const panelRef = useRef(null)
   const preLayersRef = useRef(null)
   const preLayerElsRef = useRef([])
-  const iconRef = useRef(null)
-  const textInnerRef = useRef(null)
-  const [textLines, setTextLines] = useState(['Menu', 'Close'])
 
   const openTlRef = useRef(null)
   const closeTweenRef = useRef(null)
-  const spinTweenRef = useRef(null)
-  const textCycleAnimRef = useRef(null)
   const colorTweenRef = useRef(null)
   const toggleBtnRef = useRef(null)
 
@@ -68,17 +63,13 @@ function StaggeredMenu({
     const ctx = gsap.context(() => {
       const panel = panelRef.current
       const preContainer = preLayersRef.current
-      const icon = iconRef.current
-      const textInner = textInnerRef.current
-      if (!panel || !icon || !textInner) return
+      if (!panel) return
 
       const preLayers = preContainer ? Array.from(preContainer.querySelectorAll('.smenu-prelayer')) : []
       preLayerElsRef.current = preLayers
 
       const offscreen = position === 'left' ? -100 : 100
       gsap.set([panel, ...preLayers], { xPercent: offscreen })
-      gsap.set(icon, { rotate: 0, transformOrigin: '50% 50%' })
-      gsap.set(textInner, { yPercent: 0 })
       if (toggleBtnRef.current) gsap.set(toggleBtnRef.current, { color: menuButtonColor })
     })
     return () => ctx.revert()
@@ -187,18 +178,6 @@ function StaggeredMenu({
     })
   }, [position])
 
-  const animateIcon = useCallback((opening) => {
-    const icon = iconRef.current
-    if (!icon) return
-    spinTweenRef.current?.kill()
-    spinTweenRef.current = gsap.to(icon, {
-      rotate: 0,
-      duration: opening ? 0.2 : 0.18,
-      ease: 'power2.out',
-      overwrite: 'auto',
-    })
-  }, [])
-
   const animateColor = useCallback(
     (opening) => {
       const btn = toggleBtnRef.current
@@ -218,36 +197,14 @@ function StaggeredMenu({
     [openMenuButtonColor, menuButtonColor, changeMenuColorOnOpen],
   )
 
-  const animateText = useCallback((opening) => {
-    const inner = textInnerRef.current
-    if (!inner) return
-    textCycleAnimRef.current?.kill()
-
-    const currentLabel = opening ? 'Menu' : 'Close'
-    const targetLabel = opening ? 'Close' : 'Menu'
-    const seq = [currentLabel, currentLabel === 'Menu' ? 'Close' : 'Menu', targetLabel, targetLabel]
-    setTextLines(seq)
-
-    gsap.set(inner, { yPercent: 0 })
-    const lineCount = seq.length
-    const finalShift = ((lineCount - 1) / lineCount) * 100
-    textCycleAnimRef.current = gsap.to(inner, {
-      yPercent: -finalShift,
-      duration: 0.5 + lineCount * 0.07,
-      ease: 'power4.out',
-    })
-  }, [])
-
   const closeMenu = useCallback(() => {
     if (!openRef.current) return
     openRef.current = false
     setOpen(false)
     onMenuClose?.()
     playClose()
-    animateIcon(false)
     animateColor(false)
-    animateText(false)
-  }, [playClose, animateIcon, animateColor, animateText, onMenuClose])
+  }, [playClose, animateColor, onMenuClose])
 
   const toggleMenu = useCallback(() => {
     const target = !openRef.current
@@ -260,10 +217,8 @@ function StaggeredMenu({
       onMenuClose?.()
       playClose()
     }
-    animateIcon(target)
     animateColor(target)
-    animateText(target)
-  }, [playOpen, playClose, animateIcon, animateColor, animateText, onMenuOpen, onMenuClose])
+  }, [playOpen, playClose, animateColor, onMenuOpen, onMenuClose])
 
   useEffect(() => {
     if (!closeOnClickAway || !open) return undefined
@@ -307,27 +262,24 @@ function StaggeredMenu({
 
       <button
         ref={toggleBtnRef}
-        className="smenu-toggle"
-        aria-label={open ? 'Close menu' : 'Open menu'}
+        className="smenu-toggle smenu-toggle--icon-only"
+        aria-label={open ? 'Close navigation' : 'Open navigation'}
         aria-expanded={open}
         aria-controls="staggered-menu-panel"
         onClick={toggleMenu}
         type="button"
       >
-        <span className="smenu-toggle-textWrap" aria-hidden="true">
-          <span ref={textInnerRef} className="smenu-toggle-textInner">
-            {textLines.map((l, i) => (
-              <span className="smenu-toggle-line" key={`${l}-${i}`}>
-                {l}
-              </span>
-            ))}
+        <span className="smenu-icon smenu-icon--toggle" aria-hidden="true">
+          <span className={`smenu-icon__state ${!open ? 'smenu-icon__state--active' : ''}`}>
+            <span className="smenu-burger">
+              <span className="smenu-burger__line" />
+              <span className="smenu-burger__line" />
+              <span className="smenu-burger__line" />
+            </span>
           </span>
-        </span>
-        <span ref={iconRef} className="smenu-icon" aria-hidden="true">
-          <span className="smenu-icon-line smenu-icon-line-top" />
-          <span className="smenu-icon-line smenu-icon-line-mid" />
-          <span className="smenu-icon-line smenu-icon-line-bottom" />
-          <span className="smenu-icon-dot" />
+          <span className={`smenu-icon__state ${open ? 'smenu-icon__state--active' : ''}`}>
+            <X className="smenu-icon__svg smenu-icon__svg--close" strokeWidth={2.25} />
+          </span>
         </span>
       </button>
 

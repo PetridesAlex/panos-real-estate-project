@@ -93,8 +93,12 @@ function Navbar() {
       )}
 
       <div className="container navbar__inner navbar__inner--wide">
-        <Link to="/" className="navbar__logo">
-          <img src="/images/logo/logo-panos.svg" alt="United Properties" />
+        <Link to="/" className="navbar__logo" aria-label="United Properties — Home">
+          <img src="/images/logo/united-properties-logo.png" alt="" role="presentation" />
+          <span className="navbar__logo-wordmark" aria-hidden="true">
+            <span className="navbar__logo-line navbar__logo-line--top">United</span>
+            <span className="navbar__logo-line navbar__logo-line--bottom">Properties</span>
+          </span>
         </Link>
 
         <nav className="navbar__desktop">

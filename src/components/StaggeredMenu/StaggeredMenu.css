@@ -6,143 +6,125 @@
 
 .smenu-toggle {
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  background: linear-gradient(145deg, rgba(20, 19, 18, 0.72), rgba(45, 34, 24, 0.58));
-  border: 1px solid rgba(217, 182, 128, 0.42);
-  color: #fff;
-  border-radius: 999px;
-  height: 42px;
-  padding: 0 0.72rem;
   cursor: pointer;
   overflow: visible;
-  backdrop-filter: blur(7px);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.28);
-  transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+  color: #fff;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast),
+    box-shadow var(--transition-fast);
   will-change: transform;
 }
 
-.smenu-toggle:hover {
-  transform: translateY(-1px);
-  border-color: rgba(217, 182, 128, 0.62);
-  background: linear-gradient(145deg, rgba(28, 25, 21, 0.78), rgba(59, 44, 30, 0.64));
+/* Icon-only control: chamfered tile — custom menu bars + close */
+.smenu-toggle--icon-only {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 1px solid rgba(217, 182, 128, 0.48);
+  border-radius: 6px 18px 16px 9px;
+  background: linear-gradient(
+    152deg,
+    rgba(36, 32, 29, 0.96) 0%,
+    rgba(16, 14, 13, 0.94) 42%,
+    rgba(26, 22, 19, 0.98) 100%
+  );
+  backdrop-filter: blur(8px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.11),
+    0 12px 28px rgba(0, 0, 0, 0.38);
 }
 
-.smenu-toggle::after {
+.smenu-toggle--icon-only:hover {
+  transform: translateY(-1px);
+  border-color: rgba(232, 200, 150, 0.65);
+  background: linear-gradient(
+    152deg,
+    rgba(42, 37, 33, 0.98) 0%,
+    rgba(22, 19, 17, 0.96) 45%,
+    rgba(32, 27, 23, 0.99) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 14px 32px rgba(0, 0, 0, 0.42);
+}
+
+.smenu-toggle--icon-only::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   pointer-events: none;
 }
 
-.smenu-toggle-textWrap {
+.smenu-icon--toggle {
   position: relative;
-  display: inline-block;
-  height: 1em;
-  overflow: hidden;
-  white-space: nowrap;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  display: block;
+  line-height: 0;
+  color: inherit;
 }
 
-.smenu-toggle-textInner {
+/* Three-line menu mark — reads clearly at small sizes */
+.smenu-burger {
   display: flex;
   flex-direction: column;
-  line-height: 1;
-}
-
-.smenu-toggle-line {
-  display: block;
-  height: 1em;
-  line-height: 1;
-  font-size: 0.85rem;
-  letter-spacing: 0.02em;
-}
-
-.smenu-icon {
-  position: relative;
-  width: 16px;
-  height: 14px;
-  flex: 0 0 16px;
-  display: inline-flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  will-change: transform;
-  line-height: 0;
+  gap: 5px;
+  width: 24px;
+  margin: 0 auto;
 }
 
-.smenu-icon-line {
+.smenu-burger__line {
+  display: block;
+  height: 2.5px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 248, 236, 0.98) 0%,
+    rgba(232, 210, 176, 0.95) 55%,
+    rgba(255, 248, 236, 0.88) 100%
+  );
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.2);
+}
+
+.smenu-burger__line:nth-child(2) {
+  width: 78%;
+  margin-inline: auto;
+  opacity: 0.92;
+}
+
+.smenu-icon__state {
   position: absolute;
-  left: 50%;
-  width: 100%;
-  height: 2px;
-  background: currentColor;
-  border-radius: 2px;
-  transform-origin: 50% 50%;
-  transition: transform 220ms ease, opacity 180ms ease;
-}
-
-.smenu-icon-line-top {
-  top: 2px;
-  transform: translateX(-50%);
-}
-
-.smenu-icon-line-mid {
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.smenu-icon-line-bottom {
-  bottom: 2px;
-  transform: translateX(-50%);
-}
-
-.smenu-icon-dot {
-  position: absolute;
-  right: -2px;
-  top: -2px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: #e3bb84;
-  box-shadow: 0 0 0 3px rgba(227, 187, 132, 0.22);
-  animation: smenuPulse 1.8s ease-in-out infinite;
-  transition: opacity 180ms ease, transform 220ms ease;
-}
-
-[data-open='true'] .smenu-icon-line-top {
-  top: 50%;
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
-[data-open='true'] .smenu-icon-line-mid {
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: currentColor;
   opacity: 0;
-  transform: translate(-50%, -50%) scaleX(0.4);
+  transform: scale(0.88);
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s cubic-bezier(0.33, 1, 0.68, 1);
+  pointer-events: none;
 }
 
-[data-open='true'] .smenu-icon-line-bottom {
-  bottom: auto;
-  top: 50%;
-  transform: translate(-50%, -50%) rotate(-45deg);
+.smenu-icon__state--active {
+  opacity: 1;
+  transform: scale(1);
 }
 
-[data-open='true'] .smenu-icon-dot {
-  opacity: 0;
-  transform: scale(0.6);
+.smenu-icon__svg {
+  width: 32px;
+  height: 32px;
 }
 
-@keyframes smenuPulse {
-  0%,
-  100% {
-    opacity: 0.9;
-    box-shadow: 0 0 0 2px rgba(227, 187, 132, 0.18);
-  }
-  50% {
-    opacity: 1;
-    box-shadow: 0 0 0 5px rgba(227, 187, 132, 0.1);
-  }
+.smenu-icon__svg--close {
+  width: 30px;
+  height: 30px;
 }
 
 .smenu-prelayers {
@@ -347,23 +329,33 @@
 }
 
 @media (max-width: 1000px) {
-  .smenu-toggle-textWrap {
-    display: none;
+  .smenu-toggle--icon-only {
+    width: 52px;
+    height: 52px;
   }
 
-  .smenu-toggle {
-    width: 42px;
-    height: 42px;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
-    display: grid;
-    place-items: center;
-    line-height: 0;
+  .smenu-icon--toggle {
+    width: 30px;
+    height: 30px;
   }
 
-  .smenu-icon {
-    margin: 0;
+  .smenu-burger {
+    width: 22px;
+    gap: 4px;
+  }
+
+  .smenu-burger__line {
+    height: 2.25px;
+  }
+
+  .smenu-icon__svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .smenu-icon__svg--close {
+    width: 26px;
+    height: 26px;
   }
 
   .smenu-prelayers,

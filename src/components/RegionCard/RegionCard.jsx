@@ -4,7 +4,7 @@ import './RegionCard.css'
 
 function RegionCard({ region }) {
   return (
-    <motion.article className="region-card" whileHover={{ scale: 1.01 }}>
+    <motion.article className="region-card">
       <img src={region.image} alt={`${region.name} properties`} />
       <div className="region-card__overlay" />
       <div className="region-card__content">

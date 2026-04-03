@@ -127,17 +127,65 @@
   outline: none;
 }
 
-.search-panel > .search-panel__chip-row {
-  margin-top: 0.72rem;
+.search-panel__filter-block {
+  margin-top: 1.05rem;
 }
 
-.search-panel__controls-row {
-  margin-top: 0.72rem;
+.search-panel__filter-block--cities {
+  margin-top: 1rem;
+}
+
+.search-panel__filter-label {
+  margin: 0 0 0.48rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #3d5d82;
+}
+
+.search-panel__filter-block--categories .search-panel__filter-label {
+  color: #7a5c38;
+}
+
+.search-panel__filter-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.9rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
+  margin-bottom: 0.55rem;
+}
+
+.search-panel__filter-toolbar .search-panel__filter-label {
+  margin: 0;
+}
+
+.search-panel__filter-block--cities .search-panel__chip-row--cities {
+  margin-top: 0;
+  padding: 0.5rem 0.55rem;
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, rgba(12, 38, 68, 0.09), rgba(12, 38, 68, 0.04)),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(245, 249, 255, 0.5));
+  border: 1px solid rgba(24, 57, 95, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.search-panel__filter-block--categories {
+  padding: 0.85rem 0.95rem 0.95rem;
+  border-radius: 16px;
+  background: linear-gradient(168deg, rgba(255, 253, 248, 0.98), rgba(255, 244, 228, 0.72));
+  border: 1px solid rgba(169, 131, 72, 0.24);
+  border-top: 3px solid rgba(169, 131, 72, 0.65);
+  box-shadow: 0 10px 28px rgba(88, 62, 28, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.search-panel__filter-block--categories .search-panel__chip-row--categories {
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
 }
 
 .search-panel__chip-row {
@@ -147,15 +195,11 @@
   row-gap: 0.5rem;
 }
 
-.search-panel__chip-row--cities {
-  margin-top: 0.25rem;
-}
-
 .search-panel__chip-row--categories {
-  padding: 0.46rem;
-  border-radius: 12px;
-  background: linear-gradient(145deg, rgba(17, 43, 77, 0.05), rgba(17, 43, 77, 0.02));
-  border: 1px solid rgba(24, 57, 95, 0.11);
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
 }
 
 .search-panel__chip {
@@ -545,10 +589,15 @@
     letter-spacing: -0.01em;
   }
 
-  .search-panel__controls-row {
+  .search-panel__filter-toolbar {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.62rem;
+    gap: 0.5rem;
+  }
+
+  .search-panel__filter-toolbar .search-panel__reset--alt {
+    align-self: stretch;
+    text-align: center;
   }
 
   .search-panel__chip-row {
@@ -558,8 +607,12 @@
     padding-bottom: 0;
   }
 
-  .search-panel__chip-row--categories {
-    padding: 0.4rem;
+  .search-panel__filter-block--cities .search-panel__chip-row--cities {
+    padding: 0.42rem 0.45rem;
+  }
+
+  .search-panel__filter-block--categories {
+    padding: 0.72rem 0.78rem 0.82rem;
   }
 
   .search-panel__chip {

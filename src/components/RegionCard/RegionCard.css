@@ -3,18 +3,94 @@
   min-height: 330px;
   border-radius: var(--radius-md);
   overflow: hidden;
+  isolation: isolate;
+  transition: box-shadow 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.region-card:hover {
+  box-shadow:
+    0 28px 56px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(191, 152, 117, 0.22);
 }
 
 .region-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: scale(1.001);
+  transition: transform 0.75s cubic-bezier(0.33, 1, 0.68, 1);
+  will-change: transform;
 }
 
+.region-card:hover img {
+  transform: scale(1.07);
+}
+
+/* Gradient + animated shine — reads modern without fighting the image */
 .region-card__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.72), transparent 65%);
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(6, 10, 18, 0.78) 0%,
+    rgba(6, 10, 18, 0.35) 42%,
+    transparent 68%
+  );
+  transition: background 0.55s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.region-card__overlay::before {
+  content: '';
+  position: absolute;
+  inset: -20% -40%;
+  background: linear-gradient(
+    118deg,
+    transparent 0%,
+    transparent 36%,
+    rgba(255, 255, 255, 0.14) 48%,
+    rgba(255, 255, 255, 0.06) 52%,
+    transparent 64%,
+    transparent 100%
+  );
+  transform: translateX(-18%) translateY(8%) rotate(0deg);
+  opacity: 0;
+  transition: opacity 0.45s ease, transform 0.65s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.region-card__overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 80% at 50% 100%,
+    rgba(191, 152, 117, 0.18) 0%,
+    transparent 55%
+  );
+  opacity: 0.55;
+  mix-blend-mode: soft-light;
+  transition: opacity 0.55s ease, transform 0.65s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.region-card:hover .region-card__overlay {
+  background: linear-gradient(
+    to top,
+    rgba(4, 8, 16, 0.88) 0%,
+    rgba(8, 14, 28, 0.45) 48%,
+    rgba(12, 22, 38, 0.12) 78%,
+    transparent 100%
+  );
+}
+
+.region-card:hover .region-card__overlay::before {
+  opacity: 1;
+  transform: translateX(12%) translateY(-4%) rotate(0deg);
+}
+
+.region-card:hover .region-card__overlay::after {
+  opacity: 0.85;
+  transform: scale(1.04);
 }
 
 .region-card__content {
@@ -22,17 +98,33 @@
   left: 1.2rem;
   right: 1.2rem;
   bottom: 1.1rem;
+  z-index: 2;
   color: var(--color-white);
+  transition: transform 0.55s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.region-card:hover .region-card__content {
+  transform: translateY(-6px);
 }
 
 .region-card__content p {
   margin: 0;
   color: rgba(255, 255, 255, 0.84);
+  transition: color 0.35s ease;
+}
+
+.region-card:hover .region-card__content p {
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .region-card__content h3 {
   margin: 0.35rem 0 0.75rem;
   font-size: 1.58rem;
+  transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.region-card:hover .region-card__content h3 {
+  transform: translateY(-2px);
 }
 
 .region-card__content span {
@@ -40,4 +132,53 @@
   align-items: center;
   gap: 0.35rem;
   font-size: 0.95rem;
+  transition: gap 0.35s ease, color 0.35s ease;
+}
+
+.region-card:hover .region-card__content span {
+  gap: 0.5rem;
+  color: rgba(255, 248, 236, 0.98);
+}
+
+.region-card__content span svg {
+  transition: transform 0.45s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.region-card:hover .region-card__content span svg {
+  transform: translate(3px, -3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .region-card,
+  .region-card img,
+  .region-card__overlay,
+  .region-card__overlay::before,
+  .region-card__overlay::after,
+  .region-card__content,
+  .region-card__content h3,
+  .region-card__content span,
+  .region-card__content span svg {
+    transition: none;
+  }
+
+  .region-card:hover img {
+    transform: none;
+  }
+
+  .region-card:hover .region-card__overlay::before {
+    opacity: 0;
+    transform: none;
+  }
+
+  .region-card:hover .region-card__content {
+    transform: none;
+  }
+
+  .region-card:hover .region-card__content h3 {
+    transform: none;
+  }
+
+  .region-card:hover .region-card__content span svg {
+    transform: none;
+  }
 }

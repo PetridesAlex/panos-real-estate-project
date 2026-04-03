@@ -1,9 +1,9 @@
 import {
   Building2,
+  Compass,
   Home,
   KeyRound,
   Landmark,
-  Plane,
   ShieldCheck,
   Sun,
   UserRound,
@@ -58,7 +58,7 @@ export const services = [
     title: 'Relocation Services',
     description:
       'Smooth relocation coordination for families, executives, and digital professionals.',
-    icon: Plane,
+    icon: Compass,
   },
   {
     id: 8,

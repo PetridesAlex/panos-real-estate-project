@@ -8,7 +8,7 @@ function Footer() {
       <div className="container footer__grid">
         <div>
           <h3 className="footer__brand">
-            <img src="/images/logo/logo-panos.svg" alt="United Properties" />
+            <img src="/images/logo/united-properties-logo.png" alt="United Properties" />
           </h3>
           <p>
             Bespoke real estate advisory for premium Cyprus homes, investments, and

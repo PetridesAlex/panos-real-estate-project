@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { BedDouble, Bath, Ruler, MapPin } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import './PropertyCard.css'
 
 function formatPrice(value, status) {
@@ -9,6 +9,15 @@ function formatPrice(value, status) {
   return status === 'For Rent'
     ? `EUR ${formatter.format(value)} / month`
     : `EUR ${formatter.format(value)}`
+}
+
+function badgeVariantFromStatus(status) {
+  const s = (status || '').toLowerCase()
+  if (s.includes('rent')) return 'rent'
+  if (s.includes('sold')) return 'sold'
+  if (s.includes('reserved')) return 'reserved'
+  if (s.includes('sale')) return 'sale'
+  return 'sale'
 }
 
 function PropertyCard({
@@ -19,6 +28,8 @@ function PropertyCard({
 }) {
   const isSignature = variant === 'signature'
   const isCover = variant === 'cover'
+  const badgeVariant = badgeVariantFromStatus(property.status)
+  const reduceMotion = useReducedMotion()
   const streetAddress = property.address || property.title
   const [isTouchDevice, setIsTouchDevice] = useState(false)
   const [isCoverRevealed, setIsCoverRevealed] = useState(false)
@@ -66,7 +77,21 @@ function PropertyCard({
     >
       <div className="property-card__media">
         <img src={property.image} alt={`${property.title} in ${property.location}`} />
-        {!isCover && <span className="property-card__badge">{property.status}</span>}
+        {!isCover && (
+          <motion.span
+            className={`property-card__badge property-card__badge--${badgeVariant}`}
+            data-listing={badgeVariant}
+            initial={reduceMotion ? false : { opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: 'spring', stiffness: 420, damping: 28 }}
+            whileHover={reduceMotion ? undefined : { scale: 1.03 }}
+          >
+            <span className="property-card__badge-main">{property.status}</span>
+            {property.type ? (
+              <span className="property-card__badge-sub">{property.type}</span>
+            ) : null}
+          </motion.span>
+        )}
         {isSignature && <span className="property-card__signature">United Properties. Signature</span>}
         {isCover && (
           <>
