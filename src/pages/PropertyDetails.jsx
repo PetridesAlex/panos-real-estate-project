@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, useParams } from 'react-router-dom'
 import {
@@ -10,6 +10,10 @@ import {
   LandPlot,
   MessageCircle,
   MapPin,
+  ChevronRight,
+  LayoutTemplate,
+  Map,
+  Sparkles,
 } from 'lucide-react'
 import Gallery from '../components/Gallery/Gallery'
 import InquiryForm from '../components/InquiryForm/InquiryForm'
@@ -19,9 +23,12 @@ import { agents } from '../data/agents'
 import { useMergedProperties } from '../hooks/useMergedProperties'
 import './PropertyDetails.css'
 
+const DESCRIPTION_PREVIEW_CHARS = 280
+
 function PropertyDetails() {
   const { slug } = useParams()
   const { list: allProperties, loading } = useMergedProperties()
+  const [descriptionExpanded, setDescriptionExpanded] = useState(false)
 
   const property = useMemo(
     () => allProperties.find((item) => item.slug === slug),
@@ -92,61 +99,137 @@ function PropertyDetails() {
         <div className="container property-details">
           <Gallery images={property.gallery} title={property.title} />
 
-          <div className="property-details__head card-luxury">
+          <div className="property-details__head">
             <div>
               <p className="property-details__status">{property.status}</p>
-              <h2 className="property-details__price">EUR {property.price.toLocaleString()}</h2>
+              <h2
+                className="property-details__price"
+                aria-label={`Price EUR ${property.price.toLocaleString()}${
+                  property.status === 'For Rent' ? ' per month' : ''
+                }`}
+              >
+                <span className="property-details__price-inner">
+                  <span className="property-details__price-currency">EUR</span>
+                  <span className="property-details__price-figure">
+                    {property.price.toLocaleString()}
+                  </span>
+                  {property.status === 'For Rent' ? (
+                    <span className="property-details__price-period">/ month</span>
+                  ) : null}
+                </span>
+              </h2>
               <p className="property-details__summary">{property.description}</p>
             </div>
-            <a className="btn btn-gold" href="https://wa.me/35700000000" target="_blank" rel="noreferrer">
-              <MessageCircle size={16} /> WhatsApp Inquiry
+            <a
+              className="btn btn-gold property-details__whatsapp"
+              href="https://wa.me/35700000000"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="property-details__whatsapp-iconWrap" aria-hidden="true">
+                <MessageCircle size={18} strokeWidth={2.25} />
+              </span>
+              <span className="property-details__whatsapp-text">
+                <span className="property-details__whatsapp-title">Chat on WhatsApp</span>
+                <span className="property-details__whatsapp-sub">Fast reply · same day</span>
+              </span>
+              <ChevronRight className="property-details__whatsapp-chevron" size={20} strokeWidth={2.25} aria-hidden />
             </a>
           </div>
 
-          <div className="property-details__overview card-luxury">
-            <span>
+          <div className="property-details__overview">
+            <span className="property-details__stat">
               <BedDouble size={16} /> {property.bedrooms} Bedrooms
             </span>
-            <span>
+            <span className="property-details__stat property-details__stat--bath">
               <Bath size={16} /> {property.bathrooms} Bathrooms
             </span>
-            <span>
+            <span className="property-details__stat">
               <Ruler size={16} /> {property.sqm} sqm internal area
             </span>
-            <span>
+            <span className="property-details__stat">
               <LandPlot size={16} /> {property.plotSize || 'N/A'} sqm plot size
             </span>
-            <span>
+            <span className="property-details__stat">
               <Car size={16} /> {property.parking} Parking
             </span>
-            <span>
+            <span className="property-details__stat">
               <CalendarClock size={16} /> Built in {property.yearBuilt}
             </span>
           </div>
 
           <div className="property-details__content-grid">
-            <article className="card-luxury property-details__description">
-              <h3>Description</h3>
-              <p>{property.description}</p>
-              {featureList.length > 0 && (
-                <>
-                  <h4>Amenities and Features</h4>
-                  <ul>
+            <article className="property-details__description" aria-labelledby="property-description-title">
+              <header className="property-details__description-header">
+                <span className="property-details__description-eyebrow">
+                  <Sparkles size={14} strokeWidth={2.2} aria-hidden />
+                  Listing
+                </span>
+                <h3 id="property-description-title" className="property-details__description-title">
+                  Description
+                </h3>
+              </header>
+
+              <div
+                id="property-description-body"
+                className={`property-details__description-body ${descriptionExpanded ? 'is-expanded' : ''}`}
+              >
+                <p>{property.description}</p>
+              </div>
+              {property.description.length > DESCRIPTION_PREVIEW_CHARS ? (
+                <button
+                  type="button"
+                  className="property-details__readmore"
+                  onClick={() => setDescriptionExpanded((open) => !open)}
+                  aria-expanded={descriptionExpanded}
+                  aria-controls="property-description-body"
+                >
+                  {descriptionExpanded ? 'Show less' : 'Read full description'}
+                </button>
+              ) : null}
+
+              {featureList.length > 0 ? (
+                <section
+                  className="property-details__amenities-section"
+                  aria-labelledby="amenities-heading"
+                >
+                  <h4 id="amenities-heading">Amenities &amp; features</h4>
+                  <ul className="property-details__amenities-list">
                     {featureList.map((feature) => (
                       <li key={feature}>{feature}</li>
                     ))}
                   </ul>
-                </>
-              )}
+                </section>
+              ) : null}
 
-              <div className="property-details__placeholders">
-                <div>
-                  <h4>Floor Plan</h4>
-                  <p>Detailed floor plan available upon request.</p>
+              <div className="property-details__info-tiles">
+                <div
+                  className="property-details__info-tile"
+                  role="group"
+                  aria-label="Floor plan — available on request"
+                >
+                  <span className="property-details__info-tile-icon" aria-hidden="true">
+                    <LayoutTemplate size={22} strokeWidth={2} />
+                  </span>
+                  <div className="property-details__info-tile-copy">
+                    <h4>Floor plan</h4>
+                    <p>Detailed layout available on request from our team.</p>
+                  </div>
+                  <span className="property-details__info-tile-hint">Request</span>
                 </div>
-                <div>
-                  <h4>Map</h4>
-                  <p>Interactive map integration placeholder for future API connection.</p>
+                <div
+                  className="property-details__info-tile"
+                  role="group"
+                  aria-label="Location map — coming soon"
+                >
+                  <span className="property-details__info-tile-icon" aria-hidden="true">
+                    <Map size={22} strokeWidth={2} />
+                  </span>
+                  <div className="property-details__info-tile-copy">
+                    <h4>Location</h4>
+                    <p>Map and neighbourhood context — integration in progress.</p>
+                  </div>
+                  <span className="property-details__info-tile-hint">Soon</span>
                 </div>
               </div>
             </article>

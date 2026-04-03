@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ShieldCheck, Cookie, X } from 'lucide-react'
+import { Cookie, X } from 'lucide-react'
 import './CookiePreferences.css'
 
 const STORAGE_KEY = 'united-properties-cookie-preferences-v1'
@@ -44,11 +44,13 @@ function CookiePreferences() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved)
-        setPreferences({
+        const merged = {
           ...defaultPreferences,
           ...parsed,
           necessary: true,
-        })
+        }
+        merged.performance = merged.analytics
+        setPreferences(merged)
       } catch {
         setPreferences(defaultPreferences)
       }
@@ -85,21 +87,40 @@ function CookiePreferences() {
   }
 
   function updatePreference(key, value) {
-    setPreferences((prev) => ({
-      ...prev,
-      [key]: value,
-    }))
+    setPreferences((prev) => {
+      const next = { ...prev, [key]: value }
+      if (key === 'analytics') {
+        next.performance = value
+      }
+      return next
+    })
   }
+
+  const rejectOptional = () =>
+    save({
+      ...defaultPreferences,
+      functional: false,
+      analytics: false,
+      performance: false,
+    })
+
+  const acceptAll = () =>
+    save({
+      ...defaultPreferences,
+      functional: true,
+      analytics: true,
+      performance: true,
+    })
 
   return (
     <>
       <button
         className="cookie-preferences__launcher"
         type="button"
-        aria-label="Customize cookie preferences"
+        aria-label="Cookie preferences"
         onClick={() => setOpen(true)}
       >
-        <Cookie size={18} />
+        <Cookie size={18} strokeWidth={2} />
       </button>
 
       {open && (
@@ -113,91 +134,60 @@ function CookiePreferences() {
           >
             <header className="cookie-preferences__header">
               <div>
-                <p>Privacy Center</p>
-                <h3 id="cookie-title">Customize Consent Preferences</h3>
+                <p className="cookie-preferences__eyebrow">Privacy</p>
+                <h2 id="cookie-title">Cookies</h2>
               </div>
-              <button type="button" aria-label="Close preferences" onClick={() => setOpen(false)}>
-                <X size={16} />
+              <button type="button" className="cookie-preferences__close" aria-label="Close" onClick={() => setOpen(false)}>
+                <X size={18} strokeWidth={2} />
               </button>
             </header>
 
-            <p className="cookie-preferences__intro">
-              We use cookies to improve your browsing experience and provide tailored
-              functionality. Choose your preferences below.
+            <p className="cookie-preferences__lead">
+              We use cookies to run the site securely and, with your consent, to improve your experience.
             </p>
 
-            <div className="cookie-preferences__list">
-              <CookieToggle
-                id="necessary-cookies"
-                label="Necessary"
-                description="Essential cookies required for site security, routing, and core functionality."
-                checked
-                disabled
-              />
-              <CookieToggle
-                id="functional-cookies"
-                label="Functional"
-                description="Enables enhanced usability such as saved preferences and personalized interactions."
-                checked={preferences.functional}
-                onChange={(value) => updatePreference('functional', value)}
-              />
-              <CookieToggle
-                id="analytics-cookies"
-                label="Analytics"
-                description="Helps us understand visitor behavior and improve website performance."
-                checked={preferences.analytics}
-                onChange={(value) => updatePreference('analytics', value)}
-              />
-              <CookieToggle
-                id="performance-cookies"
-                label="Performance"
-                description="Supports speed optimizations, feature stability, and smooth loading experiences."
-                checked={preferences.performance}
-                onChange={(value) => updatePreference('performance', value)}
-              />
+            <div className="cookie-preferences__quick">
+              <button type="button" className="cookie-preferences__btn cookie-preferences__btn--gold" onClick={acceptAll}>
+                Accept all
+              </button>
+              <button type="button" className="cookie-preferences__btn cookie-preferences__btn--muted" onClick={rejectOptional}>
+                Essential only
+              </button>
             </div>
 
-            <footer className="cookie-preferences__actions">
-              <button
-                type="button"
-                className="btn btn-outline-dark"
-                onClick={() =>
-                  save({
-                    ...defaultPreferences,
-                    functional: false,
-                    analytics: false,
-                    performance: false,
-                  })
-                }
-              >
-                Reject All
+            <details className="cookie-preferences__details">
+              <summary className="cookie-preferences__summary">Customize categories</summary>
+              <div className="cookie-preferences__list">
+                <CookieToggle
+                  id="necessary-cookies"
+                  label="Strictly necessary"
+                  description="Security, navigation, and core features — always on."
+                  checked
+                  disabled
+                />
+                <CookieToggle
+                  id="functional-cookies"
+                  label="Functional"
+                  description="Saves preferences and improves usability."
+                  checked={preferences.functional}
+                  onChange={(value) => updatePreference('functional', value)}
+                />
+                <CookieToggle
+                  id="analytics-cookies"
+                  label="Analytics & performance"
+                  description="Helps us measure traffic, speed, and improve the site."
+                  checked={preferences.analytics}
+                  onChange={(value) => updatePreference('analytics', value)}
+                />
+              </div>
+              <button type="button" className="cookie-preferences__apply" onClick={() => save(preferences)}>
+                Save choices
               </button>
-              <button type="button" className="btn btn-outline-dark" onClick={() => save(preferences)}>
-                Save My Preferences
-              </button>
-              <button
-                type="button"
-                className="btn btn-gold"
-                onClick={() =>
-                  save({
-                    ...defaultPreferences,
-                    functional: true,
-                    analytics: true,
-                    performance: true,
-                  })
-                }
-              >
-                <ShieldCheck size={16} />
-                Accept All
-              </button>
-            </footer>
+            </details>
 
-            {!hasSavedPreferences && (
-              <p className="cookie-preferences__note">
-                Your preferences will be saved locally and can be updated any time from
-                the bottom-left button.
-              </p>
-            )}
+            {!hasSavedPreferences ? (
+              <p className="cookie-preferences__hint">Saved on this device. Change anytime via the cookie icon.</p>
+            ) : null}
           </section>
         </div>
       )}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { ChevronDown, MapPin, Search } from 'lucide-react'
+import { Building2, ChevronDown, ChevronRight, KeyRound, MapPin, Megaphone, Search } from 'lucide-react'
 import StaggeredMenu from '../StaggeredMenu/StaggeredMenu'
 import './Navbar.css'
 
@@ -11,9 +11,27 @@ const navTabs = [
 ]
 
 const propertySubItems = [
-  { key: 'buy', label: 'Buy', to: '/buy' },
-  { key: 'rent', label: 'Rent', to: '/rent' },
-  { key: 'sell', label: 'Sell', to: '/contact' },
+  {
+    key: 'buy',
+    label: 'Buy',
+    hint: 'Homes & investments',
+    to: '/buy',
+    icon: Building2,
+  },
+  {
+    key: 'rent',
+    label: 'Rent',
+    hint: 'Long & seasonal lets',
+    to: '/rent',
+    icon: KeyRound,
+  },
+  {
+    key: 'sell',
+    label: 'Sell',
+    hint: 'List with our team',
+    to: '/contact',
+    icon: Megaphone,
+  },
 ]
 
 function WhatsAppIcon(props) {
@@ -121,17 +139,27 @@ function Navbar() {
                     <ChevronDown size={13} aria-hidden="true" />
                   </button>
                   <div className="navbar__dropdown-menu" role="menu" aria-label="Properties menu">
-                    {propertySubItems.map((item) => (
-                      <Link
-                        key={item.key}
-                        to={item.to}
-                        className="navbar__dropdown-item"
-                        role="menuitem"
-                        onClick={() => setPropertiesDropdownDismissed(true)}
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
+                    {propertySubItems.map((item) => {
+                      const Icon = item.icon
+                      return (
+                        <Link
+                          key={item.key}
+                          to={item.to}
+                          className="navbar__dropdown-item"
+                          role="menuitem"
+                          onClick={() => setPropertiesDropdownDismissed(true)}
+                        >
+                          <span className="navbar__dropdown-item-icon" aria-hidden="true">
+                            <Icon size={18} strokeWidth={2} />
+                          </span>
+                          <span className="navbar__dropdown-item-body">
+                            <span className="navbar__dropdown-item-label">{item.label}</span>
+                            <span className="navbar__dropdown-item-hint">{item.hint}</span>
+                          </span>
+                          <ChevronRight className="navbar__dropdown-item-chevron" size={16} strokeWidth={2.25} aria-hidden />
+                        </Link>
+                      )
+                    })}
                   </div>
                 </div>
               )

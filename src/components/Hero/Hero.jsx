@@ -7,6 +7,7 @@ import './Hero.css'
 
 function Hero() {
   const sectionRef = useRef(null)
+  const videoRef = useRef(null)
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchSeed, setSearchSeed] = useState(null)
@@ -56,6 +57,24 @@ function Hero() {
     navigate(`${location.pathname}${nextSearch ? `?${nextSearch}` : ''}`, { replace: true })
   }, [location.pathname, location.search, navigate, openSearchPanel])
 
+  /** Browsers often need an explicit play() after dynamic src attach (muted + playsInline still). */
+  useEffect(() => {
+    if (!shouldLoadVideo) return undefined
+    const el = videoRef.current
+    if (!el) return undefined
+
+    function tryPlay() {
+      const p = el.play()
+      if (p && typeof p.catch === 'function') {
+        p.catch(() => {})
+      }
+    }
+
+    tryPlay()
+    el.addEventListener('loadeddata', tryPlay)
+    return () => el.removeEventListener('loadeddata', tryPlay)
+  }, [shouldLoadVideo])
+
   return (
     <>
       <section className="hero-section" ref={sectionRef}>
@@ -64,19 +83,20 @@ function Hero() {
           aria-hidden="true"
           style={{
             backgroundImage:
-              'url("https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=2000&q=80")',
+              'url("https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=2400&q=90")',
           }}
         >
           <video
+            ref={videoRef}
             className="hero-section__video"
-            src={shouldLoadVideo ? '/video/cyprus-luxury-real-estate-hero.mp4.mp4' : undefined}
+            src={shouldLoadVideo ? '/video/cyprus-luxury-real-estate-hero.mp4' : undefined}
             autoPlay={shouldLoadVideo}
             muted
             loop
             playsInline
-            preload="metadata"
+            preload={shouldLoadVideo ? 'auto' : 'none'}
             disablePictureInPicture
-            poster="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=2000&q=80"
+            poster="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=2400&q=90"
           />
         </div>
         <div className="hero-section__overlay" />

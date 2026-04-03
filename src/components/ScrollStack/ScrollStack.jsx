@@ -27,7 +27,7 @@ const ScrollStack = ({
   const lenisRef = useRef(null)
   const cardsRef = useRef([])
   const lastTransformsRef = useRef(new Map())
-  const isUpdatingRef = useRef(false)
+  const rafPendingRef = useRef(false)
 
   const calculateProgress = useCallback((scrollTop, start, end) => {
     if (scrollTop < start) return 0
@@ -76,9 +76,8 @@ const ScrollStack = ({
   )
 
   const updateCardTransforms = useCallback(() => {
-    if (!cardsRef.current.length || isUpdatingRef.current) return
+    if (!cardsRef.current.length) return
 
-    isUpdatingRef.current = true
     const { scrollTop, containerHeight } = getScrollData()
     const stackPositionPx = parsePercentage(stackPosition, containerHeight)
     const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight)
@@ -127,19 +126,19 @@ const ScrollStack = ({
       }
 
       const newTransform = {
-        translateY: Math.round(translateY * 100) / 100,
-        scale: Math.round(scale * 1000) / 1000,
-        rotation: Math.round(rotation * 100) / 100,
-        blur: Math.round(blur * 100) / 100,
+        translateY: Math.round(translateY * 1000) / 1000,
+        scale: Math.round(scale * 10000) / 10000,
+        rotation: Math.round(rotation * 1000) / 1000,
+        blur: Math.round(blur * 1000) / 1000,
       }
 
       const lastTransform = lastTransformsRef.current.get(i)
       const hasChanged =
         !lastTransform ||
-        Math.abs(lastTransform.translateY - newTransform.translateY) > 0.1 ||
-        Math.abs(lastTransform.scale - newTransform.scale) > 0.001 ||
-        Math.abs(lastTransform.rotation - newTransform.rotation) > 0.1 ||
-        Math.abs(lastTransform.blur - newTransform.blur) > 0.1
+        Math.abs(lastTransform.translateY - newTransform.translateY) > 0.25 ||
+        Math.abs(lastTransform.scale - newTransform.scale) > 0.0003 ||
+        Math.abs(lastTransform.rotation - newTransform.rotation) > 0.05 ||
+        Math.abs(lastTransform.blur - newTransform.blur) > 0.05
 
       if (hasChanged) {
         card.style.transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`
@@ -157,8 +156,6 @@ const ScrollStack = ({
         }
       }
     })
-
-    isUpdatingRef.current = false
   }, [
     itemScale,
     itemStackDistance,
@@ -175,9 +172,19 @@ const ScrollStack = ({
     getElementOffset,
   ])
 
-  const handleScroll = useCallback(() => {
-    updateCardTransforms()
+  /** One transform update per animation frame — avoids jitter when Lenis emits many scroll events per frame. */
+  const scheduleTransformUpdate = useCallback(() => {
+    if (rafPendingRef.current) return
+    rafPendingRef.current = true
+    requestAnimationFrame(() => {
+      rafPendingRef.current = false
+      updateCardTransforms()
+    })
   }, [updateCardTransforms])
+
+  const handleScroll = useCallback(() => {
+    scheduleTransformUpdate()
+  }, [scheduleTransformUpdate])
 
   const setupLenis = useCallback(() => {
     const isTouchViewport =
@@ -191,15 +198,16 @@ const ScrollStack = ({
     }
 
     const baseOptions = {
-      duration: 1.2,
+      duration: 1.05,
       easing: (t) => Math.min(1, 1.001 - 2 ** (-10 * t)),
       smoothWheel: true,
       touchMultiplier: 2,
       infinite: false,
       wheelMultiplier: 1,
-      lerp: 0.1,
+      /* Slightly snappier than 0.1 — less “rubber band” vs stacked card transforms */
+      lerp: 0.14,
       syncTouch: true,
-      syncTouchLerp: 0.075,
+      syncTouchLerp: 0.1,
     }
 
     const lenis = useWindowScroll
@@ -237,13 +245,10 @@ const ScrollStack = ({
     cardsRef.current = cards
     cards.forEach((card, i) => {
       if (i < cards.length - 1) card.style.marginBottom = `${itemDistance}px`
-      card.style.willChange = 'transform, filter'
+      card.style.willChange = 'transform'
       card.style.transformOrigin = 'top center'
       card.style.backfaceVisibility = 'hidden'
-      card.style.transform = 'translateZ(0)'
-      card.style.webkitTransform = 'translateZ(0)'
-      card.style.perspective = '1000px'
-      card.style.webkitPerspective = '1000px'
+      card.style.transform = 'translate3d(0, 0, 0)'
     })
 
     const didInitLenis = setupLenis()
@@ -270,7 +275,7 @@ const ScrollStack = ({
       stackCompletedRef.current = false
       cardsRef.current = []
       lastTransformsRef.current.clear()
-      isUpdatingRef.current = false
+      rafPendingRef.current = false
     }
   }, [
     itemDistance,

@@ -5,14 +5,12 @@ import { Link } from 'react-router-dom'
 import Hero from '../components/Hero/Hero'
 import SectionHeader from '../components/SectionHeader/SectionHeader'
 import PropertyCard from '../components/PropertyCard/PropertyCard'
-import RegionCard from '../components/RegionCard/RegionCard'
 import ServiceCard from '../components/ServiceCard/ServiceCard'
 import AgentCard from '../components/AgentCard/AgentCard'
 import TestimonialCard from '../components/TestimonialCard/TestimonialCard'
 import CTASection from '../components/CTASection/CTASection'
 import ScrollStack, { ScrollStackItem } from '../components/ScrollStack/ScrollStack'
 import { properties } from '../data/properties'
-import { regions } from '../data/regions'
 import { services } from '../data/services'
 import { agents } from '../data/agents'
 import { developments } from '../data/developments'
@@ -71,21 +69,6 @@ function Home() {
       </Helmet>
 
       <Hero />
-
-      <section className="section section--alt home-after-hero-shape">
-        <div className="container">
-          <SectionHeader
-            eyebrow="OUR LOCATION"
-            title="Prime Cyprus Regions"
-            description="Discover the home you’ve been waiting for."
-          />
-          <div className="grid-3 home-region-grid">
-            {regions.map((region) => (
-              <RegionCard key={region.name} region={region} />
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="section section--light" id="featured-properties">
         <div className="container home-featured-container">

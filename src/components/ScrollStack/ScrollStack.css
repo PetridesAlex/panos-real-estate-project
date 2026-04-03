@@ -6,10 +6,10 @@
   overflow-x: visible;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
+  /* Avoid CSS smooth-scroll fighting Lenis / native momentum */
+  scroll-behavior: auto;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
-  will-change: scroll-position;
 }
 
 .scroll-stack-inner {
@@ -19,9 +19,11 @@
 
 .scroll-stack-card {
   transform-origin: top center;
-  will-change: transform, filter;
+  will-change: transform;
   backface-visibility: hidden;
-  transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  transform-style: flat;
+  contain: layout;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
   height: 20rem;
   width: 100%;
@@ -29,8 +31,6 @@
   padding: 3rem;
   border-radius: 40px;
   box-sizing: border-box;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
   position: relative;
 }
 

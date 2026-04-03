@@ -240,8 +240,12 @@ function Properties() {
             {showBuyRegions ? (
               <div className="properties-regions">
                 <div className="properties-regions__intro">
+                  <p className="properties-regions__eyebrow">Cyprus · Prime districts</p>
                   <h2>Our Regions</h2>
-                  <p>Discover the home you&apos;ve been waiting for.</p>
+                  <p className="properties-regions__lead">
+                    Curate your search across the island&apos;s most sought-after postcodes — each
+                    enclave with its own rhythm and light.
+                  </p>
                 </div>
                 <div className="properties-regions__grid" role="tablist" aria-label="Choose location">
                   {buyRegions.map((region) => (
@@ -253,8 +257,8 @@ function Properties() {
                       className={`properties-region-btn ${filters.location === region ? 'is-active' : ''}`}
                       onClick={() => onLocationCardClick(region)}
                     >
-                      <span>{region}</span>
-                      <ChevronRight size={16} />
+                      <span className="properties-region-btn__label">{region}</span>
+                      <ChevronRight className="properties-region-btn__chevron" size={17} strokeWidth={2.1} aria-hidden />
                     </button>
                   ))}
                 </div>

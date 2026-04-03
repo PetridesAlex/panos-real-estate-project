@@ -1,39 +1,256 @@
 .inquiry-form {
-  padding: 1.2rem;
+  position: relative;
   display: grid;
-  gap: 0.9rem;
+  gap: 0;
+  padding: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: linear-gradient(
+    165deg,
+    rgba(255, 252, 247, 0.99) 0%,
+    rgba(250, 245, 236, 0.98) 45%,
+    rgba(245, 238, 226, 0.96) 100%
+  );
+  border: 1px solid rgba(196, 156, 92, 0.42);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.85) inset,
+    0 20px 50px rgba(15, 12, 5, 0.12),
+    0 6px 16px rgba(169, 131, 72, 0.12);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
 }
 
-.inquiry-form h3 {
+.inquiry-form:hover {
+  border-color: rgba(196, 156, 92, 0.58);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95) inset,
+    0 26px 56px rgba(15, 12, 5, 0.14),
+    0 10px 24px rgba(169, 131, 72, 0.14);
+}
+
+.inquiry-form__header {
+  padding: 1.25rem 1.35rem 1.1rem;
+  background: linear-gradient(
+    155deg,
+    rgba(28, 24, 18, 0.97) 0%,
+    rgba(22, 19, 15, 0.98) 50%,
+    rgba(18, 16, 13, 1) 100%
+  );
+  border-bottom: 1px solid rgba(196, 156, 92, 0.28);
+}
+
+.inquiry-form__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.55rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #e8d4b0;
+}
+
+.inquiry-form__title {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.22rem, 2vw, 1.42rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: #faf8f3;
+  text-wrap: balance;
+}
+
+.inquiry-form__lede {
   margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: rgba(248, 246, 241, 0.78);
+  max-width: 36ch;
+}
+
+.inquiry-form__trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.inquiry-form__trust li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(232, 212, 176, 0.92);
+}
+
+.inquiry-form__trust svg {
+  flex-shrink: 0;
+  opacity: 0.9;
+  color: #c49a4e;
+}
+
+.inquiry-form__fields {
+  padding: 1.2rem 1.35rem 1.35rem;
+  display: grid;
+  gap: 0.85rem;
 }
 
 .inquiry-form__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.8rem;
+  gap: 0.75rem 0.85rem;
 }
 
-.inquiry-form label {
+.inquiry-form__field {
   display: grid;
-  gap: 0.4rem;
-  font-size: 0.92rem;
-  color: var(--color-muted);
+  gap: 0.38rem;
+  margin: 0;
+}
+
+.inquiry-form__field--full {
+  grid-column: 1 / -1;
+}
+
+.inquiry-form__label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #5c564c;
+}
+
+.inquiry-form__optional {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: #8a8478;
 }
 
 .inquiry-form input,
 .inquiry-form select,
 .inquiry-form textarea {
   width: 100%;
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-sm);
-  padding: 0.68rem 0.72rem;
-  background: var(--color-white);
-  color: var(--color-ink);
+  margin: 0;
+  border: 1px solid rgba(110, 100, 88, 0.28);
+  border-radius: 10px;
+  padding: 0.72rem 0.85rem;
+  font-family: var(--font-sans);
+  font-size: 0.94rem;
+  color: #1f1c18;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 1px 2px rgba(15, 12, 5, 0.04);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.inquiry-form input::placeholder,
+.inquiry-form textarea::placeholder {
+  color: #9a948a;
+}
+
+.inquiry-form input:hover,
+.inquiry-form select:hover,
+.inquiry-form textarea:hover {
+  border-color: rgba(169, 131, 72, 0.45);
+}
+
+.inquiry-form input:focus,
+.inquiry-form select:focus,
+.inquiry-form textarea:focus {
+  outline: none;
+  border-color: rgba(169, 131, 72, 0.85);
+  box-shadow: 0 0 0 3px rgba(196, 156, 92, 0.25);
+  background: #fff;
+}
+
+.inquiry-form textarea {
+  resize: vertical;
+  min-height: 6.5rem;
+  line-height: 1.5;
+}
+
+.inquiry-form select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235c564c' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2.25rem;
+}
+
+.inquiry-form__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  width: 100%;
+  margin-top: 0.15rem;
+  padding: 0.88rem 1.25rem;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #0c1210;
+  background: linear-gradient(155deg, #f0d9bc 0%, var(--color-accent) 42%, #a67c32 100%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.45) inset,
+    0 10px 28px rgba(169, 131, 72, 0.35),
+    0 4px 12px rgba(15, 12, 5, 0.15);
+  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inquiry-form__submit:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 14px 34px rgba(169, 131, 72, 0.42),
+    0 6px 16px rgba(15, 12, 5, 0.18);
+}
+
+.inquiry-form__submit:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
+}
+
+.inquiry-form__submit:focus-visible {
+  outline: 2px solid #1f1c18;
+  outline-offset: 3px;
+}
+
+.inquiry-form__footnote {
+  margin: 0;
+  text-align: center;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: #7a7468;
 }
 
 @media (max-width: 700px) {
   .inquiry-form__grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inquiry-form,
+  .inquiry-form__submit {
+    transition: none;
+  }
+
+  .inquiry-form:hover,
+  .inquiry-form__submit:hover {
+    transform: none;
   }
 }

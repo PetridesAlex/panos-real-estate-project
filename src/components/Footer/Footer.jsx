@@ -85,8 +85,24 @@ function Footer() {
         </form>
       </div>
 
-      <div className="container footer__bottom">
-        <p>Copyright {new Date().getFullYear()} United Properties. All rights reserved.</p>
+      <div className="footer__bottom">
+        <div className="container footer__bottom-inner">
+          <p className="footer__copyright">
+            <span className="footer__copyright-line">
+              <span className="footer__copyright-symbol" aria-hidden="true">
+                —
+              </span>{' '}
+              <span className="footer__copyright-year">© {new Date().getFullYear()}</span>
+              <span className="footer__copyright-brand"> United Properties</span>
+              <span className="footer__copyright-dot"> · </span>
+              <span className="footer__copyright-rights">All rights reserved</span>
+              <span className="footer__copyright-symbol" aria-hidden="true">
+                {' '}
+                —
+              </span>
+            </span>
+          </p>
+        </div>
       </div>
     </footer>
   )
