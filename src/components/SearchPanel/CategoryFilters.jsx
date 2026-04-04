@@ -1,6 +1,6 @@
 function CategoryFilters({ categories, activeCategory, onSelect, onReset }) {
   return (
-    <div className="search-panel__filter-block search-panel__filter-block--categories">
+    <div className="search-panel__filter-block search-panel__filter-block--sidebar search-panel__filter-block--categories">
       <div className="search-panel__filter-toolbar">
         <p className="search-panel__filter-label" id="search-panel-category-label">
           Listing type

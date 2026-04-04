@@ -210,6 +210,14 @@
   outline-offset: 2px;
 }
 
+.hero-section__ai-pill-icon {
+  display: block;
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 .hero-section__smart-groups {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

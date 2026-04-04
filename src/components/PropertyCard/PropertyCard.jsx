@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { BedDouble, Bath, Ruler, MapPin } from 'lucide-react'
 import { motion, useReducedMotion } from 'framer-motion'
@@ -31,86 +30,59 @@ function PropertyCard({
   const badgeVariant = badgeVariantFromStatus(property.status)
   const reduceMotion = useReducedMotion()
   const streetAddress = property.address || property.title
-  const [isTouchDevice, setIsTouchDevice] = useState(false)
-  const [isCoverRevealed, setIsCoverRevealed] = useState(false)
-
-  useEffect(() => {
-    if (!isCover || typeof window === 'undefined') return undefined
-
-    const media = window.matchMedia('(hover: none), (pointer: coarse)')
-    const onChange = () => setIsTouchDevice(media.matches)
-    onChange()
-
-    if (media.addEventListener) {
-      media.addEventListener('change', onChange)
-      return () => media.removeEventListener('change', onChange)
-    }
-
-    media.addListener(onChange)
-    return () => media.removeListener(onChange)
-  }, [isCover])
-
-  useEffect(() => {
-    if (!isCoverRevealed || !isTouchDevice) return undefined
-    const timeoutId = window.setTimeout(() => setIsCoverRevealed(false), 3500)
-    return () => window.clearTimeout(timeoutId)
-  }, [isCoverRevealed, isTouchDevice])
-
-  function onCoverLinkClick(event) {
-    if (!isCover || !isTouchDevice) return
-    if (!isCoverRevealed) {
-      event.preventDefault()
-      setIsCoverRevealed(true)
-    }
-  }
 
   return (
     <motion.article
       className={`property-card ${isSignature ? 'property-card--signature' : 'card-luxury'} ${
         isCover ? 'property-card--cover' : ''
-      } ${isCoverRevealed ? 'is-revealed' : ''}`.trim()}
-      onMouseLeave={() => {
-        if (isCoverRevealed) setIsCoverRevealed(false)
-      }}
+      }`.trim()}
       whileHover={{ y: -4 }}
       transition={{ duration: 0.25 }}
     >
       <div className="property-card__media">
         <img src={property.image} alt={`${property.title} in ${property.location}`} />
-        {!isCover && (
-          <motion.span
-            className={`property-card__badge property-card__badge--${badgeVariant}`}
-            data-listing={badgeVariant}
-            initial={reduceMotion ? false : { opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: 'spring', stiffness: 420, damping: 28 }}
-            whileHover={reduceMotion ? undefined : { scale: 1.03 }}
-          >
-            <span className="property-card__badge-main">{property.status}</span>
-            {property.type ? (
-              <span className="property-card__badge-sub">{property.type}</span>
-            ) : null}
-          </motion.span>
-        )}
+        <motion.span
+          className={`property-card__badge property-card__badge--${badgeVariant}${
+            isCover ? ' property-card__badge--on-cover' : ''
+          }`}
+          data-listing={badgeVariant}
+          initial={reduceMotion ? false : { opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: 'spring', stiffness: 420, damping: 28 }}
+          whileHover={reduceMotion ? undefined : { scale: 1.03 }}
+        >
+          <span className="property-card__badge-main">{property.status}</span>
+          {property.type ? (
+            <>
+              <span className="property-card__badge-sep" aria-hidden="true" />
+              <span className="property-card__badge-type">{property.type}</span>
+            </>
+          ) : null}
+        </motion.span>
         {isSignature && <span className="property-card__signature">United Properties. Signature</span>}
         {isCover && (
           <>
-            <div className="property-card__cover-overlay">
-              <p>
-                <strong>Street Address:</strong> {streetAddress}
-              </p>
-              <p>
-                <strong>Location Area:</strong> {property.location}
-              </p>
-              <p>
-                <strong>sqm:</strong> {property.sqm}
-              </p>
+            <div className="property-card__cover-bottom">
+              <p className="property-card__cover-price">{formatPrice(property.price, property.status)}</p>
+              <div className="property-card__cover-extra" role="group" aria-label="Listing summary">
+                <p className="property-card__cover-line">
+                  <span className="property-card__cover-label">Address</span>
+                  <span className="property-card__cover-value">{streetAddress}</span>
+                </p>
+                <p className="property-card__cover-line">
+                  <span className="property-card__cover-label">Area</span>
+                  <span className="property-card__cover-value">{property.location}</span>
+                </p>
+                <p className="property-card__cover-line property-card__cover-line--compact">
+                  <span className="property-card__cover-label">Size</span>
+                  <span className="property-card__cover-value">{property.sqm} sqm</span>
+                </p>
+              </div>
             </div>
             <Link
               className="property-card__cover-link"
               to={`/properties/${property.slug}`}
               aria-label={`View ${property.title} details`}
-              onClick={onCoverLinkClick}
             />
           </>
         )}

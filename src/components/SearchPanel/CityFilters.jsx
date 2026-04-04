@@ -1,6 +1,6 @@
 function CityFilters({ cities, activeCity, onSelect }) {
   return (
-    <div className="search-panel__filter-block search-panel__filter-block--cities">
+    <div className="search-panel__filter-block search-panel__filter-block--sidebar search-panel__filter-block--cities">
       <p className="search-panel__filter-label" id="search-panel-city-label">
         Location
       </p>

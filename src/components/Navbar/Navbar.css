@@ -117,6 +117,28 @@
   transition: width var(--transition-normal), max-width var(--transition-normal);
 }
 
+/* Inner pages (not home): shorter lockup so fixed nav doesn’t cover hero titles */
+.navbar--solid:not(.navbar--home-scrolled) .navbar__logo {
+  max-width: min(260px, 40vw);
+  gap: 0.48rem;
+}
+
+.navbar--solid:not(.navbar--home-scrolled) .navbar__logo img {
+  height: clamp(48px, 5.2vw, 68px);
+  transform: scale(1);
+  filter: contrast(1.08) saturate(1.04) brightness(1.02) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.22));
+}
+
+.navbar--solid:not(.navbar--home-scrolled) .navbar__logo-line--top {
+  font-size: clamp(0.68rem, 0.95vw + 0.32rem, 0.88rem);
+  letter-spacing: 0.16em;
+}
+
+.navbar--solid:not(.navbar--home-scrolled) .navbar__logo-line--bottom {
+  font-size: clamp(0.6rem, 0.82vw + 0.28rem, 0.78rem);
+  letter-spacing: 0.1em;
+}
+
 .navbar--solid .navbar__inner {
   min-height: 54px;
   border: 0;
@@ -210,7 +232,7 @@
 
 .navbar__logo img {
   display: block;
-  height: clamp(72px, 7.6vw, 112px);
+  height: clamp(82px, 8.2vw, 128px);
   width: auto;
   max-width: 100%;
   margin-inline: auto;
@@ -222,13 +244,13 @@
 }
 
 .navbar--transparent .navbar__logo img {
-  height: clamp(52px, 5.6vw, 76px);
+  height: clamp(60px, 6.4vw, 88px);
   transform: scale(1);
   transform-origin: center center;
 }
 
 .navbar--home-scrolled .navbar__logo img {
-  height: clamp(52px, 5.8vw, 70px);
+  height: clamp(58px, 6.2vw, 80px);
   transform: scale(1);
 }
 
@@ -871,7 +893,8 @@
   display: none;
 }
 
-@media (max-width: 1000px) {
+/* Match tablet / small laptop: show logo + staggered menu (desktop nav + search hide above this width) */
+@media (max-width: 1200px) {
   .navbar__desktop,
   .navbar__search-pill,
   .navbar__icon-btn,
@@ -955,13 +978,18 @@
   }
 
   .navbar__logo img {
-    height: clamp(56px, 13vw, 84px);
+    height: clamp(64px, 14vw, 96px);
     width: auto;
     transform: scale(1.04);
   }
 
   .navbar--transparent .navbar__logo img {
-    height: clamp(40px, 11vw, 54px);
+    height: clamp(46px, 12.5vw, 64px);
+    transform: none;
+  }
+
+  .navbar--solid:not(.navbar--home-scrolled) .navbar__logo img {
+    height: clamp(42px, 11vw, 54px);
     transform: none;
   }
 
@@ -978,7 +1006,7 @@
   }
 
   .navbar--home-scrolled .navbar__logo img {
-    height: clamp(44px, 11vw, 58px);
+    height: clamp(50px, 12vw, 66px);
   }
 
   .navbar__logo-wordmark {

@@ -195,6 +195,10 @@ function Navbar() {
           <StaggeredMenu
             className="navbar__staggered"
             position="right"
+            panelEyebrow="United Properties"
+            panelTitle="Menu"
+            panelTagline="Homes & agents"
+            panelLocation="Limassol"
             items={[
               { label: 'Buy', link: '/buy' },
               { label: 'Rent', link: '/rent' },

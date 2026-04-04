@@ -24,6 +24,44 @@ import { useMergedProperties } from '../hooks/useMergedProperties'
 import './PropertyDetails.css'
 
 const DESCRIPTION_PREVIEW_CHARS = 280
+const SIMILAR_MAX = 3
+
+function pickSimilarProperties(all, current, max = SIMILAR_MAX) {
+  if (!current) return []
+  const currentId = String(current.id)
+  const others = all.filter((p) => String(p.id) !== currentId)
+  const locNorm = (current.location || '').trim().toLowerCase()
+
+  const sameLocation = others.filter((p) => (p.location || '').trim().toLowerCase() === locNorm)
+  const sameStatus = others.filter((p) => p.status === current.status)
+
+  const seen = new Set()
+  const out = []
+
+  function takeFrom(list) {
+    for (const p of list) {
+      if (out.length >= max) return
+      const id = String(p.id)
+      if (seen.has(id)) continue
+      seen.add(id)
+      out.push(p)
+    }
+  }
+
+  takeFrom(sameLocation)
+  takeFrom(sameStatus)
+  if (out.length < max) {
+    const rest = others
+      .filter((p) => !seen.has(String(p.id)))
+      .sort(
+        (a, b) =>
+          Math.abs(a.price - current.price) - Math.abs(b.price - current.price),
+      )
+    takeFrom(rest)
+  }
+
+  return out
+}
 
 function PropertyDetails() {
   const { slug } = useParams()
@@ -37,12 +75,10 @@ function PropertyDetails() {
 
   const agent = property ? agents.find((item) => item.id === property.agentId) : null
 
-  const similarProperties = useMemo(() => {
-    if (!property) return []
-    return allProperties
-      .filter((item) => item.id !== property.id && item.location === property.location)
-      .slice(0, 3)
-  }, [allProperties, property])
+  const similarProperties = useMemo(
+    () => (property ? pickSimilarProperties(allProperties, property) : []),
+    [allProperties, property],
+  )
 
   if (!property) {
     if (loading) {
@@ -86,11 +122,23 @@ function PropertyDetails() {
         <title>{property.title} | United Properties</title>
       </Helmet>
 
-      <section className="page-hero page-hero--property">
-        <div className="container">
+      <section
+        className="page-hero page-hero--property"
+        style={{ '--property-hero-image': `url(${JSON.stringify(property.image)})` }}
+      >
+        <div className="container property-details__hero-inner">
+          <p className="property-details__hero-eyebrow">
+            <span>{property.status}</span>
+            {property.type ? (
+              <>
+                <span className="property-details__hero-eyebrow-sep" aria-hidden="true" />
+                <span>{property.type}</span>
+              </>
+            ) : null}
+          </p>
           <h1 className="property-details__hero-title">{property.title}</h1>
           <p className="property-details__hero-location">
-            <MapPin size={16} /> {property.location}
+            <MapPin size={16} aria-hidden /> {property.location}
           </p>
         </div>
       </section>
@@ -100,41 +148,43 @@ function PropertyDetails() {
           <Gallery images={property.gallery} title={property.title} />
 
           <div className="property-details__head">
-            <div>
-              <p className="property-details__status">{property.status}</p>
-              <h2
-                className="property-details__price"
-                aria-label={`Price EUR ${property.price.toLocaleString()}${
-                  property.status === 'For Rent' ? ' per month' : ''
-                }`}
-              >
-                <span className="property-details__price-inner">
-                  <span className="property-details__price-currency">EUR</span>
-                  <span className="property-details__price-figure">
-                    {property.price.toLocaleString()}
+            <div className="property-details__head-row">
+              <div className="property-details__head-primary">
+                <p className="property-details__status">{property.status}</p>
+                <h2
+                  className="property-details__price"
+                  aria-label={`Price EUR ${property.price.toLocaleString()}${
+                    property.status === 'For Rent' ? ' per month' : ''
+                  }`}
+                >
+                  <span className="property-details__price-inner">
+                    <span className="property-details__price-currency">EUR</span>
+                    <span className="property-details__price-figure">
+                      {property.price.toLocaleString()}
+                    </span>
+                    {property.status === 'For Rent' ? (
+                      <span className="property-details__price-period">/ month</span>
+                    ) : null}
                   </span>
-                  {property.status === 'For Rent' ? (
-                    <span className="property-details__price-period">/ month</span>
-                  ) : null}
+                </h2>
+              </div>
+              <a
+                className="btn btn-gold property-details__whatsapp"
+                href="https://wa.me/35700000000"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span className="property-details__whatsapp-iconWrap" aria-hidden="true">
+                  <MessageCircle size={18} strokeWidth={2.25} />
                 </span>
-              </h2>
-              <p className="property-details__summary">{property.description}</p>
+                <span className="property-details__whatsapp-text">
+                  <span className="property-details__whatsapp-title">Chat on WhatsApp</span>
+                  <span className="property-details__whatsapp-sub">FAST REPLY · SAME DAY</span>
+                </span>
+                <ChevronRight className="property-details__whatsapp-chevron" size={20} strokeWidth={2.25} aria-hidden />
+              </a>
             </div>
-            <a
-              className="btn btn-gold property-details__whatsapp"
-              href="https://wa.me/35700000000"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span className="property-details__whatsapp-iconWrap" aria-hidden="true">
-                <MessageCircle size={18} strokeWidth={2.25} />
-              </span>
-              <span className="property-details__whatsapp-text">
-                <span className="property-details__whatsapp-title">Chat on WhatsApp</span>
-                <span className="property-details__whatsapp-sub">Fast reply · same day</span>
-              </span>
-              <ChevronRight className="property-details__whatsapp-chevron" size={20} strokeWidth={2.25} aria-hidden />
-            </a>
+            <p className="property-details__summary">{property.description}</p>
           </div>
 
           <div className="property-details__overview">
@@ -252,13 +302,43 @@ function PropertyDetails() {
       </section>
 
       <section className="section section--alt">
-        <div className="container">
-          <SectionHeader title="Similar Properties" />
-          <div className="grid-3">
-            {similarProperties.map((item) => (
-              <PropertyCard key={item.id} property={item} />
-            ))}
+        <div className="container property-details__similar">
+          <div className="property-details__similar-heading">
+            <span className="property-details__similar-heading__accent" aria-hidden="true" />
+            <div className="property-details__similar-heading__main">
+              <span className="property-details__similar-heading__icon" aria-hidden="true">
+                <Sparkles size={22} strokeWidth={2} />
+              </span>
+              <div className="property-details__similar-heading__copy">
+                <SectionHeader
+                  className="property-details__similar-header"
+                  eyebrow="Curated for you"
+                  title="Similar Properties"
+                  description="More listings that fit this home—matched by area, status, or price band. Open any card for the full story."
+                />
+                <ul className="property-details__similar-match-hints" aria-label="Matching criteria">
+                  <li>Area &amp; district</li>
+                  <li>Status</li>
+                  <li>Price band</li>
+                </ul>
+              </div>
+            </div>
+            <Link className="property-details__similar-viewall" to="/buy">
+              View all in Limassol
+              <ChevronRight size={17} strokeWidth={2.1} aria-hidden />
+            </Link>
           </div>
+          {similarProperties.length > 0 ? (
+            <div className="grid-3 property-details__similar-grid">
+              {similarProperties.map((item) => (
+                <PropertyCard key={item.id} property={item} variant="cover" />
+              ))}
+            </div>
+          ) : (
+            <p className="property-details__similar-empty">
+              <Link to="/buy">Browse all properties</Link> to discover more listings.
+            </p>
+          )}
         </div>
       </section>
 

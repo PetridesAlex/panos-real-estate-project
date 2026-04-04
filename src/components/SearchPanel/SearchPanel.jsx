@@ -8,7 +8,7 @@ import {
 import SearchBar from './SearchBar'
 import CityFilters from './CityFilters'
 import CategoryFilters from './CategoryFilters'
-import PropertyGrid from './PropertyGrid'
+import DiscoveryResults from './DiscoveryResults'
 import SearchMap from './SearchMap'
 import './SearchPanel.css'
 
@@ -108,30 +108,60 @@ function SearchPanel({ open, onClose, seed = null, seedKey = 0 }) {
       className="search-panel-overlay"
       role="dialog"
       aria-modal="true"
+      aria-labelledby="search-panel-title"
       data-lenis-prevent
       onClick={onClose}
     >
       <section className="search-panel" onClick={(event) => event.stopPropagation()}>
         <button type="button" className="search-panel__close" aria-label="Close search panel" onClick={onClose}>
-          <X size={18} />
+          <X className="search-panel__close-icon" size={20} strokeWidth={2.35} aria-hidden />
         </button>
 
-        <h2>Search</h2>
-        <SearchBar value={query} onChange={setQuery} />
+        <header className="search-panel__head">
+          <p className="search-panel__eyebrow">United Properties · Search</p>
+          <h2 id="search-panel-title" className="search-panel__title">
+            Explore listings
+          </h2>
+          <p className="search-panel__sub">
+            Narrow your criteria in the filter column — results and map update as you go.
+          </p>
+        </header>
 
-        <CityFilters cities={searchCities} activeCity={activeCity} onSelect={setActiveCity} />
-        <CategoryFilters
-          categories={searchCategories}
-          activeCategory={activeCategory}
-          onSelect={setActiveCategory}
-          onReset={resetFilters}
-        />
+        <div className="search-panel__body">
+          <aside
+            className="search-panel__sidebar"
+            id="search-panel-filters"
+            aria-label="Search filters"
+          >
+            <SearchBar value={query} onChange={setQuery} />
 
-        <PropertyGrid activeCategory={activeCategory} />
+            <CityFilters cities={searchCities} activeCity={activeCity} onSelect={setActiveCity} />
+            <CategoryFilters
+              categories={searchCategories}
+              activeCategory={activeCategory}
+              onSelect={setActiveCategory}
+              onReset={resetFilters}
+            />
+          </aside>
 
-        <div className="search-panel__map-wrap">
-          <p className="search-panel__section-title">Explore Cyprus on Map</p>
-          <SearchMap properties={mapProperties} activeCity={activeCity} />
+          <div className="search-panel__main">
+            <output
+              className="search-panel__stat search-panel__stat--main"
+              htmlFor="search-panel-filters"
+              aria-live="polite"
+            >
+              <span className="search-panel__stat-value">{filteredBase.length}</span>
+              <span className="search-panel__stat-label">
+                {filteredBase.length === 1 ? 'match' : 'matches'}
+              </span>
+            </output>
+            <DiscoveryResults properties={filteredBase} />
+
+            <div className="search-panel__map-wrap">
+              <p className="search-panel__section-title">Explore Cyprus on Map</p>
+              <SearchMap properties={mapProperties} activeCity={activeCity} />
+            </div>
+          </div>
         </div>
       </section>
     </div>

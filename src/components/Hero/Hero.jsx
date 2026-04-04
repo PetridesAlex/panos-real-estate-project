@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ChevronDown, MapPinned, Search } from 'lucide-react'
+import { ChevronDown, Search } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import SearchPanel from '../SearchPanel/SearchPanel'
 import './Hero.css'
+
+const MAP_SUGGESTIONS_ICON = `${import.meta.env.BASE_URL}images/icon/united-properties-map.svg`
 
 function Hero() {
   const sectionRef = useRef(null)
@@ -142,7 +144,15 @@ function Hero() {
                   aria-label="Open featured property map suggestions"
                   title="Featured map suggestions"
                 >
-                  <MapPinned size={14} strokeWidth={2.1} aria-hidden />
+                  <img
+                    className="hero-section__ai-pill-icon"
+                    src={MAP_SUGGESTIONS_ICON}
+                    alt=""
+                    width={18}
+                    height={18}
+                    decoding="async"
+                    aria-hidden
+                  />
                 </button>
                 <button
                   type="button"

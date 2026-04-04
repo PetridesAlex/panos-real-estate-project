@@ -25,11 +25,11 @@ function AppRouter() {
       <Route path="/signature-listings" element={<Properties />} />
       <Route path="/properties" element={<Properties />} />
       <Route path="/properties/limassol" element={<Properties />} />
-      <Route path="/properties/paphos" element={<Properties />} />
-      <Route path="/properties/nicosia" element={<Properties />} />
-      <Route path="/properties/larnaca" element={<Properties />} />
-      <Route path="/properties/protaras" element={<Properties />} />
-      <Route path="/properties/ayia-napa" element={<Properties />} />
+      <Route path="/properties/paphos" element={<Navigate to="/buy" replace />} />
+      <Route path="/properties/nicosia" element={<Navigate to="/buy" replace />} />
+      <Route path="/properties/larnaca" element={<Navigate to="/buy" replace />} />
+      <Route path="/properties/protaras" element={<Navigate to="/buy" replace />} />
+      <Route path="/properties/ayia-napa" element={<Navigate to="/buy" replace />} />
       <Route path="/property/:slug" element={<LegacyPropertyRedirect />} />
       <Route path="/properties/:slug" element={<PropertyDetails />} />
       <Route path="/about" element={<About />} />
