@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { Instagram, Linkedin, Facebook, MessageCircle } from 'lucide-react'
+import { Instagram, Linkedin, Facebook, MessageCircle, LayoutDashboard } from 'lucide-react'
+import { SANITY_STUDIO_URL } from '../../config/externalLinks'
 import './Footer.css'
 
 function Footer() {
@@ -44,7 +45,7 @@ function Footer() {
           </ul>
         </div>
 
-        <div>
+        <div className="footer__contact-block">
           <h4>Contact</h4>
           <ul>
             <li>18 Marina Avenue, Limassol, Cyprus</li>
@@ -69,6 +70,21 @@ function Footer() {
               <MessageCircle size={16} />
             </a>
           </div>
+          <a
+            className="footer__portal"
+            href={SANITY_STUDIO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open team Portal (content management) in a new tab"
+          >
+            <span className="footer__portal-icon" aria-hidden="true">
+              <LayoutDashboard size={22} strokeWidth={1.85} />
+            </span>
+            <span className="footer__portal-copy">
+              <span className="footer__portal-title">Portal</span>
+              <span className="footer__portal-sub">Team login · Listings &amp; content</span>
+            </span>
+          </a>
         </div>
       </div>
 

@@ -1,11 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
-import { ChevronDown, Search } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import SearchPanel from '../SearchPanel/SearchPanel'
 import './Hero.css'
-
-const MAP_SUGGESTIONS_ICON = `${import.meta.env.BASE_URL}images/icon/united-properties-map.svg`
 
 function Hero() {
   const sectionRef = useRef(null)
@@ -101,75 +98,14 @@ function Hero() {
             poster="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=2400&q=90"
           />
         </div>
-        <div className="hero-section__overlay" />
-        <div className="container hero-section__inner">
-          <div className="hero-section__search-stack">
-            <motion.div
-              className="hero-section__trigger"
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.75 }}
-            >
-              <div
-                className="hero-section__trigger-inner"
-                role="button"
-                tabIndex={0}
-                onClick={() => openSearchPanel(null)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault()
-                    openSearchPanel(null)
-                  }
-                }}
-                aria-label="Open property search panel"
-              >
-                <button
-                  type="button"
-                  className="hero-section__trigger-input"
-                  aria-label="Search properties"
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    openSearchPanel(null)
-                  }}
-                >
-                  <span className="hero-section__trigger-text">Search properties, locations, agents...</span>
-                </button>
-                <button
-                  type="button"
-                  className="hero-section__ai-pill"
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    openSearchPanel({ category: 'Featured Properties' })
-                  }}
-                  aria-label="Open featured property map suggestions"
-                  title="Featured map suggestions"
-                >
-                  <img
-                    className="hero-section__ai-pill-icon"
-                    src={MAP_SUGGESTIONS_ICON}
-                    alt=""
-                    width={18}
-                    height={18}
-                    decoding="async"
-                    aria-hidden
-                  />
-                </button>
-                <button
-                  type="button"
-                  className="hero-section__trigger-location"
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    openSearchPanel(null)
-                  }}
-                  aria-label="Open search"
-                >
-                  <Search size={18} strokeWidth={2.2} />
-                </button>
-              </div>
-            </motion.div>
 
-          </div>
+        <div className="hero-section__premium" aria-hidden="true">
+          <div className="hero-section__ambient" />
+          <div className="hero-section__vignette" />
+          <div className="hero-section__grain" />
         </div>
+
+        <div className="hero-section__overlay" />
 
         <a className="hero-section__indicator" href="#featured-properties" aria-label="Scroll">
           <ChevronDown size={22} />

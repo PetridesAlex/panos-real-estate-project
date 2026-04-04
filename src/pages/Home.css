@@ -31,31 +31,9 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.home-featured-grid .property-card__media {
-  border-radius: 12px;
-  aspect-ratio: 16 / 11;
-  min-height: clamp(320px, 38vw, 520px);
-}
-
-.home-featured-grid .property-card__media img {
-  width: 100%;
+/* Same cover layout as /rent and /buy listing grids (editorial card + status pill + specs line) */
+.home-featured-grid .property-card--cover {
   height: 100%;
-  object-fit: cover;
-}
-
-/* Signature overlay: match taller hero image */
-.home-featured-grid .property-card--signature .property-card__content {
-  margin-top: clamp(-11rem, -28vw, -8.75rem);
-  padding: 1.15rem 1.05rem 1.05rem;
-}
-
-.home-featured-grid .property-card--signature .property-card__price {
-  font-size: clamp(1.2rem, 2.4vw, 1.45rem);
-}
-
-.home-featured-grid .property-card--signature h3 {
-  font-size: clamp(1.12rem, 2.1vw, 1.38rem);
-  line-height: 1.2;
 }
 
 .home-scroll-stack-section {
@@ -257,9 +235,5 @@
 @media (max-width: 620px) {
   .home-featured-grid {
     grid-template-columns: 1fr;
-  }
-
-  .home-featured-grid .property-card__media {
-    min-height: clamp(300px, 78vw, 440px);
   }
 }

@@ -10,6 +10,13 @@ function formatPrice(value, status) {
     : `EUR ${formatter.format(value)}`
 }
 
+/** Internal area in sqm → sq ft for listing line (matches US-style MLS copy). */
+function sqmToSqft(sqm) {
+  const n = Number(sqm)
+  if (!Number.isFinite(n) || n <= 0) return null
+  return Math.round(n * 10.76391041671)
+}
+
 function badgeVariantFromStatus(status) {
   const s = (status || '').toLowerCase()
   if (s.includes('rent')) return 'rent'
@@ -30,88 +37,104 @@ function PropertyCard({
   const badgeVariant = badgeVariantFromStatus(property.status)
   const reduceMotion = useReducedMotion()
   const streetAddress = property.address || property.title
+  const showSignaturePill = Boolean(property.featured || property.isSignature)
+  const sqft = sqmToSqft(property.sqm)
+
+  const coverLinkLabel = `View listing: ${property.title}`
 
   return (
     <motion.article
       className={`property-card ${isSignature ? 'property-card--signature' : 'card-luxury'} ${
         isCover ? 'property-card--cover' : ''
       }`.trim()}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.25 }}
+      whileHover={isCover ? { y: -3 } : { y: -4 }}
+      transition={{ duration: 0.22 }}
     >
-      <div className="property-card__media">
-        <img src={property.image} alt={`${property.title} in ${property.location}`} />
-        <motion.span
-          className={`property-card__badge property-card__badge--${badgeVariant}${
-            isCover ? ' property-card__badge--on-cover' : ''
-          }`}
-          data-listing={badgeVariant}
-          initial={reduceMotion ? false : { opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: 'spring', stiffness: 420, damping: 28 }}
-          whileHover={reduceMotion ? undefined : { scale: 1.03 }}
+      {isCover ? (
+        <Link
+          className="property-card__cover-whole"
+          to={`/properties/${property.slug}`}
+          aria-label={coverLinkLabel}
         >
-          <span className="property-card__badge-main">{property.status}</span>
-          {property.type ? (
-            <>
-              <span className="property-card__badge-sep" aria-hidden="true" />
-              <span className="property-card__badge-type">{property.type}</span>
-            </>
-          ) : null}
-        </motion.span>
-        {isSignature && <span className="property-card__signature">United Properties. Signature</span>}
-        {isCover && (
-          <>
-            <div className="property-card__cover-bottom">
-              <p className="property-card__cover-price">{formatPrice(property.price, property.status)}</p>
-              <div className="property-card__cover-extra" role="group" aria-label="Listing summary">
-                <p className="property-card__cover-line">
-                  <span className="property-card__cover-label">Address</span>
-                  <span className="property-card__cover-value">{streetAddress}</span>
-                </p>
-                <p className="property-card__cover-line">
-                  <span className="property-card__cover-label">Area</span>
-                  <span className="property-card__cover-value">{property.location}</span>
-                </p>
-                <p className="property-card__cover-line property-card__cover-line--compact">
-                  <span className="property-card__cover-label">Size</span>
-                  <span className="property-card__cover-value">{property.sqm} sqm</span>
-                </p>
-              </div>
-            </div>
-            <Link
-              className="property-card__cover-link"
-              to={`/properties/${property.slug}`}
-              aria-label={`View ${property.title} details`}
-            />
-          </>
-        )}
-      </div>
-      {!isCover && (
-        <div className="property-card__content">
-          <p className="property-card__price">{formatPrice(property.price, property.status)}</p>
-          <h3>{property.title}</h3>
-          <p className="property-card__location">
-            <MapPin size={15} /> {property.location}
-          </p>
-          {showDescription && <p className="property-card__description">{property.description}</p>}
-          <div className="property-card__meta">
-            <span>
-              <BedDouble size={16} /> {property.bedrooms} Beds
+          <div className="property-card__media">
+            <img src={property.image} alt="" />
+            <span className={`property-card__status-pill property-card__status-pill--${badgeVariant}`}>
+              {property.status === 'For Rent'
+                ? 'FOR RENT'
+                : property.status === 'For Sale'
+                  ? 'FOR SALE'
+                  : property.status.toUpperCase()}
             </span>
-            <span>
-              <Bath size={16} /> {property.bathrooms} Baths
-            </span>
-            <span>
-              <Ruler size={16} /> {property.sqm} sqm
-            </span>
+            {showSignaturePill ? (
+              <span className="property-card__signature-pill">United Properties · Signature</span>
+            ) : null}
           </div>
-          {showButton && (
-            <Link className="btn btn-outline-dark" to={`/properties/${property.slug}`}>
-              View Details
-            </Link>
-          )}
-        </div>
+          <div className="property-card__body property-card__body--cover">
+            <p className="property-card__price property-card__price--cover">{formatPrice(property.price, property.status)}</p>
+            <p className="property-card__address-line">
+              {streetAddress}
+              {property.location ? `, ${property.location}` : ''}
+            </p>
+            <p className="property-card__specs-line" aria-label="Bedrooms, bathrooms, and size">
+              <span>{property.bedrooms} BEDS</span>
+              <span className="property-card__specs-dot" aria-hidden="true">
+                ·
+              </span>
+              <span>{property.bathrooms} FULL BATHS</span>
+              <span className="property-card__specs-dot" aria-hidden="true">
+                ·
+              </span>
+              <span>{sqft != null ? `${sqft.toLocaleString('en-US')} SQ.FT.` : `${property.sqm} SQM`}</span>
+            </p>
+          </div>
+        </Link>
+      ) : (
+        <>
+          <div className="property-card__media">
+            <img src={property.image} alt={`${property.title} in ${property.location}`} />
+            <motion.span
+              className={`property-card__badge property-card__badge--${badgeVariant}`}
+              data-listing={badgeVariant}
+              initial={reduceMotion ? false : { opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ type: 'spring', stiffness: 420, damping: 28 }}
+              whileHover={reduceMotion ? undefined : { scale: 1.03 }}
+            >
+              <span className="property-card__badge-main">{property.status}</span>
+              {property.type ? (
+                <>
+                  <span className="property-card__badge-sep" aria-hidden="true" />
+                  <span className="property-card__badge-type">{property.type}</span>
+                </>
+              ) : null}
+            </motion.span>
+            {isSignature && <span className="property-card__signature">United Properties. Signature</span>}
+          </div>
+          <div className="property-card__content">
+            <p className="property-card__price">{formatPrice(property.price, property.status)}</p>
+            <h3>{property.title}</h3>
+            <p className="property-card__location">
+              <MapPin size={15} /> {property.location}
+            </p>
+            {showDescription && <p className="property-card__description">{property.description}</p>}
+            <div className="property-card__meta">
+              <span>
+                <BedDouble size={16} /> {property.bedrooms} Beds
+              </span>
+              <span>
+                <Bath size={16} /> {property.bathrooms} Baths
+              </span>
+              <span>
+                <Ruler size={16} /> {property.sqm} sqm
+              </span>
+            </div>
+            {showButton && (
+              <Link className="btn btn-outline-dark" to={`/properties/${property.slug}`}>
+                View Details
+              </Link>
+            )}
+          </div>
+        </>
       )}
     </motion.article>
   )

@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 import SectionHeader from '../components/SectionHeader/SectionHeader'
 import AgentCard from '../components/AgentCard/AgentCard'
 import { agents } from '../data/agents'
+import { SANITY_STUDIO_URL } from '../config/externalLinks'
 import './Agents.css'
 
 function Agents() {
@@ -30,6 +31,22 @@ function Agents() {
           <p>
             Specialists in luxury homes, investments, developments, and international
             client guidance across Cyprus.
+          </p>
+        </div>
+      </section>
+
+      <section className="agents-studio-cta" aria-label="Portal">
+        <div className="container agents-studio-cta__inner">
+          <a
+            className="btn btn-gold agents-studio-cta__btn"
+            href={SANITY_STUDIO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open Portal
+          </a>
+          <p className="agents-studio-cta__note">
+            For United Properties team members: sign in to manage listings and site content. Opens in a new tab.
           </p>
         </div>
       </section>

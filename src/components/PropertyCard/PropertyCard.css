@@ -249,149 +249,186 @@
   box-shadow: none;
 }
 
+/* —— Listing grid (cover): editorial white card, image + body —— */
 .property-card--cover {
-  border-radius: 14px;
+  padding: 0;
   overflow: hidden;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 14px 40px rgba(15, 23, 42, 0.08);
+}
+
+.property-card--cover.card-luxury {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 14px 40px rgba(15, 23, 42, 0.08);
+}
+
+.property-card__cover-whole {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  text-decoration: none;
+  color: inherit;
+  border-radius: inherit;
+}
+
+.property-card__cover-whole:focus-visible {
+  outline: 2px solid rgba(191, 152, 117, 0.85);
+  outline-offset: 3px;
 }
 
 .property-card--cover .property-card__media {
-  border-radius: 14px;
+  border-radius: 0;
+  flex-shrink: 0;
 }
 
 .property-card--cover .property-card__media img {
-  height: clamp(280px, 34vw, 380px);
+  display: block;
+  width: 100%;
+  height: clamp(220px, 30vw, 340px);
+  object-fit: cover;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.property-card__badge--on-cover {
-  z-index: 4;
-  pointer-events: none;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-right-width: 3px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.97), rgba(248, 244, 236, 0.94));
-  box-shadow:
-    0 10px 28px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+.property-card--cover:hover .property-card__media img {
+  transform: scale(1.04);
 }
 
-.property-card__cover-bottom {
+.property-card__status-pill {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 4;
-  padding: 0.85rem 1rem 0.95rem;
-  border-top: 1px solid rgba(196, 156, 92, 0.42);
-  background: linear-gradient(
-    to top,
-    rgba(4, 8, 16, 0.97) 0%,
-    rgba(8, 14, 26, 0.88) 38%,
-    rgba(10, 18, 32, 0.55) 100%
-  );
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  pointer-events: none;
-  box-shadow:
-    0 -12px 36px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  transition:
-    border-color var(--transition-fast),
-    box-shadow var(--transition-fast),
-    background var(--transition-fast);
-}
-
-.property-card--cover:hover .property-card__cover-bottom {
-  border-top-color: rgba(217, 182, 128, 0.75);
-  box-shadow:
-    0 -16px 44px rgba(0, 0, 0, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 0 0 1px rgba(196, 156, 92, 0.2);
-}
-
-.property-card__cover-price {
-  margin: 0 0 0.65rem;
-  font-size: clamp(1.12rem, 2.2vw, 1.38rem);
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 2;
+  padding: 0.32rem 0.55rem 0.34rem;
+  border-radius: 4px;
+  font-size: 0.625rem;
   font-weight: 800;
-  letter-spacing: 0.03em;
-  color: #fffaf3;
-  text-shadow:
-    0 1px 0 rgba(0, 0, 0, 0.35),
-    0 3px 22px rgba(0, 0, 0, 0.55);
-  line-height: 1.15;
-}
-
-.property-card__cover-extra {
-  display: grid;
-  gap: 0.42rem;
-  margin: 0;
-}
-
-.property-card__cover-line {
-  margin: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 4.2rem) minmax(0, 1fr);
-  align-items: start;
-  gap: 0.5rem 0.75rem;
-  font-size: clamp(0.78rem, 1.35vw, 0.88rem);
-  line-height: 1.35;
-}
-
-.property-card__cover-line--compact {
-  grid-template-columns: minmax(0, 4.2rem) auto;
-}
-
-.property-card__cover-label {
-  display: block;
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
+  line-height: 1;
   text-transform: uppercase;
-  color: rgba(232, 212, 176, 0.88);
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
-  padding-top: 0.12em;
+  pointer-events: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
 }
 
-.property-card__cover-value {
-  display: block;
+.property-card__status-pill--sale {
+  background: #b8d9f0;
+  color: #0c1e2e;
+}
+
+.property-card__status-pill--rent {
+  background: #c8dcf5;
+  color: #0f2740;
+}
+
+.property-card__status-pill--sold {
+  background: #e2e4e8;
+  color: #2a2f36;
+}
+
+.property-card__status-pill--reserved {
+  background: #e8d5b8;
+  color: #3a2e1a;
+}
+
+.property-card__signature-pill {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 2;
+  max-width: calc(100% - 1.5rem);
+  padding: 0.38rem 0.65rem 0.42rem;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.96);
+  background: #0a0a0a;
+  pointer-events: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.property-card__body--cover {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.05rem 1.1rem;
+  background: #ffffff;
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.property-card__price--cover {
+  margin: 0 0 0.42rem;
+  font-size: clamp(1.125rem, 2.1vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: #0a0a0a;
+  font-family: var(--font-sans);
+}
+
+.property-card__address-line {
+  margin: 0 0 0.75rem;
+  font-size: clamp(0.875rem, 1.25vw, 0.95rem);
+  font-weight: 500;
+  line-height: 1.45;
+  color: #111827;
+  font-family: var(--font-sans);
+}
+
+.property-card__specs-line {
+  margin: 0;
+  margin-top: auto;
+  padding-top: 0.15rem;
+  font-size: 0.68rem;
   font-weight: 600;
-  color: rgba(252, 248, 240, 0.98);
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
-  word-break: break-word;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6b7280;
+  line-height: 1.5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+  font-family: var(--font-sans);
+}
+
+.property-card__specs-dot {
+  color: #9ca3af;
+  font-weight: 500;
+  user-select: none;
 }
 
 @media (max-width: 720px) {
-  .property-card__cover-bottom {
-    padding: 0.75rem 0.85rem 0.88rem;
+  .property-card--cover .property-card__media img {
+    height: clamp(200px, 58vw, 280px);
   }
 
-  .property-card__cover-line {
-    grid-template-columns: 1fr;
-    gap: 0.2rem;
+  .property-card__body--cover {
+    padding: 0.88rem 0.9rem 1rem;
   }
 
-  .property-card__cover-line--compact {
-    grid-template-columns: 1fr;
-  }
-
-  .property-card__cover-label {
-    font-size: 0.58rem;
-    letter-spacing: 0.12em;
-  }
-
-  .property-card__cover-extra {
-    gap: 0.5rem;
-  }
-
-  .property-card__cover-price {
-    margin-bottom: 0.55rem;
-    font-size: clamp(1.05rem, 3.5vw, 1.22rem);
+  .property-card__specs-line {
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
   }
 }
 
-.property-card__cover-link {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  border-radius: inherit;
+@media (prefers-reduced-motion: reduce) {
+  .property-card--cover .property-card__media img {
+    transition: none;
+  }
+
+  .property-card--cover:hover .property-card__media img {
+    transform: none;
+  }
 }
 
 .property-card--signature .property-card__content {
@@ -454,11 +491,6 @@
 @media (max-width: 720px) {
   .property-card__media img {
     height: 220px;
-  }
-
-  .property-card--cover .property-card__media img {
-    min-height: 268px;
-    height: clamp(268px, 62vw, 320px);
   }
 
   .property-card--signature .property-card__content {

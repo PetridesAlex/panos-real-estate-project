@@ -80,13 +80,7 @@ function Home() {
           />
           <div className="grid-3 home-featured-grid">
             {featuredProperties.map((property) => (
-              <PropertyCard
-                key={property.id}
-                property={property}
-                variant="signature"
-                showDescription={false}
-                showButton={false}
-              />
+              <PropertyCard key={property.id} property={property} variant="cover" />
             ))}
           </div>
         </div>
