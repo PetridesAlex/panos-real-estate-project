@@ -5,6 +5,13 @@ import {media} from 'sanity-plugin-media'
 import {schemaTypes} from './schemaTypes'
 import {structure} from './sanity.structure'
 
+/** Put Media library first when picking images — grid supports multi-select (Shift/Cmd+click). */
+function imageAssetSourcesWithMediaFirst<T extends {name: string}>(prev: T[]): T[] {
+  const mediaSource = prev.find((s) => s.name === 'media')
+  const rest = prev.filter((s) => s.name !== 'media')
+  return mediaSource ? [mediaSource, ...rest] : prev
+}
+
 /** Bazaraki XML-aligned defaults — confirm rubric & district IDs in https://www.bazaraki.com/business-xml-guide/ */
 const bazarakiRentDefaults = {
   status: 'for-rent',
@@ -41,10 +48,20 @@ export default defineConfig({
   dataset: 'production',
 
   plugins: [
-    media(),
+    media({
+      creditLine: {enabled: false},
+      directUploads: true,
+      maximumUploadSize: 25000000,
+    }),
     structureTool({structure}),
     visionTool(),
   ],
+
+  form: {
+    image: {
+      assetSources: imageAssetSourcesWithMediaFirst,
+    },
+  },
 
   schema: {
     types: schemaTypes,
@@ -52,21 +69,33 @@ export default defineConfig({
       ...prev,
       {
         id: 'property-for-sale',
-        title: 'Property: For Sale',
+        title: 'Property: Buy (for sale)',
         schemaType: 'property',
         value: {status: 'for-sale', featured: false, currency: 'EUR'},
       },
       {
         id: 'property-for-rent',
-        title: 'Property: For Rent',
+        title: 'Property: Rent',
         schemaType: 'property',
         value: {status: 'for-rent', featured: false, currency: 'EUR'},
       },
       {
         id: 'property-featured',
-        title: 'Property: Featured',
+        title: 'Property: Featured listing',
         schemaType: 'property',
         value: {status: 'for-sale', featured: true, currency: 'EUR'},
+      },
+      {
+        id: 'property-signature',
+        title: 'Property: Signature collection',
+        schemaType: 'property',
+        value: {status: 'for-sale', featured: false, signature: true, currency: 'EUR'},
+      },
+      {
+        id: 'property-new-development',
+        title: 'Property: New development listing',
+        schemaType: 'property',
+        value: {status: 'for-sale', featured: false, newDevelopment: true, currency: 'EUR'},
       },
       {
         id: 'property-bazaraki-rent',

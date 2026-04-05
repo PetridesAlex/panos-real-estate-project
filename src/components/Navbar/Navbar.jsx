@@ -1,9 +1,8 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { Building2, ChevronDown, KeyRound, MapPin, Megaphone, Search } from 'lucide-react'
+import { Building2, ChevronDown, KeyRound, Megaphone, Search } from 'lucide-react'
 import StaggeredMenu from '../StaggeredMenu/StaggeredMenu'
 import { SANITY_STUDIO_URL, TELEGRAM_CHAT_URL, WHATSAPP_CHAT_URL } from '../../config/externalLinks'
-import { TelegramBrandIcon, WhatsAppBrandIcon } from './SocialBrandIcons'
 import './Navbar.css'
 
 const navTabs = [
@@ -248,40 +247,13 @@ function Navbar() {
         </a>
 
         <div className="navbar__actions">
-          <div className="navbar__socials" aria-label="WhatsApp and Telegram">
-            <a
-              href={WHATSAPP_CHAT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="navbar__social-btn navbar__social-btn--whatsapp"
-              aria-label="WhatsApp — chat on WhatsApp"
-              title="WhatsApp"
-            >
-              <WhatsAppBrandIcon size={26} />
-            </a>
-            <a
-              href={TELEGRAM_CHAT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="navbar__social-btn navbar__social-btn--telegram"
-              aria-label="Telegram — chat on Telegram"
-              title="Telegram"
-            >
-              <TelegramBrandIcon size={26} />
-            </a>
-          </div>
-
           <button
             type="button"
             className="navbar__search-pill"
             aria-label="Search homes and agents"
             onClick={openGlobalSearch}
           >
-            <Search size={14} />
-            <span>United Properties. Homes &amp; Agents</span>
-            <span className="navbar__search-pill-map" aria-hidden="true">
-              <MapPin size={13} />
-            </span>
+            <Search size={20} strokeWidth={2} aria-hidden="true" />
           </button>
 
           <div className="navbar__ctas">

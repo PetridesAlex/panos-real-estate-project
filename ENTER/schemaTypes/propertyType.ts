@@ -39,8 +39,8 @@ export const propertyType = defineType({
       group: WEBSITE,
       options: {
         list: [
-          {title: 'For Sale', value: 'for-sale'},
-          {title: 'For Rent', value: 'for-rent'},
+          {title: 'Buy (for sale)', value: 'for-sale'},
+          {title: 'Rent', value: 'for-rent'},
           {title: 'Sold', value: 'sold'},
           {title: 'Reserved', value: 'reserved'},
         ],
@@ -137,24 +137,27 @@ export const propertyType = defineType({
     }),
     defineField({
       name: 'featured',
-      title: 'Featured',
+      title: 'Featured listing',
+      description:
+        'Turn on to show this property in “Featured listings” on the site and in the Featured desk view. Same document can also be Buy/Rent — this is an extra flag.',
       type: 'boolean',
       group: WEBSITE,
       initialValue: false,
     }),
     defineField({
       name: 'signature',
-      title: 'Signature listing',
-      description: 'Used for Signature collection / marketing on the website.',
+      title: 'Signature collection',
+      description:
+        'Turn on for Signature collection marketing. Use the desk view “Signature collection” to find these. Can combine with Buy and Featured.',
       type: 'boolean',
       group: WEBSITE,
       initialValue: false,
     }),
     defineField({
       name: 'newDevelopment',
-      title: 'New development listing',
+      title: 'New development (property listing)',
       description:
-        'Show on New Developments (/new-developments). Often used with “For sale” for off-plan units.',
+        'Turn on for off-plan / new-build units shown with new-development listings. Separate from “Development projects” (which are full development documents). Usually used with Buy (for sale).',
       type: 'boolean',
       group: WEBSITE,
       initialValue: false,
@@ -381,7 +384,7 @@ export const propertyType = defineType({
       type: 'image',
       group: MEDIA,
       description:
-        'One image per slot. To pick from the Media library (batch uploads live there), use “Select” and choose multiple assets where supported.',
+        'Hero image. Use Select → choose “Media” first in the list for the big library. Upload many files at once under the Media tool in the top toolbar, then pick them here.',
       options: {hotspot: true},
     }),
     defineField({
@@ -390,14 +393,17 @@ export const propertyType = defineType({
       type: 'array',
       group: MEDIA,
       description:
-        '**Quick add many photos:** (1) Drag several files from your computer onto this gallery area — Studio adds one image per file. (2) Or open **Media** in the left toolbar, upload a batch there, then here use **Browse** / asset picker and select multiple. The small “Choose file” control on a single slot only uploads **one** file at a time (Sanity default). Max 16 images if the listing is on the Bazaraki feed.',
+        '**Multiple images at once:** (1) Drag **several image files** from your desktop onto the gallery (the empty zone or below existing thumbnails) — Studio adds one slot per file. (2) Click **Add item** → **Select** → pick **Media** (listed first) → **select multiple assets** with Shift/Cmd+click, then confirm. (3) Or upload a batch in the **Media** tool (toolbar), then add here via Select. Max 16 images if Bazaraki feed is on.',
       options: {
         layout: 'grid',
       },
       of: [
         defineArrayMember({
           type: 'image',
-          options: {hotspot: true},
+          options: {
+            hotspot: true,
+            metadata: ['blurhash', 'lqip', 'palette'],
+          },
         }),
       ],
       validation: (rule) =>

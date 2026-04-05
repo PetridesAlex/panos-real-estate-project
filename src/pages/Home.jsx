@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Hero from '../components/Hero/Hero'
 import SectionHeader from '../components/SectionHeader/SectionHeader'
-import PropertyCard from '../components/PropertyCard/PropertyCard'
+import ModalCards from '../components/ModalCards/ModalCards'
 import ServiceCard from '../components/ServiceCard/ServiceCard'
 import AgentCard from '../components/AgentCard/AgentCard'
 import TestimonialCard from '../components/TestimonialCard/TestimonialCard'
@@ -17,6 +17,8 @@ import { developments } from '../data/developments'
 import { testimonials } from '../data/testimonials'
 import { useMergedProperties } from '../hooks/useMergedProperties'
 import './Home.css'
+
+const MotionDiv = motion.div
 
 function isSignatureProperty(property) {
   if (!property) return false
@@ -49,6 +51,19 @@ function Home() {
     const source = featured.length ? featured : sanityOnly
     return source.slice(0, 3)
   }, [sanityOnly, fallbackFeaturedProperties])
+  const featuredModalCards = useMemo(
+    () =>
+      featuredProperties.map((property) => ({
+        id: String(property.id),
+        imageUrl: property.image,
+        title: property.title,
+        description:
+          property.description ||
+          `Discover this ${property.type || 'property'} in ${property.location}.`,
+        slug: property.slug,
+      })),
+    [featuredProperties],
+  )
   const signatureCollectionProperties = useMemo(() => {
     const source = sanityOnly.length ? sanityOnly : properties
     const signatureOnly = source.filter(isSignatureProperty)
@@ -78,11 +93,7 @@ function Home() {
             description="Check out some of our most exclusive houses, apartments, townhomes, penthouses, and more."
             className="section-header--featured"
           />
-          <div className="grid-3 home-featured-grid">
-            {featuredProperties.map((property) => (
-              <PropertyCard key={property.id} property={property} variant="cover" />
-            ))}
-          </div>
+          <ModalCards cards={featuredModalCards} className="home-featured-modal-cards" />
         </div>
       </section>
 
@@ -165,7 +176,7 @@ function Home() {
 
       <section className="section section--alt">
         <div className="container home-editorial">
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, x: -18 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.4 }}
@@ -179,7 +190,7 @@ function Home() {
               market intelligence with private-client service to secure properties that
               align with your ambitions.
             </p>
-          </motion.div>
+          </MotionDiv>
           <img
             src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1600&q=80"
             alt="Luxury Cyprus property lifestyle"

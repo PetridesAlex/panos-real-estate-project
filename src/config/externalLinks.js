@@ -17,3 +17,11 @@ export const TELEGRAM_CHAT_URL =
   typeof import.meta !== 'undefined' && import.meta.env?.VITE_TELEGRAM_URL
     ? String(import.meta.env.VITE_TELEGRAM_URL)
     : 'https://t.me/'
+
+/** Primary inbox for quick-contact FAB + footer (override with VITE_CONTACT_EMAIL). */
+export const CONTACT_EMAIL =
+  typeof import.meta !== 'undefined' && import.meta.env?.VITE_CONTACT_EMAIL
+    ? String(import.meta.env.VITE_CONTACT_EMAIL)
+    : 'info@unitedproperties.eu'
+
+export const CONTACT_MAILTO_HREF = `mailto:${CONTACT_EMAIL}`

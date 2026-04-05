@@ -4,7 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import SearchPanel from '../SearchPanel/SearchPanel'
 import './Hero.css'
 
-const HERO_VIDEO_SRC = '/video/united-properties-mp4.mp4'
+/** Served from `public/video/hero-video-optimize-united-properties.mp4` */
+const HERO_VIDEO_SRC = '/video/hero-video-optimize-united-properties.mp4'
 
 function Hero() {
   const sectionRef = useRef(null)
@@ -79,14 +80,7 @@ function Hero() {
   return (
     <>
       <section className="hero-section" ref={sectionRef}>
-        <div
-          className="hero-section__media"
-          aria-hidden="true"
-          style={{
-            backgroundImage:
-              'url("https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=2400&q=90")',
-          }}
-        >
+        <div className="hero-section__media" aria-hidden="true">
           <video
             ref={videoRef}
             className="hero-section__video"
@@ -97,7 +91,6 @@ function Hero() {
             playsInline
             preload={shouldLoadVideo ? 'auto' : 'none'}
             disablePictureInPicture
-            poster="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=2400&q=90"
           />
         </div>
 

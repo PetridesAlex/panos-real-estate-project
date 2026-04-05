@@ -248,29 +248,23 @@
 }
 
 .property-details__price-figure {
-  font-weight: 700;
+  font-family: 'Montserrat', var(--font-sans), system-ui, sans-serif;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.035em;
-  color: transparent;
-  background: linear-gradient(
-    165deg,
-    #fffefb 0%,
-    #f0e6d4 28%,
-    #d4b57a 52%,
-    #c49a4e 78%,
-    #a67c32 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  filter: drop-shadow(0 2px 14px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 28px rgba(196, 156, 92, 0.22));
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.2),
+    0 2px 16px rgba(0, 0, 0, 0.35);
 }
 
-@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
-  .property-details__price-figure {
-    color: #f2e6d2;
-    background: none;
-    filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.4));
-  }
+.property-details__head .property-details__price-figure {
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.45),
+    0 0 32px rgba(255, 255, 255, 0.06);
 }
 
 .property-details__price-period {

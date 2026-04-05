@@ -26,14 +26,10 @@
   font-size: 1.02rem;
 }
 
-.home-featured-grid {
-  gap: clamp(1.5rem, 2.5vw, 2.25rem);
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-/* Same cover layout as /rent and /buy listing grids (editorial card + status pill + specs line) */
-.home-featured-grid .property-card--cover {
-  height: 100%;
+/* Featured block uses ModalCards (container-query grid in ModalCards.css). */
+.home-featured-modal-cards .modal-cards-grid {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .home-scroll-stack-section {
@@ -193,12 +189,6 @@
   gap: 1.1rem;
 }
 
-@media (max-width: 1200px) {
-  .home-featured-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 820px) {
   .home-featured-container {
     width: min(1180px, 92vw);
@@ -232,8 +222,3 @@
   }
 }
 
-@media (max-width: 620px) {
-  .home-featured-grid {
-    grid-template-columns: 1fr;
-  }
-}
