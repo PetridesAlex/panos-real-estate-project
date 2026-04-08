@@ -342,7 +342,7 @@
   align-items: center;
   align-content: center;
   flex-wrap: nowrap;
-  min-height: 72px;
+  min-height: 80px;
   padding-left: max(15px, env(safe-area-inset-left, 0px));
   padding-right: max(15px, env(safe-area-inset-right, 0px));
   gap: clamp(0.5rem, 1.35vw, 1.15rem);
@@ -352,6 +352,7 @@
 .navbar--transparent:not(.navbar--home-scrolled) .navbar__inner {
   padding-top: 0.28rem;
   padding-bottom: 0.26rem;
+  min-height: 84px;
 }
 
 .navbar__logo {
@@ -377,7 +378,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 0;
-  max-width: min(360px, 72vw);
+  max-width: min(440px, 84vw);
   flex-shrink: 0;
   overflow: visible;
   z-index: 2;
@@ -403,9 +404,9 @@
 
 /* Home hero: larger lockup — only while transparent (pre-scroll) */
 .navbar--transparent .navbar__logo img {
-  height: clamp(58px, 8vw, 96px);
+  height: clamp(76px, 11vw, 118px);
   width: auto;
-  max-width: min(360px, 72vw);
+  max-width: min(440px, 84vw);
   transform: translate3d(0, 0, 0) scale(1);
   transform-origin: center center;
   filter: drop-shadow(0 3px 14px rgba(0, 0, 0, 0.35)) drop-shadow(0 0 1px rgba(255, 255, 255, 0.12));
@@ -1178,7 +1179,7 @@
     flex-direction: row;
     align-items: center;
     gap: clamp(0.34rem, 2.2vw, 0.52rem);
-    max-width: min(94vw, 340px);
+    max-width: min(94vw, 400px);
   }
 
   .navbar__logo img {
@@ -1188,8 +1189,8 @@
   }
 
   .navbar--transparent .navbar__logo img {
-    height: clamp(52px, 10vw, 80px);
-    max-width: min(72vw, 340px);
+    height: clamp(64px, 13vw, 100px);
+    max-width: min(82vw, 400px);
     transform: translate3d(0, 0, 0) scale(1);
   }
 

@@ -8,13 +8,13 @@ import {
   Car,
   CalendarClock,
   LandPlot,
-  MessageCircle,
   MapPin,
   ChevronRight,
   LayoutTemplate,
   Map,
   Sparkles,
 } from 'lucide-react'
+import { WhatsAppBrandIcon } from '../components/Navbar/SocialBrandIcons'
 import Gallery from '../components/Gallery/Gallery'
 import InquiryForm from '../components/InquiryForm/InquiryForm'
 import SectionHeader from '../components/SectionHeader/SectionHeader'
@@ -175,7 +175,7 @@ function PropertyDetails() {
                 rel="noreferrer"
               >
                 <span className="property-details__whatsapp-iconWrap" aria-hidden="true">
-                  <MessageCircle size={18} strokeWidth={2.25} />
+                  <WhatsAppBrandIcon size={18} className="property-details__whatsapp-brandIcon" />
                 </span>
                 <span className="property-details__whatsapp-text">
                   <span className="property-details__whatsapp-title">Chat on WhatsApp</span>
@@ -344,7 +344,8 @@ function PropertyDetails() {
 
       <div className="property-details__mobile-cta">
         <a className="btn btn-gold" href="https://wa.me/35700000000" target="_blank" rel="noreferrer">
-          <MessageCircle size={16} /> WhatsApp
+          <WhatsAppBrandIcon size={16} className="property-details__whatsapp-brandIcon" />
+          WhatsApp
         </a>
         <Link className="btn btn-outline-dark" to="/contact">
           Contact Team

@@ -139,6 +139,10 @@
   height: 100vh;
   height: 100dvh;
   isolation: isolate;
+  font-family: 'Montserrat', var(--font-sans), system-ui, sans-serif;
+  font-feature-settings: 'kern' 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 38%, transparent 55%),
     radial-gradient(ellipse 90% 55% at 12% 8%, rgba(196, 156, 92, 0.14), transparent 52%),
@@ -338,7 +342,8 @@
   width: 100%;
   color: #f3ede2;
   text-decoration: none;
-  font-family: var(--font-sans);
+  font-family: 'Montserrat', var(--font-sans), system-ui, sans-serif;
+  font-feature-settings: 'kern' 1;
   font-weight: 700;
   font-size: clamp(1.5rem, 3.2vw, 2.2rem);
   line-height: 1.18;
@@ -404,7 +409,8 @@
 
 .smenu-socials-title {
   margin: 0 0 1rem;
-  font-family: var(--font-sans);
+  font-family: 'Montserrat', var(--font-sans), system-ui, sans-serif;
+  font-feature-settings: 'kern' 1;
   font-size: 0.84rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -433,6 +439,8 @@
   -webkit-backdrop-filter: blur(8px);
   color: #efe7db;
   text-decoration: none;
+  font-family: 'Montserrat', var(--font-sans), system-ui, sans-serif;
+  font-feature-settings: 'kern' 1;
   font-weight: 650;
   font-size: 0.9rem;
   transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);

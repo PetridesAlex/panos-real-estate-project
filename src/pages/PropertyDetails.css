@@ -338,6 +338,16 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
+.property-details__whatsapp-brandIcon {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Gold bar: filled mark reads as brand green on accent background */
+.property-details__mobile-cta .btn-gold .property-details__whatsapp-brandIcon {
+  color: #128c7e;
+}
+
 .property-details__whatsapp-text {
   display: flex;
   flex-direction: column;
@@ -411,10 +421,6 @@
 .property-details__overview .property-details__stat svg {
   flex-shrink: 0;
   color: rgba(196, 156, 92, 0.95);
-}
-
-.property-details__overview .property-details__stat--bath svg {
-  color: rgba(120, 200, 220, 0.92);
 }
 
 .property-details__overview .property-details__stat--bath {
