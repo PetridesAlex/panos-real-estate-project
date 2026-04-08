@@ -25,3 +25,9 @@ export const CONTACT_EMAIL =
     : 'info@unitedproperties.eu'
 
 export const CONTACT_MAILTO_HREF = `mailto:${CONTACT_EMAIL}`
+
+/** Primary phone for tel: links (FAB + quick actions). Full `tel:` URI, e.g. tel:+35725123456 */
+export const CONTACT_PHONE_TEL =
+  typeof import.meta !== 'undefined' && import.meta.env?.VITE_CONTACT_PHONE_TEL
+    ? String(import.meta.env.VITE_CONTACT_PHONE_TEL)
+    : 'tel:+35725123456'

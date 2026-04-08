@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import './SitePreloader.css'
 
-const MIN_MS = 2200
+/** Minimum time preloader stays visible (sync with `--sp-duration-bar` in CSS). */
+const MIN_MS = 3000
 /** Must match `.site-preloader--exit` animation duration in CSS */
 const EXIT_MS = 780
 const EXIT_MS_REDUCED = 420
@@ -86,21 +87,14 @@ function SitePreloader({ onDone }) {
       <div className="site-preloader__grain" aria-hidden="true" />
 
       <div className="site-preloader__content">
-        <div className="site-preloader__frame" aria-hidden="true">
-          <span className="site-preloader__frame-corner site-preloader__frame-corner--tl" />
-          <span className="site-preloader__frame-corner site-preloader__frame-corner--tr" />
-          <span className="site-preloader__frame-corner site-preloader__frame-corner--bl" />
-          <span className="site-preloader__frame-corner site-preloader__frame-corner--br" />
-        </div>
-
         <div className="site-preloader__brand">
           <div className="site-preloader__logo-wrap">
             <img
               className="site-preloader__logo"
-              src="/images/logo/United_Properties_v2.1.svg"
+              src="/images/logo/real-logo.svg"
               alt=""
-              width={335}
-              height={355}
+              width={322}
+              height={360}
               decoding="async"
               fetchPriority="high"
             />
@@ -108,11 +102,7 @@ function SitePreloader({ onDone }) {
         </div>
 
         <div className="site-preloader__track" aria-hidden="true">
-          <div className="site-preloader__track-groove" />
-          <div className="site-preloader__bar">
-            <span className="site-preloader__bar-sheen" />
-          </div>
-          <div className="site-preloader__bar-glow" />
+          <div className="site-preloader__bar" />
         </div>
       </div>
     </div>

@@ -1,123 +1,155 @@
-import { useEffect, useId, useState } from 'react'
-import { Phone, X, Mail } from 'lucide-react'
+import { Fragment } from 'react'
 import {
   WHATSAPP_CHAT_URL,
   TELEGRAM_CHAT_URL,
   CONTACT_MAILTO_HREF,
-  CONTACT_EMAIL,
+  CONTACT_PHONE_TEL,
 } from '../../config/externalLinks'
-import { WhatsAppBrandIcon, TelegramBrandIcon } from '../Navbar/SocialBrandIcons'
+import { WhatsAppBrandIcon } from '../Navbar/SocialBrandIcons'
 import './QuickContactFab.css'
 
-const channels = [
+function IconTelegram({ className = 'quick-contact-fab__dock-icon', size = 20 }) {
+  return (
+    <svg
+      className={className}
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden
+    >
+      <path
+        d="M22 2L11 13"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M22 2L15 22l-4-9-9-4 20-7z"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+function IconEmail() {
+  return (
+    <svg
+      className="quick-contact-fab__dock-icon quick-contact-fab__dock-icon--line"
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden
+    >
+      <rect
+        x="3"
+        y="5"
+        width="18"
+        height="14"
+        rx="2"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M3 7l9 6 9-6"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+function IconPhone() {
+  return (
+    <svg
+      className="quick-contact-fab__dock-icon quick-contact-fab__dock-icon--line"
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden
+    >
+      <path
+        d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.8.3 1.5.5 2.2a2 2 0 0 1-.5 2L8 9a16 16 0 0 0 7 7l1.1-1.1a2 2 0 0 1 2-.5c.7.2 1.4.4 2.2.5a2 2 0 0 1 1.7 2z"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+const DOCK_LINKS = [
   {
     key: 'whatsapp',
-    label: 'WhatsApp',
-    hint: 'Message us',
     href: WHATSAPP_CHAT_URL,
     external: true,
+    ariaLabel: 'WhatsApp',
     Icon: WhatsAppBrandIcon,
-    className: 'quick-contact-fab__link--whatsapp',
+    badge: 'whatsapp',
   },
   {
     key: 'telegram',
-    label: 'Telegram',
-    hint: 'Chat on Telegram',
     href: TELEGRAM_CHAT_URL,
     external: true,
-    Icon: TelegramBrandIcon,
-    className: 'quick-contact-fab__link--telegram',
+    ariaLabel: 'Telegram',
+    Icon: IconTelegram,
+    badge: 'telegram',
   },
   {
     key: 'email',
-    label: 'Email',
-    hint: CONTACT_EMAIL,
     href: CONTACT_MAILTO_HREF,
     external: false,
-    Icon: null,
-    className: 'quick-contact-fab__link--email',
+    ariaLabel: 'Email',
+    Icon: IconEmail,
+    badge: null,
+  },
+  {
+    key: 'phone',
+    href: CONTACT_PHONE_TEL,
+    external: false,
+    ariaLabel: 'Phone',
+    Icon: IconPhone,
+    badge: null,
   },
 ]
 
 export default function QuickContactFab() {
-  const [open, setOpen] = useState(false)
-  const panelId = useId()
-
-  useEffect(() => {
-    if (!open) return undefined
-    const onKey = (e) => {
-      if (e.key === 'Escape') setOpen(false)
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [open])
-
   return (
-    <>
-      {open ? (
-        <div
-          className="quick-contact-fab__backdrop"
-          role="presentation"
-          aria-hidden
-          onClick={() => setOpen(false)}
-        />
-      ) : null}
-
-      <div className="quick-contact-fab">
-        <div
-          id={panelId}
-          className={`quick-contact-fab__panel ${open ? 'quick-contact-fab__panel--open' : ''}`}
-          role="dialog"
-          aria-modal={open}
-          aria-label="Contact channels"
-          aria-hidden={!open}
-          inert={!open}
-        >
-          <p className="quick-contact-fab__headline">Get in touch</p>
-          <p className="quick-contact-fab__sub">Choose a channel — we reply during business hours.</p>
-          <ul className="quick-contact-fab__list">
-            {channels.map(({ key, label, hint, href, external, Icon, className }) => (
-              <li key={key}>
-                <a
-                  href={href}
-                  className={`quick-contact-fab__link ${className}`}
-                  {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  onClick={() => setOpen(false)}
-                >
-                  <span className="quick-contact-fab__link-icon" aria-hidden>
-                    {Icon ? <Icon size={22} /> : <Mail size={22} strokeWidth={1.75} />}
-                  </span>
-                  <span className="quick-contact-fab__link-text">
-                    <span className="quick-contact-fab__link-label">{label}</span>
-                    <span className="quick-contact-fab__link-hint">{hint}</span>
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <button
-          type="button"
-          className={`quick-contact-fab__trigger ${open ? 'quick-contact-fab__trigger--open' : ''}`}
-          aria-expanded={open}
-          aria-controls={panelId}
-          aria-haspopup="dialog"
-          aria-label={
-            open
-              ? 'Close booking menu'
-              : 'Book a call — WhatsApp, Telegram, or email'
-          }
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? (
-            <X size={26} strokeWidth={2} aria-hidden />
-          ) : (
-            <Phone size={26} strokeWidth={1.75} aria-hidden />
-          )}
-          <span className="quick-contact-fab__trigger-label">Book a call</span>
-        </button>
-      </div>
-    </>
+    <div className="quick-contact-fab">
+      <nav className="quick-contact-fab__dock" aria-label="Contact channels">
+        {DOCK_LINKS.map(({ key, href, external, ariaLabel, Icon, badge }, index) => (
+          <Fragment key={key}>
+            <a
+              href={href}
+              className={`quick-contact-fab__dock-link ${badge ? `quick-contact-fab__dock-link--${badge}` : 'quick-contact-fab__dock-link--line'}`}
+              aria-label={ariaLabel}
+              {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >
+              {badge ? (
+                <span className={`quick-contact-fab__dock-badge quick-contact-fab__dock-badge--${badge}`}>
+                  <Icon size={20} className="quick-contact-fab__dock-icon" />
+                </span>
+              ) : (
+                <Icon />
+              )}
+            </a>
+            {index < DOCK_LINKS.length - 1 ? (
+              <span className="quick-contact-fab__dock-divider" aria-hidden="true" />
+            ) : null}
+          </Fragment>
+        ))}
+      </nav>
+    </div>
   )
 }
