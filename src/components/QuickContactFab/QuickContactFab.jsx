@@ -8,7 +8,7 @@ import {
 import { WhatsAppBrandIcon } from '../Navbar/SocialBrandIcons'
 import './QuickContactFab.css'
 
-function IconTelegram({ className = 'quick-contact-fab__dock-icon', size = 20 }) {
+function IconTelegram({ className = 'quick-contact-fab__dock-icon', size = 18 }) {
   return (
     <svg
       className={className}
@@ -40,8 +40,8 @@ function IconEmail() {
   return (
     <svg
       className="quick-contact-fab__dock-icon quick-contact-fab__dock-icon--line"
-      width={24}
-      height={24}
+      width={20}
+      height={20}
       viewBox="0 0 24 24"
       fill="none"
       aria-hidden
@@ -72,8 +72,8 @@ function IconPhone() {
   return (
     <svg
       className="quick-contact-fab__dock-icon quick-contact-fab__dock-icon--line"
-      width={24}
-      height={24}
+      width={20}
+      height={20}
       viewBox="0 0 24 24"
       fill="none"
       aria-hidden
@@ -138,7 +138,7 @@ export default function QuickContactFab() {
             >
               {badge ? (
                 <span className={`quick-contact-fab__dock-badge quick-contact-fab__dock-badge--${badge}`}>
-                  <Icon size={20} className="quick-contact-fab__dock-icon" />
+                  <Icon size={18} className="quick-contact-fab__dock-icon" />
                 </span>
               ) : (
                 <Icon />

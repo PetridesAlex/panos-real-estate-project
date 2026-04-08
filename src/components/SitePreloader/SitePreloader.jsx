@@ -91,10 +91,10 @@ function SitePreloader({ onDone }) {
           <div className="site-preloader__logo-wrap">
             <img
               className="site-preloader__logo"
-              src="/images/logo/real-logo.svg"
+              src="/images/logo/United_Properties_v2.1.svg"
               alt=""
-              width={322}
-              height={360}
+              width={335}
+              height={355}
               decoding="async"
               fetchPriority="high"
             />

@@ -167,7 +167,7 @@
 }
 
 .site-preloader__logo-wrap {
-  width: min(96%, min(480px, 52vw));
+  width: min(92%, min(320px, 72vw));
   max-width: 100%;
 }
 
@@ -175,9 +175,8 @@
   display: block;
   width: 100%;
   height: auto;
-  max-height: clamp(140px, 34vw, 260px);
+  max-height: clamp(96px, 24vw, 168px);
   object-fit: contain;
-  /* Vector mark only — no white matte; depth on dark preload */
   filter: drop-shadow(0 12px 40px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 48px rgba(191, 152, 117, 0.18));
   will-change: transform, filter;
 }
@@ -205,11 +204,11 @@
 
 @media (max-width: 480px) {
   .site-preloader__logo-wrap {
-    width: min(94%, min(400px, 88vw));
+    width: min(90%, min(280px, 82vw));
   }
 
   .site-preloader__logo {
-    max-height: clamp(120px, 42vw, 220px);
+    max-height: clamp(84px, 32vw, 144px);
   }
 }
 

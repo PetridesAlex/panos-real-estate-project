@@ -29,8 +29,8 @@
   align-items: center;
   justify-content: center;
   gap: 0;
-  min-height: 3.65rem;
-  padding: 0.5rem 0.65rem;
+  min-height: 3.1rem;
+  padding: 0.38rem 0.5rem;
   border-radius: 999px;
   background: #1c1c1e;
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -58,8 +58,8 @@
   flex-shrink: 0;
   align-self: stretch;
   width: 1px;
-  margin: 0 0.15rem;
-  min-height: 1.75rem;
+  margin: 0 0.1rem;
+  min-height: 1.45rem;
   background: rgba(255, 255, 255, 0.14);
   border-radius: 1px;
 }
@@ -69,13 +69,13 @@
   align-items: center;
   justify-content: center;
   flex: 1 1 0;
-  min-width: 2.85rem;
-  max-width: 3.25rem;
-  min-height: 2.75rem;
-  padding: 0 0.35rem;
+  min-width: 2.45rem;
+  max-width: 2.85rem;
+  min-height: 2.35rem;
+  padding: 0 0.25rem;
   color: rgba(255, 255, 255, 0.95);
   text-decoration: none;
-  border-radius: 0.65rem;
+  border-radius: 0.5rem;
   transition:
     background var(--transition-fast),
     transform var(--transition-fast),
@@ -110,13 +110,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.15rem;
+  height: 2.15rem;
   border-radius: 50%;
   color: #fff;
   box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.28),
-    0 1px 0 rgba(255, 255, 255, 0.22) inset;
+    0 2px 6px rgba(0, 0, 0, 0.26),
+    0 1px 0 rgba(255, 255, 255, 0.2) inset;
   transition:
     filter var(--transition-fast),
     transform var(--transition-fast);
@@ -155,24 +155,24 @@
 
 @media (max-width: 360px) {
   .quick-contact-fab__dock {
-    min-height: 3.35rem;
-    padding: 0.45rem 0.5rem;
+    min-height: 2.95rem;
+    padding: 0.32rem 0.4rem;
   }
 
   .quick-contact-fab__dock-badge {
-    width: 2.35rem;
-    height: 2.35rem;
+    width: 2rem;
+    height: 2rem;
   }
 
   .quick-contact-fab__dock-link {
-    min-width: 2.5rem;
-    max-width: 2.85rem;
-    min-height: 2.5rem;
-    padding: 0 0.2rem;
+    min-width: 2.15rem;
+    max-width: 2.5rem;
+    min-height: 2.15rem;
+    padding: 0 0.15rem;
   }
 
   .quick-contact-fab__dock-divider {
-    margin: 0 0.08rem;
-    min-height: 1.5rem;
+    margin: 0 0.06rem;
+    min-height: 1.25rem;
   }
 }
