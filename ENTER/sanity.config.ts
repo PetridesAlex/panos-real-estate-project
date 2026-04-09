@@ -5,11 +5,21 @@ import {media} from 'sanity-plugin-media'
 import {schemaTypes} from './schemaTypes'
 import {structure} from './sanity.structure'
 
-/** Put Media library first when picking images — grid supports multi-select (Shift/Cmd+click). */
+/**
+ * Put Media library first when picking images — supports multi-select (Shift/Cmd+click),
+ * reuse of existing uploads. Bulk uploads: open **Media** from the **left sidebar** (grid icon).
+ */
 function imageAssetSourcesWithMediaFirst<T extends {name: string}>(prev: T[]): T[] {
   const mediaSource = prev.find((s) => s.name === 'media')
   const rest = prev.filter((s) => s.name !== 'media')
   return mediaSource ? [mediaSource, ...rest] : prev
+}
+
+const mediaPluginOptions = {
+  creditLine: {enabled: false},
+  directUploads: true,
+  /** ~25 MB per file; adjust if your project needs larger PDFs/images */
+  maximumUploadSize: 25000000,
 }
 
 /** Bazaraki XML-aligned defaults — confirm rubric & district IDs in https://www.bazaraki.com/business-xml-guide/ */
@@ -48,11 +58,7 @@ export default defineConfig({
   dataset: 'production',
 
   plugins: [
-    media({
-      creditLine: {enabled: false},
-      directUploads: true,
-      maximumUploadSize: 25000000,
-    }),
+    media(mediaPluginOptions),
     structureTool({structure}),
     visionTool(),
   ],

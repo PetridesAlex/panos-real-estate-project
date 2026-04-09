@@ -23,7 +23,8 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform-style: flat;
-  contain: layout;
+  /* layout containment fought scroll-linked transforms in some WebKit builds */
+  contain: paint;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
   height: 20rem;
   width: 100%;

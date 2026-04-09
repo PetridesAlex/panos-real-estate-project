@@ -2,7 +2,8 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 
 const WEBSITE = 'website'
 const BAZARAKI = 'bazaraki'
-const MEDIA = 'media'
+const MEDIA_PHOTOS = 'mediaPhotos'
+const MEDIA_DOCS = 'mediaDocs'
 const SEO = 'seo'
 
 export const propertyType = defineType({
@@ -12,7 +13,8 @@ export const propertyType = defineType({
   groups: [
     {name: WEBSITE, title: 'Website listing', default: true},
     {name: BAZARAKI, title: 'Bazaraki XML feed'},
-    {name: MEDIA, title: 'Media'},
+    {name: MEDIA_PHOTOS, title: 'Photos & gallery'},
+    {name: MEDIA_DOCS, title: 'Plans & downloads'},
     {name: SEO, title: 'SEO'},
   ],
   fields: [
@@ -380,26 +382,36 @@ export const propertyType = defineType({
 
     defineField({
       name: 'mainImage',
-      title: 'Main image',
+      title: 'Cover / hero image',
       type: 'image',
-      group: MEDIA,
+      group: MEDIA_PHOTOS,
       description:
-        'Hero image. Use Select → choose “Media” first in the list for the big library. Upload many files at once under the Media tool in the top toolbar, then pick them here.',
-      options: {hotspot: true},
+        'Main photo for cards, hero, and SEO. Bulk-upload once via **Media** (left sidebar → grid icon), then **Select** here — no need to re-upload.',
+      options: {hotspot: true, metadata: ['blurhash', 'lqip', 'palette']},
+    }),
+    defineField({
+      name: 'galleryLeadImage',
+      title: 'Featured gallery image (optional)',
+      type: 'image',
+      group: MEDIA_PHOTOS,
+      description:
+        'Optional. The image you want **first** in the on-site gallery (e.g. best interior shot). Pick the same file from **Media** as one of your gallery images, or any asset. If empty, the **first image in the gallery list** (below) is used.',
+      options: {hotspot: true, metadata: ['blurhash', 'lqip', 'palette']},
     }),
     defineField({
       name: 'gallery',
       title: 'Gallery',
       type: 'array',
-      group: MEDIA,
+      group: MEDIA_PHOTOS,
       description:
-        '**Multiple images at once:** (1) Drag **several image files** from your desktop onto the gallery (the empty zone or below existing thumbnails) — Studio adds one slot per file. (2) Click **Add item** → **Select** → pick **Media** (listed first) → **select multiple assets** with Shift/Cmd+click, then confirm. (3) Or upload a batch in the **Media** tool (toolbar), then add here via Select. Max 16 images if Bazaraki feed is on.',
+        '**Bulk add:** drag multiple files onto the grid, or **Add item → Select → Media** and Shift/Cmd+click several assets. **Reorder:** drag rows in list view, or use the handle on each tile in grid view. All files live in the shared Media library for reuse. Max 16 images when Bazaraki feed is enabled.',
       options: {
         layout: 'grid',
       },
       of: [
         defineArrayMember({
           type: 'image',
+          title: 'Image',
           options: {
             hotspot: true,
             metadata: ['blurhash', 'lqip', 'palette'],
@@ -415,6 +427,26 @@ export const propertyType = defineType({
           }
           return true
         }),
+    }),
+    defineField({
+      name: 'floorPlanImage',
+      title: 'Floor plan',
+      type: 'image',
+      group: MEDIA_DOCS,
+      description:
+        'Optional. Plan drawing or screenshot (PNG/JPEG). Choose an existing upload from **Media** or add a new file — it stays in the library for reuse.',
+      options: {hotspot: true, metadata: ['blurhash', 'lqip', 'palette']},
+    }),
+    defineField({
+      name: 'brochureFile',
+      title: 'Brochure or PDF',
+      type: 'file',
+      group: MEDIA_DOCS,
+      description:
+        'Optional. PDF brochure for visitors to download. Upload once; the file is stored in Sanity and can be linked from other listings too via **Select**.',
+      options: {
+        accept: 'application/pdf,.pdf',
+      },
     }),
     defineField({
       name: 'amenities',

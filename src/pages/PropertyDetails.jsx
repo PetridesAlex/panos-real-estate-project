@@ -13,6 +13,7 @@ import {
   LayoutTemplate,
   Map,
   Sparkles,
+  FileDown,
 } from 'lucide-react'
 import { WhatsAppBrandIcon } from '../components/Navbar/SocialBrandIcons'
 import Gallery from '../components/Gallery/Gallery'
@@ -147,6 +148,25 @@ function PropertyDetails() {
         <div className="container property-details">
           <Gallery images={property.gallery} title={property.title} />
 
+          {property.brochureUrl ? (
+            <div className="property-details__brochure">
+              <a
+                className="btn btn-outline-dark property-details__brochure-link"
+                href={property.brochureUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                download={property.brochureFilename || undefined}
+              >
+                <FileDown size={18} strokeWidth={2.1} aria-hidden />
+                <span>
+                  {property.brochureFilename
+                    ? `Download ${property.brochureFilename}`
+                    : 'Download brochure (PDF)'}
+                </span>
+              </a>
+            </div>
+          ) : null}
+
           <div className="property-details__head">
             <div className="property-details__head-row">
               <div className="property-details__head-primary">
@@ -254,18 +274,32 @@ function PropertyDetails() {
 
               <div className="property-details__info-tiles">
                 <div
-                  className="property-details__info-tile"
+                  className={`property-details__info-tile ${property.floorPlanUrl ? 'property-details__info-tile--has-plan' : ''}`}
                   role="group"
-                  aria-label="Floor plan — available on request"
+                  aria-label={property.floorPlanUrl ? 'Floor plan' : 'Floor plan — available on request'}
                 >
                   <span className="property-details__info-tile-icon" aria-hidden="true">
                     <LayoutTemplate size={22} strokeWidth={2} />
                   </span>
                   <div className="property-details__info-tile-copy">
                     <h4>Floor plan</h4>
-                    <p>Detailed layout available on request from our team.</p>
+                    {property.floorPlanUrl ? (
+                      <div className="property-details__floorplan-thumbWrap">
+                        <img
+                          className="property-details__floorplan-thumb"
+                          src={property.floorPlanUrl}
+                          alt={`${property.title} — floor plan`}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </div>
+                    ) : (
+                      <p>Detailed layout available on request from our team.</p>
+                    )}
                   </div>
-                  <span className="property-details__info-tile-hint">Request</span>
+                  <span className="property-details__info-tile-hint">
+                    {property.floorPlanUrl ? 'Listing' : 'Request'}
+                  </span>
                 </div>
                 <div
                   className="property-details__info-tile"

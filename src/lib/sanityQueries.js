@@ -19,7 +19,15 @@ const PROPERTY_PROJECTION = `
     signature,
     newDevelopment,
     mainImage,
+    galleryLeadImage,
     gallery,
+    floorPlanImage,
+    brochureFile{
+      asset->{
+        url,
+        originalFilename
+      }
+    },
     description,
     amenities,
     seoTitle,

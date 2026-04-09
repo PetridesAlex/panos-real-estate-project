@@ -26,7 +26,6 @@ const ScrollStack = ({
   const animationFrameRef = useRef(null)
   const lenisRef = useRef(null)
   const cardsRef = useRef([])
-  const lastTransformsRef = useRef(new Map())
   const rafPendingRef = useRef(false)
 
   const calculateProgress = useCallback((scrollTop, start, end) => {
@@ -44,9 +43,10 @@ const ScrollStack = ({
 
   const getScrollData = useCallback(() => {
     if (useWindowScroll) {
+      const vv = typeof window !== 'undefined' ? window.visualViewport : null
       return {
-        scrollTop: window.scrollY,
-        containerHeight: window.innerHeight,
+        scrollTop: window.scrollY ?? document.documentElement.scrollTop,
+        containerHeight: vv?.height ?? window.innerHeight,
       }
     }
 
@@ -125,25 +125,21 @@ const ScrollStack = ({
         translateY = pinEnd - cardTop + stackPositionPx + itemStackDistance * i
       }
 
-      const newTransform = {
-        translateY: Math.round(translateY * 1000) / 1000,
-        scale: Math.round(scale * 10000) / 10000,
-        rotation: Math.round(rotation * 1000) / 1000,
-        blur: Math.round(blur * 1000) / 1000,
+      // Subpixel rounding keeps GPU work stable; dedupe avoids redundant writes when scroll is idle.
+      const ty = Math.round(translateY * 1000) / 1000
+      const sc = Math.round(scale * 10000) / 10000
+      const rot = Math.round(rotation * 1000) / 1000
+      const bl = Math.round(blur * 1000) / 1000
+
+      const transformStr = `translate3d(0, ${ty}px, 0) scale(${sc}) rotate(${rot}deg)`
+      const filterStr = bl > 0 ? `blur(${bl}px)` : ''
+      if (card.dataset.stackTx !== transformStr) {
+        card.dataset.stackTx = transformStr
+        card.style.transform = transformStr
       }
-
-      const lastTransform = lastTransformsRef.current.get(i)
-      const hasChanged =
-        !lastTransform ||
-        Math.abs(lastTransform.translateY - newTransform.translateY) > 0.25 ||
-        Math.abs(lastTransform.scale - newTransform.scale) > 0.0003 ||
-        Math.abs(lastTransform.rotation - newTransform.rotation) > 0.05 ||
-        Math.abs(lastTransform.blur - newTransform.blur) > 0.05
-
-      if (hasChanged) {
-        card.style.transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`
-        card.style.filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : ''
-        lastTransformsRef.current.set(i, newTransform)
+      if (card.dataset.stackFl !== filterStr) {
+        card.dataset.stackFl = filterStr
+        card.style.filter = filterStr
       }
 
       if (i === cardsRef.current.length - 1) {
@@ -220,17 +216,17 @@ const ScrollStack = ({
           touchInertia: 0.6,
         })
 
-    lenis.on('scroll', handleScroll)
-
+    // Drive transforms in the same frame as Lenis — avoids 1-frame lag vs smooth wheel.
     const raf = (time) => {
       lenis.raf(time)
+      updateCardTransforms()
       animationFrameRef.current = requestAnimationFrame(raf)
     }
 
     animationFrameRef.current = requestAnimationFrame(raf)
     lenisRef.current = lenis
     return true
-  }, [handleScroll, useWindowScroll])
+  }, [useWindowScroll, updateCardTransforms])
 
   useLayoutEffect(() => {
     const scroller = scrollerRef.current
@@ -257,12 +253,16 @@ const ScrollStack = ({
     if (!didInitLenis) {
       const target = useWindowScroll ? window : scroller
       const onNativeScroll = () => handleScroll()
-      const onNativeResize = () => handleScroll()
+      const onViewportChange = () => handleScroll()
       target.addEventListener('scroll', onNativeScroll, { passive: true })
-      window.addEventListener('resize', onNativeResize, { passive: true })
+      window.addEventListener('resize', onViewportChange, { passive: true })
+      window.visualViewport?.addEventListener('resize', onViewportChange, { passive: true })
+      window.visualViewport?.addEventListener('scroll', onViewportChange, { passive: true })
       removeNativeListeners = () => {
         target.removeEventListener('scroll', onNativeScroll)
-        window.removeEventListener('resize', onNativeResize)
+        window.removeEventListener('resize', onViewportChange)
+        window.visualViewport?.removeEventListener('resize', onViewportChange)
+        window.visualViewport?.removeEventListener('scroll', onViewportChange)
       }
     }
 
@@ -274,7 +274,6 @@ const ScrollStack = ({
       if (lenisRef.current) lenisRef.current.destroy()
       stackCompletedRef.current = false
       cardsRef.current = []
-      lastTransformsRef.current.clear()
       rafPendingRef.current = false
     }
   }, [

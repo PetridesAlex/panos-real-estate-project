@@ -1,0 +1,17 @@
+{
+  "name": "United Properties",
+  "short_name": "United Properties",
+  "description": "Luxury real estate in Cyprus — buy, sell, and rent premium properties.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#060a12",
+  "theme_color": "#0a1220",
+  "icons": [
+    {
+      "src": "/images/logo/favicon-logo-united-properties.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any"
+    }
+  ]
+}

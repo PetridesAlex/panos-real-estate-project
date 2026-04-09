@@ -122,8 +122,9 @@
   right: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(22px) saturate(1.12);
-  -webkit-backdrop-filter: blur(22px) saturate(1.12);
+  /* Blur still reads “glass”; high-opacity fills from Navbar keep page content from showing through */
+  backdrop-filter: blur(18px) saturate(1.08);
+  -webkit-backdrop-filter: blur(18px) saturate(1.08);
 }
 
 [data-open='true'] .smenu-prelayers {
@@ -143,13 +144,14 @@
   font-feature-settings: 'kern' 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Near-opaque base so the page doesn’t read through; light top edge keeps a glass feel */
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 38%, transparent 55%),
-    radial-gradient(ellipse 90% 55% at 12% 8%, rgba(196, 156, 92, 0.14), transparent 52%),
-    radial-gradient(circle at 88% 72%, rgba(60, 92, 140, 0.08), transparent 45%),
-    linear-gradient(175deg, rgba(12, 18, 30, 0.78) 0%, rgba(6, 10, 18, 0.85) 55%, rgba(8, 12, 22, 0.82) 100%);
-  backdrop-filter: blur(32px) saturate(1.18);
-  -webkit-backdrop-filter: blur(32px) saturate(1.18);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055) 0%, transparent 32%),
+    radial-gradient(ellipse 90% 55% at 12% 8%, rgba(196, 156, 92, 0.08), transparent 50%),
+    radial-gradient(circle at 88% 72%, rgba(60, 92, 140, 0.05), transparent 45%),
+    linear-gradient(175deg, rgba(11, 15, 26, 0.97) 0%, rgba(7, 10, 18, 0.985) 52%, rgba(9, 12, 22, 0.975) 100%);
+  backdrop-filter: blur(22px) saturate(1.12);
+  -webkit-backdrop-filter: blur(22px) saturate(1.12);
   border: 0;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
@@ -200,9 +202,9 @@
   position: fixed;
   inset: 0;
   border: 0;
-  background: rgba(4, 10, 20, 0.48);
-  backdrop-filter: blur(10px) saturate(1.05);
-  -webkit-backdrop-filter: blur(10px) saturate(1.05);
+  background: rgba(4, 10, 20, 0.68);
+  backdrop-filter: blur(12px) saturate(1.05);
+  -webkit-backdrop-filter: blur(12px) saturate(1.05);
   z-index: 158;
 }
 
@@ -433,10 +435,10 @@
   gap: 0.4rem;
   padding: 0.5rem 0.72rem;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(28, 32, 42, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   color: #efe7db;
   text-decoration: none;
   font-family: 'Montserrat', var(--font-sans), system-ui, sans-serif;
