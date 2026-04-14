@@ -6,8 +6,8 @@ import {schemaTypes} from './schemaTypes'
 import {structure} from './sanity.structure'
 
 /**
- * Put Media library first when picking images (reuse uploads). For image **arrays** (e.g. gallery),
- * Property **gallery** uses a custom field input with checkbox multi-select (see `studio/GalleryImagesInput.tsx`).
+ * Put Media library first when picking images (reuse uploads). Property **gallery** uses a custom
+ * input (`studio/PropertyGalleryInput.tsx`): multi-upload, dropzone, media grid, reorder, alt text.
  */
 function imageAssetSourcesWithMediaFirst<T extends {name: string}>(prev: T[]): T[] {
   const mediaSource = prev.find((s) => s.name === 'media')
