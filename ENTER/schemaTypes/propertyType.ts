@@ -405,7 +405,7 @@ export const propertyType = defineType({
       type: 'array',
       group: MEDIA_PHOTOS,
       description:
-        '**Multi-upload:** use **Choose images** or drag & drop many files at once (phone: multi-select in the photo picker). **Reorder:** drag tiles by the handle. **Media library:** add existing assets from the dataset. Max 30 images here; max **16** when Bazaraki XML feed is enabled.',
+        '**iPhone / Android:** tap **Choose images (multiple)** and pick many photos from the library (use **Select** in Photos). **Desktop:** drag & drop or the same button. **Media library:** batch-add existing assets. **Reorder:** drag handles. Max **30** here; max **16** when Bazaraki feed is on. Redeploy Studio after updates so you see the latest uploader.',
       options: {
         layout: 'grid',
       },

@@ -49,6 +49,15 @@ type GalleryImageValue = {
 
 type AssetRow = {_id: string; originalFilename?: string; url?: string}
 
+/** iOS often reports HEIC with empty or odd MIME — still allow upload */
+function isLikelyImageFile(f: File) {
+  if (f.type.startsWith('image/')) return true
+  return /\.(heic|heif|jpg|jpeg|png|gif|webp)$/i.test(f.name)
+}
+
+const FILE_ACCEPT =
+  'image/jpeg,image/jpg,image/png,image/heic,image/heif,image/webp,image/gif,image/*'
+
 function galleryAssetListQuery(start: number, end: number) {
   return `*[_type == "sanity.imageAsset"] | order(_createdAt desc) [${start}...${end}]{_id, originalFilename, url}`
 }
@@ -226,7 +235,7 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
   const uploadFiles = useCallback(
     async (fileList: FileList | File[] | null) => {
       if (!fileList || uploading) return
-      const files = Array.from(fileList).filter((f) => f.type.startsWith('image/'))
+      const files = Array.from(fileList).filter(isLikelyImageFile)
       if (files.length === 0) return
 
       const cap = Math.min(files.length, remainingSlots)
@@ -331,17 +340,10 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
     [uploadFiles],
   )
 
+  const uploadDisabled = uploading || remainingSlots === 0
+
   return (
     <Stack space={4}>
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        multiple
-        style={{display: 'none'}}
-        onChange={(e) => void uploadFiles(e.target.files)}
-      />
-
       <Card
         padding={4}
         radius={3}
@@ -379,9 +381,10 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
               <strong>Desktop:</strong> drag files here or use <strong>Choose images</strong> and pick many files.
             </Text>
             <Text muted size={1}>
-              <strong>Phone:</strong> tap <strong>Choose images</strong>, then open your <strong>photo library</strong>{' '}
-              (not the camera), tap <strong>Select</strong> if shown, choose multiple photos, then confirm. The camera
-              only sends one photo at a time.
+              <strong>iPhone:</strong> tap the blue <strong>Choose images</strong> area below (not “Add item”). In
+              Photos, tap <strong>Select</strong> (top right), tap several photos, then <strong>Add</strong>. Using{' '}
+              <strong>Take Photo</strong> or the camera only adds one image — use the library / browse flow for
+              multiple.
             </Text>
             <Text muted size={1}>
               Reorder below with the grip handle. Use <strong>Add from Media library</strong> to attach existing uploads
@@ -421,16 +424,46 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
           )}
 
           <Flex gap={2} wrap="wrap">
+            {/* Native file input overlays the button so taps open the real multi picker (fixes iOS Safari). */}
+            <Box
+              style={{
+                position: 'relative',
+                display: 'inline-block',
+                minWidth: 'min(100%, 280px)',
+                flex: '1 1 200px',
+              }}
+            >
+              <Box style={{pointerEvents: 'none'}}>
+                <Button
+                  disabled={uploadDisabled}
+                  icon={UploadIcon}
+                  mode="default"
+                  text="Choose images (multiple)"
+                  tone="primary"
+                />
+              </Box>
+              <input
+                ref={fileInputRef}
+                aria-label="Choose multiple images from your device"
+                disabled={uploadDisabled}
+                multiple
+                type="file"
+                accept={FILE_ACCEPT}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  opacity: 0,
+                  cursor: uploadDisabled ? 'not-allowed' : 'pointer',
+                  fontSize: 0,
+                  zIndex: 1,
+                }}
+                onChange={(e) => void uploadFiles(e.target.files)}
+              />
+            </Box>
             <Button
-              disabled={uploading || remainingSlots === 0}
-              icon={UploadIcon}
-              mode="default"
-              text="Choose images"
-              tone="primary"
-              onClick={() => fileInputRef.current?.click()}
-            />
-            <Button
-              disabled={uploading || remainingSlots === 0}
+              disabled={uploadDisabled}
               icon={ImagesIcon}
               mode="ghost"
               text="Add from Media library…"
