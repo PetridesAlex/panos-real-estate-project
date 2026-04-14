@@ -106,14 +106,21 @@ export function GalleryImagesInput(props: ArrayOfObjectsInputProps) {
         <Stack space={3}>
           <Flex align="center" gap={3}>
             <Text size={2} weight="semibold">
-              Add many photos from your Media library
+              Add several images at once (yes, this is supported)
             </Text>
             <ImagesIcon style={{opacity: 0.85}} />
           </Flex>
-          <Text size={1} muted>
-            The usual <strong>Select</strong> / <strong>Insert image</strong> window only picks one file at a time.
-            Use the button below for <strong>checkboxes</strong> — tick several images, then insert them all at once.
-          </Text>
+          <Stack space={2}>
+            <Text size={1} muted>
+              <strong>From your computer:</strong> select multiple files in Finder / File Explorer, then drag them
+              together onto the gallery area below (one drop creates many slots).
+            </Text>
+            <Text size={1} muted>
+              <strong>From uploads already in Sanity:</strong> click the button below, tick as many as you want,
+              then <strong>Insert N images</strong>. (The small <strong>Select → Insert image</strong> window only
+              adds one at a time — use this picker or drag-and-drop instead.)
+            </Text>
+          </Stack>
           <Box>
             <Button
               icon={ImagesIcon}

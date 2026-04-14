@@ -405,7 +405,7 @@ export const propertyType = defineType({
       type: 'array',
       group: MEDIA_PHOTOS,
       description:
-        '**Bulk add:** use the blue **Choose multiple images** area above the grid (checkboxes, then **Insert N images**). You can also drag multiple files from your computer onto the grid, or use **Add item → Select** one at a time. **Reorder:** drag rows or tiles. Max 16 images when Bazaraki feed is enabled.',
+        '**Many at once:** drag several files from your computer onto the gallery in one go, or use **Choose multiple images…** (checkboxes) for assets already in the dataset. **One at a time:** **Add item → Select → Insert image** only. **Reorder:** drag rows or tiles. Max 16 images when Bazaraki feed is enabled.',
       options: {
         layout: 'grid',
       },
