@@ -1,5 +1,5 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
-import {GalleryImagesInput} from '../studio/GalleryImagesInput'
+import {PropertyGalleryInput} from '../studio/PropertyGalleryInput'
 
 const WEBSITE = 'website'
 const BAZARAKI = 'bazaraki'
@@ -401,15 +401,15 @@ export const propertyType = defineType({
     }),
     defineField({
       name: 'gallery',
-      title: 'Gallery',
+      title: 'Property Gallery',
       type: 'array',
       group: MEDIA_PHOTOS,
       description:
-        '**Many at once:** drag several files from your computer onto the gallery in one go, or use **Choose multiple images…** (checkboxes) for assets already in the dataset. **One at a time:** **Add item → Select → Insert image** only. **Reorder:** drag rows or tiles. Max 16 images when Bazaraki feed is enabled.',
+        '**Multi-upload:** use **Choose images** or drag & drop many files at once (phone: multi-select in the photo picker). **Reorder:** drag tiles by the handle. **Media library:** add existing assets from the dataset. Max 30 images here; max **16** when Bazaraki XML feed is enabled.',
       options: {
         layout: 'grid',
       },
-      components: {input: GalleryImagesInput},
+      components: {input: PropertyGalleryInput},
       of: [
         defineArrayMember({
           type: 'image',
@@ -421,7 +421,7 @@ export const propertyType = defineType({
         }),
       ],
       validation: (rule) =>
-        rule.custom((value, context) => {
+        rule.max(30).custom((value, context) => {
           const doc = context.document as {publishToBazaraki?: boolean} | undefined
           const n = Array.isArray(value) ? value.length : 0
           if (doc?.publishToBazaraki && n > 16) {
