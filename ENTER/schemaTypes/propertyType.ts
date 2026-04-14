@@ -405,10 +405,11 @@ export const propertyType = defineType({
       type: 'array',
       group: MEDIA_PHOTOS,
       description:
-        '**iPhone / Android:** tap **Choose images (multiple)** and pick many photos from the library (use **Select** in Photos). **Desktop:** drag & drop or the same button. **Media library:** batch-add existing assets. **Reorder:** drag handles. Max **30** here; max **16** when Bazaraki feed is on. Redeploy Studio after updates so you see the latest uploader.',
+        'Upload multiple images for this property. On iPhone, open **Photo Library** and select multiple photos when the picker allows (tap **Select**, choose photos, then **Add**). On desktop, drag files onto the upload area or use **Add photos**. You can also add existing files from **Media library**. Reorder with the drag handle; optional alt text per image. Up to **30** images, or **16** if this listing is on the Bazaraki feed.',
       options: {
         layout: 'grid',
       },
+      /** Custom input: native multi-file picker + batch upload — better on mobile than default “Add item” per image. */
       components: {input: PropertyGalleryInput},
       of: [
         defineArrayMember({

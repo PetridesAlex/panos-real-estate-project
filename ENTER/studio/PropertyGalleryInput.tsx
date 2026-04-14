@@ -378,17 +378,13 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
           </Flex>
           <Stack space={2}>
             <Text muted size={1}>
-              <strong>Desktop:</strong> drag files here or use <strong>Choose images</strong> and pick many files.
+              <strong>iPhone:</strong> tap <strong>Add photos</strong> below, then in Photos use <strong>Select</strong>{' '}
+              and choose several images, then <strong>Add</strong>. Avoid <strong>Take Photo</strong> if you need many —
+              that flow is usually one at a time.
             </Text>
             <Text muted size={1}>
-              <strong>iPhone:</strong> tap the blue <strong>Choose images</strong> area below (not “Add item”). In
-              Photos, tap <strong>Select</strong> (top right), tap several photos, then <strong>Add</strong>. Using{' '}
-              <strong>Take Photo</strong> or the camera only adds one image — use the library / browse flow for
-              multiple.
-            </Text>
-            <Text muted size={1}>
-              Reorder below with the grip handle. Use <strong>Add from Media library</strong> to attach existing uploads
-              in one go.
+              <strong>Desktop:</strong> drag files onto this box, or use <strong>Add photos</strong>.{' '}
+              <strong>Media library</strong> adds existing uploads in one step. Reorder with the grip handle.
             </Text>
           </Stack>
 
@@ -431,6 +427,7 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
                 display: 'inline-block',
                 minWidth: 'min(100%, 280px)',
                 flex: '1 1 200px',
+                minHeight: 44,
               }}
             >
               <Box style={{pointerEvents: 'none'}}>
@@ -438,13 +435,13 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
                   disabled={uploadDisabled}
                   icon={UploadIcon}
                   mode="default"
-                  text="Choose images (multiple)"
+                  text="Add photos (multiple)"
                   tone="primary"
                 />
               </Box>
               <input
                 ref={fileInputRef}
-                aria-label="Choose multiple images from your device"
+                aria-label="Add multiple photos from your device"
                 disabled={uploadDisabled}
                 multiple
                 type="file"

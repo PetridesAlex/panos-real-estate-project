@@ -7,7 +7,7 @@ import {structure} from './sanity.structure'
 
 /**
  * Put Media library first when picking images (reuse uploads). Property **gallery** uses a custom
- * input (`studio/PropertyGalleryInput.tsx`): multi-upload, dropzone, media grid, reorder, alt text.
+ * input (`studio/PropertyGalleryInput.tsx`): multi-file picker, drop zone, media batch-add, reorder, alt text.
  */
 function imageAssetSourcesWithMediaFirst<T extends {name: string}>(prev: T[]): T[] {
   const mediaSource = prev.find((s) => s.name === 'media')
