@@ -21,15 +21,13 @@ const SANITY_DATASET = 'production'
 const SANITY_API_VERSION = '2026-03-21'
 
 /**
- * Ordered hub URLs (important pages first). /video/hero-video is listed; it redirects in-app to the watch page.
+ * Ordered hub URLs. Only one “developments” listing (/developments); /new-developments is omitted from sitemap to avoid duplicate discovery.
  */
 const STATIC_PATHS = [
   '/',
   '/buy',
   '/rent',
   '/contact',
-  '/new-developments',
-  '/video/hero-video',
   '/properties',
   '/featured-properties',
   '/signature-listings',
