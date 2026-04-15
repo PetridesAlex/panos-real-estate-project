@@ -49,14 +49,17 @@ type GalleryImageValue = {
 
 type AssetRow = {_id: string; originalFilename?: string; url?: string}
 
-/** iOS often reports HEIC with empty or odd MIME — still allow upload */
+/** iOS HEIC + some PNG exports use empty or generic MIME — still allow upload */
 function isLikelyImageFile(f: File) {
   if (f.type.startsWith('image/')) return true
+  if (f.type === 'application/octet-stream' && /\.(png|jpe?g|gif|webp|heic|heif)$/i.test(f.name)) {
+    return true
+  }
   return /\.(heic|heif|jpg|jpeg|png|gif|webp)$/i.test(f.name)
 }
 
-const FILE_ACCEPT =
-  'image/jpeg,image/jpg,image/png,image/heic,image/heif,image/webp,image/gif,image/*'
+/** Broad `image/*` keeps multi-select working on Safari/iOS; long MIME lists can limit selection. */
+const FILE_ACCEPT = 'image/*'
 
 function galleryAssetListQuery(start: number, end: number) {
   return `*[_type == "sanity.imageAsset"] | order(_createdAt desc) [${start}...${end}]{_id, originalFilename, url}`
@@ -248,7 +251,8 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
       setUploading(true)
       setUploadProgress({done: 0, total: cap})
 
-      const newItems: GalleryImageValue[] = []
+      /** Append after each asset so form state stays in sync across awaits (fixes batch PNG issues). */
+      let accumulated = [...items]
       try {
         for (let i = 0; i < cap; i++) {
           const file = files[i]
@@ -256,24 +260,29 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
             filename: file.name,
             label: file.name,
           })
-          newItems.push({
+          const newItem: GalleryImageValue = {
             _type: 'image',
             _key: nanoid(),
             asset: {_ref: asset._id, _type: 'reference'},
-          })
+          }
+          accumulated = [...accumulated, newItem]
+          onChange(set(accumulated))
           setUploadProgress({done: i + 1, total: cap})
         }
-        appendImages(newItems)
       } catch (e) {
         const msg = e instanceof Error ? e.message : 'Upload failed'
-        setUploadError(msg)
+        setUploadError(
+          accumulated.length > items.length
+            ? `${msg} (${accumulated.length - items.length} image(s) were added before the error.)`
+            : msg,
+        )
       } finally {
         setUploading(false)
         setUploadProgress({done: 0, total: 0})
         if (fileInputRef.current) fileInputRef.current.value = ''
       }
     },
-    [appendImages, client, remainingSlots, uploading],
+    [client, items, onChange, remainingSlots, uploading],
   )
 
   const onDragEnd = useCallback(
