@@ -1,4 +1,5 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {GalleryImageMemberInput} from '../studio/GalleryImageMemberInput'
 import {PropertyGalleryInput} from '../studio/PropertyGalleryInput'
 
 const WEBSITE = 'website'
@@ -405,16 +406,16 @@ export const propertyType = defineType({
       type: 'array',
       group: MEDIA_PHOTOS,
       description:
-        'Upload multiple images for this property. On iPhone, open **Photo Library** and select multiple photos when the picker allows (tap **Select**, choose photos, then **Add**). On desktop, drag files onto the upload area or use **Add photos**. You can also add existing files from **Media library**. Reorder with the drag handle; optional alt text per image. Up to **30** images, or **16** if this listing is on the Bazaraki feed.',
-      options: {
-        layout: 'grid',
-      },
-      /** Custom input: native multi-file picker + batch upload — better on mobile than default “Add item” per image. */
+        '**Bulk upload (recommended):** use the **Upload multiple images** box at the top — **Add photos (multiple)** or **Add from Media library** — to select many files at once (any common image type: PNG, JPEG, WebP, HEIC, etc.). Do not rely on the per-image “Upload” under each row for batches. Up to **30** images, or **16** with Bazaraki feed on.',
+      /** Custom array input replaces default list; no grid layout so Sanity does not show duplicate per-item pickers. */
       components: {input: PropertyGalleryInput},
       of: [
         defineArrayMember({
           type: 'image',
           title: 'Image',
+          components: {
+            input: GalleryImageMemberInput,
+          },
           options: {
             hotspot: true,
             metadata: ['blurhash', 'lqip', 'palette'],

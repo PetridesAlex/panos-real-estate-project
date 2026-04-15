@@ -479,6 +479,13 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
                 fetchLibCount()
               }}
             />
+            <Button
+              disabled={uploadDisabled}
+              mode="bleed"
+              text="Open file picker (multi-select)"
+              title="Same as Add photos — use this if the blue button is hard to tap"
+              onClick={() => fileInputRef.current?.click()}
+            />
           </Flex>
         </Stack>
       </Card>
