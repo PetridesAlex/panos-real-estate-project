@@ -22,34 +22,6 @@ const mediaPluginOptions = {
   maximumUploadSize: 25000000,
 }
 
-/** Bazaraki XML-aligned defaults — confirm rubric & district IDs in https://www.bazaraki.com/business-xml-guide/ */
-const bazarakiRentDefaults = {
-  status: 'for-rent',
-  featured: false,
-  currency: 'EUR',
-  publishToBazaraki: false,
-  bazarakiListingStatus: 'active',
-  bazarakiRubric: 682,
-  phoneHide: false,
-  negotiablePrice: false,
-  exchange: false,
-  disallowChat: false,
-  delivery: 0,
-}
-
-const bazarakiSaleDefaults = {
-  status: 'for-sale',
-  featured: false,
-  currency: 'EUR',
-  publishToBazaraki: false,
-  bazarakiListingStatus: 'active',
-  phoneHide: false,
-  negotiablePrice: false,
-  exchange: false,
-  disallowChat: false,
-  delivery: 0,
-}
-
 export default defineConfig({
   name: 'default',
   title: 'United Properties',
@@ -96,30 +68,6 @@ export default defineConfig({
         title: 'Property: Signature collection',
         schemaType: 'property',
         value: {status: 'for-sale', featured: false, signature: true, currency: 'EUR'},
-      },
-      {
-        id: 'property-new-development',
-        title: 'Property: New development listing',
-        schemaType: 'property',
-        value: {status: 'for-sale', featured: false, newDevelopment: true, currency: 'EUR'},
-      },
-      {
-        id: 'property-bazaraki-rent',
-        title: 'Property: Bazaraki (rent) — XML defaults',
-        schemaType: 'property',
-        value: bazarakiRentDefaults,
-      },
-      {
-        id: 'property-bazaraki-sale',
-        title: 'Property: Bazaraki (sale) — set rubric ID',
-        schemaType: 'property',
-        value: bazarakiSaleDefaults,
-      },
-      {
-        id: 'development-new',
-        title: 'Development: New',
-        schemaType: 'development',
-        value: {status: 'off-plan', featured: false},
       },
     ],
   },

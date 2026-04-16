@@ -56,7 +56,6 @@ function getModeFromRoute(location) {
   const pathname = normalizePathname(location.pathname)
 
   if (pathname === '/rent') return 'rent'
-  if (pathname === '/new-developments') return 'new-development'
   if (pathname === '/buy' || pathname === '/featured-properties') return 'buy'
   if (searchMode) return searchMode
   if (params.get('status') === 'For Rent') return 'rent'
@@ -70,14 +69,6 @@ function getDiscoveryIntro(mode) {
       title: 'Homes & apartments to lease',
       description:
         'Long-term and seasonal lets across prime Limassol districts — curated by our team.',
-    }
-  }
-  if (mode === 'new-development') {
-    return {
-      eyebrow: 'Limassol · New builds',
-      title: 'Developments & off-plan',
-      description:
-        'Coastal and city projects — reserve early or explore investment-ready stock in one place.',
     }
   }
   return {
@@ -98,18 +89,6 @@ function getHeroContent(mode, status) {
       description:
         'Browse premium apartments, villas, and furnished residences in Limassol — short and long-term.',
       pageTitle: 'Rent Properties | United Properties',
-    }
-  }
-
-  if (mode === 'new-development') {
-    return {
-      modeClass: 'properties-hero--development',
-      eyebrow: 'New in Limassol',
-      lead: 'Future-ready projects for modern Mediterranean living.',
-      title: 'Limassol New Developments',
-      description:
-        'Explore off-plan and newly launched residences in Limassol — design-led projects with strong long-term value.',
-      pageTitle: 'New Developments | United Properties',
     }
   }
 
@@ -150,8 +129,6 @@ function Properties() {
       const matchesStatus = !filters.status || property.status === filters.status
       const matchesFeatured =
         !filters.featured || (filters.featured === 'true' ? Boolean(property.featured) : true)
-      const matchesNewDevelopment =
-        mode !== 'new-development' || property.isNewDevelopment === true
       const matchesBeds = !filters.bedrooms || property.bedrooms >= Number(filters.bedrooms)
       const matchesBaths = !filters.bathrooms || property.bathrooms >= Number(filters.bathrooms)
       const matchesMin = !filters.minPrice || property.price >= Number(filters.minPrice)
@@ -168,7 +145,6 @@ function Properties() {
         matchesType &&
         matchesStatus &&
         matchesFeatured &&
-        matchesNewDevelopment &&
         matchesBeds &&
         matchesBaths &&
         matchesMin &&
@@ -178,7 +154,7 @@ function Properties() {
     })
 
     return result
-  }, [filters, mode, allProperties])
+  }, [filters, allProperties])
 
   const visibleProperties = filtered.slice(0, visibleCount)
 

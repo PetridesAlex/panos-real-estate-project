@@ -28,7 +28,7 @@ export const mediaCleanupHelpType = defineType({
       rows: 8,
       readOnly: true,
       initialValue:
-        '*[_type in ["property","development"] && references($assetId)]{\n  _id,\n  _type,\n  title,\n  name,\n  "slug": slug.current\n}',
+        '*[_type == "property" && references($assetId)]{\n  _id,\n  _type,\n  title,\n  "slug": slug.current\n}',
     }),
     defineField({
       name: 'queryParams',

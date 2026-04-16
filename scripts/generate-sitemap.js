@@ -20,9 +20,7 @@ const SANITY_PROJECT_ID = 'd7j11dpu'
 const SANITY_DATASET = 'production'
 const SANITY_API_VERSION = '2026-03-21'
 
-/**
- * Ordered hub URLs. Only one “developments” listing (/developments); /new-developments is omitted from sitemap to avoid duplicate discovery.
- */
+/** Ordered hub URLs for active website sections. */
 const STATIC_PATHS = [
   '/',
   '/buy',
@@ -33,7 +31,6 @@ const STATIC_PATHS = [
   '/signature-listings',
   '/about',
   '/services',
-  '/developments',
   '/agents',
 ]
 

@@ -1,37 +1,159 @@
 .agent-card {
+  position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid rgba(205, 170, 115, 0.24);
+  border-radius: 16px;
+  background:
+    radial-gradient(ellipse 120% 82% at 8% -12%, rgba(205, 170, 115, 0.18), transparent 55%),
+    radial-gradient(ellipse 90% 70% at 100% 100%, rgba(67, 109, 170, 0.17), transparent 56%),
+    linear-gradient(162deg, rgba(18, 30, 50, 0.96) 0%, rgba(11, 19, 34, 0.98) 52%, rgba(8, 14, 24, 1) 100%);
+  box-shadow:
+    0 22px 46px rgba(6, 12, 22, 0.32),
+    0 2px 10px rgba(6, 12, 22, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition:
+    transform 220ms ease,
+    box-shadow 260ms ease,
+    border-color 260ms ease;
+}
+
+.agent-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    130deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.02) 32%,
+    transparent 64%
+  );
+}
+
+.agent-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(217, 182, 128, 0.4);
+  box-shadow:
+    0 30px 64px rgba(6, 12, 22, 0.42),
+    0 8px 20px rgba(6, 12, 22, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .agent-card img {
   width: 100%;
-  height: 300px;
+  height: clamp(248px, 26vw, 320px);
   object-fit: cover;
+  object-position: center;
+  display: block;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  filter: saturate(1.03) contrast(1.04);
 }
 
 .agent-card__content {
-  padding: 1.2rem;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.1rem 1.1rem 1.2rem;
+  flex: 1;
 }
 
 .agent-card__role {
-  color: var(--color-accent-strong);
-  font-size: 0.84rem;
-  letter-spacing: 0.08em;
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  margin: 0 0 0.1rem;
+  padding: 0.28rem 0.58rem 0.3rem;
+  border-radius: 999px;
+  border: 1px solid rgba(217, 182, 128, 0.5);
+  background: rgba(217, 182, 128, 0.12);
+  color: rgba(245, 226, 197, 0.98);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
-  margin-bottom: 0.4rem;
 }
 
 .agent-card h3 {
   margin: 0;
+  color: #f8f5ee;
+  font-size: clamp(1.08rem, 1.3vw, 1.24rem);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
 }
 
-.agent-card__specialization,
+.agent-card__specialization {
+  margin: 0;
+  color: rgba(225, 233, 245, 0.95);
+  font-size: 0.93rem;
+  font-weight: 560;
+  line-height: 1.35;
+}
+
 .agent-card__bio {
-  color: var(--color-muted);
+  margin: 0.1rem 0 0;
+  color: rgba(205, 216, 233, 0.86);
+  font-size: 0.88rem;
+  line-height: 1.58;
 }
 
-.agent-card__actions {
-  margin-top: 1rem;
+.agent-card__socials {
+  margin-top: auto;
+  padding-top: 0.75rem;
   display: flex;
-  gap: 0.65rem;
+  align-items: center;
+  gap: 0.55rem;
   flex-wrap: wrap;
+}
+
+.agent-card__social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(229, 209, 176, 0.34);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(239, 232, 222, 0.95);
+  text-decoration: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.agent-card__social--whatsapp {
+  color: #25d366;
+  border-color: rgba(37, 211, 102, 0.42);
+  background: rgba(37, 211, 102, 0.11);
+}
+
+.agent-card__social--linkedin {
+  color: #0a66c2;
+  border-color: rgba(10, 102, 194, 0.42);
+  background: rgba(10, 102, 194, 0.12);
+}
+
+.agent-card__social--email {
+  color: #ea4335;
+  border-color: rgba(234, 67, 53, 0.4);
+  background: rgba(234, 67, 53, 0.11);
+}
+
+.agent-card__social:hover {
+  border-color: rgba(229, 209, 176, 0.58);
+  background: rgba(217, 182, 128, 0.16);
+  color: #fff8ee;
+  transform: translateY(-1px);
+}
+
+.agent-card__social:focus-visible {
+  outline: 2px solid rgba(229, 209, 176, 0.62);
+  outline-offset: 2px;
 }

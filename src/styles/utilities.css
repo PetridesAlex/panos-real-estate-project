@@ -9,14 +9,36 @@
 
 .section--light {
   background: var(--color-bg-light);
+  color: var(--color-ink);
 }
 
 .section--alt {
-  background: var(--color-bg-alt);
+  background:
+    radial-gradient(ellipse 86% 64% at 50% -18%, rgba(196, 156, 92, 0.14), transparent 56%),
+    linear-gradient(168deg, var(--color-bg-alt) 0%, var(--color-bg-dark-soft) 100%);
+  color: var(--color-white);
+}
+
+.section--alt .section-header__eyebrow {
+  color: rgba(238, 211, 170, 0.92);
+}
+
+.section--alt .section-header__description {
+  color: rgba(248, 246, 241, 0.9);
+}
+
+.section--alt > .container > p,
+.section--alt > .container > h1,
+.section--alt > .container > h2,
+.section--alt > .container > h3,
+.section--alt > .container > h4 {
+  color: rgba(248, 246, 241, 0.95);
 }
 
 .section--dark {
-  background: var(--color-bg-dark);
+  background:
+    radial-gradient(ellipse 82% 62% at 50% -20%, rgba(196, 156, 92, 0.12), transparent 56%),
+    linear-gradient(168deg, var(--color-bg-dark) 0%, #0f223d 100%);
   color: var(--color-white);
 }
 
@@ -26,6 +48,20 @@
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-soft);
   color: var(--color-white);
+}
+
+.card-luxury p {
+  color: rgba(242, 247, 255, 0.9);
+}
+
+.card-luxury .btn-outline-dark {
+  border-color: rgba(255, 255, 255, 0.54);
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.card-luxury .btn-outline-dark:hover {
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .grid-2 {
@@ -86,8 +122,8 @@
 
 .btn-outline-dark {
   border: 1px solid var(--color-line);
-  color: var(--color-white);
-  background: rgba(255, 255, 255, 0.03);
+  color: var(--color-ink);
+  background: rgba(23, 38, 59, 0.04);
 }
 
 .page-hero {

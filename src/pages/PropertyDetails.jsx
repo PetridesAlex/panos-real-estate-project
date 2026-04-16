@@ -123,10 +123,7 @@ function PropertyDetails() {
         <title>{property.title} | United Properties</title>
       </Helmet>
 
-      <section
-        className="page-hero page-hero--property"
-        style={{ '--property-hero-image': `url(${JSON.stringify(property.image)})` }}
-      >
+      <section className="page-hero page-hero--property">
         <div className="container property-details__hero-inner">
           <p className="property-details__hero-eyebrow">
             <span>{property.status}</span>

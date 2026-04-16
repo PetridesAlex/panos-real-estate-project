@@ -270,8 +270,8 @@
 }
 
 .property-card__cover-whole {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr;
   height: 100%;
   min-height: 0;
   text-decoration: none;
@@ -300,16 +300,16 @@
   border-radius: inherit;
   background: linear-gradient(
     125deg,
-    rgba(255, 255, 255, 0.26) 0%,
-    rgba(255, 255, 255, 0.08) 35%,
-    rgba(255, 255, 255, 0.02) 52%,
-    rgba(6, 12, 28, 0.18) 100%
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.03) 35%,
+    rgba(255, 255, 255, 0) 52%,
+    rgba(6, 12, 28, 0.08) 100%
   );
-  backdrop-filter: blur(5px) saturate(1.18);
-  -webkit-backdrop-filter: blur(5px) saturate(1.18);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.42),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .property-card--cover .property-card__media img {
@@ -320,7 +320,7 @@
   height: clamp(220px, 30vw, 340px);
   object-fit: cover;
   transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-  filter: saturate(1.06) contrast(1.02);
+  filter: none;
 }
 
 .property-card--cover:hover .property-card__media img {
@@ -392,9 +392,10 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 1rem 1.05rem 1.1rem;
+  padding: 1.06rem 1.08rem 1.16rem;
   background: #ffffff;
   border-top: 1px solid transparent;
+  min-height: 12.5rem;
 }
 
 .property-card__price--cover {
@@ -402,35 +403,65 @@
   font-size: clamp(1.125rem, 2.1vw, 1.35rem);
   font-weight: 800;
   letter-spacing: -0.02em;
-  line-height: 1.2;
-  color: #0a0a0a;
+  line-height: 1.16;
+  color: #050505;
   font-family: var(--font-sans);
 }
 
 .property-card__address-line {
   margin: 0 0 0.75rem;
   font-size: clamp(0.875rem, 1.25vw, 0.95rem);
-  font-weight: 500;
-  line-height: 1.45;
-  color: #111827;
+  font-weight: 560;
+  line-height: 1.42;
+  color: #0f172a;
   font-family: var(--font-sans);
+}
+
+.property-card__cover-description {
+  margin: 0 0 0.62rem;
+  color: #1f2937;
+  font-size: clamp(0.8rem, 1.1vw, 0.9rem);
+  font-weight: 520;
+  line-height: 1.48;
+  font-family: var(--font-sans);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Ensure readable dark copy on white cover cards (override generic .card-luxury p). */
+.property-card--cover .property-card__price--cover {
+  color: #050505;
+}
+
+.property-card--cover .property-card__address-line {
+  color: #0f172a;
+}
+
+.property-card--cover .property-card__cover-description {
+  color: #1f2937;
 }
 
 .property-card__specs-line {
   margin: 0;
   margin-top: auto;
-  padding-top: 0.15rem;
-  font-size: 0.68rem;
+  padding-top: 0.22rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #6b7280;
-  line-height: 1.5;
+  color: #475569;
+  line-height: 1.45;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.35rem 0.5rem;
   font-family: var(--font-sans);
+}
+
+.property-card--cover .property-card__specs-line {
+  color: #475569;
 }
 
 .property-card__specs-dot {

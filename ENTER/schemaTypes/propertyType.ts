@@ -3,10 +3,11 @@ import {GalleryImageMemberInput} from '../studio/GalleryImageMemberInput'
 import {PropertyGalleryInput} from '../studio/PropertyGalleryInput'
 
 const WEBSITE = 'website'
-const BAZARAKI = 'bazaraki'
 const MEDIA_PHOTOS = 'mediaPhotos'
 const MEDIA_DOCS = 'mediaDocs'
 const SEO = 'seo'
+/** Old dataset keys — hidden so Studio does not show “unknown fields”; remove after a one-time migration if you want a clean schema. */
+const LEGACY = 'legacy'
 
 export const propertyType = defineType({
   name: 'property',
@@ -14,10 +15,10 @@ export const propertyType = defineType({
   type: 'document',
   groups: [
     {name: WEBSITE, title: 'Website listing', default: true},
-    {name: BAZARAKI, title: 'Bazaraki XML feed'},
     {name: MEDIA_PHOTOS, title: 'Photos & gallery'},
     {name: MEDIA_DOCS, title: 'Plans & downloads'},
     {name: SEO, title: 'SEO'},
+    {name: LEGACY, title: 'Legacy (hidden)', hidden: true},
   ],
   fields: [
     defineField({
@@ -25,7 +26,6 @@ export const propertyType = defineType({
       title: 'Title',
       type: 'string',
       group: WEBSITE,
-      description: 'Max 70 characters for Bazaraki. No price in the title; avoid duplicate words.',
       validation: (rule) => rule.required().max(70),
     }),
     defineField({
@@ -71,17 +71,8 @@ export const propertyType = defineType({
     defineField({
       name: 'price',
       title: 'Price',
-      description: 'EUR — required for Bazaraki when “Include in Bazaraki feed” is on.',
       type: 'number',
       group: WEBSITE,
-      validation: (rule) =>
-        rule.custom((value, context) => {
-          const doc = context.document as {publishToBazaraki?: boolean} | undefined
-          if (doc?.publishToBazaraki && (value === undefined || value === null)) {
-            return 'Price is required when the listing is included in the Bazaraki XML feed.'
-          }
-          return true
-        }),
     }),
     defineField({
       name: 'currency',
@@ -142,8 +133,6 @@ export const propertyType = defineType({
     defineField({
       name: 'featured',
       title: 'Featured listing',
-      description:
-        'Turn on to show this property in “Featured listings” on the site and in the Featured desk view. Same document can also be Buy/Rent — this is an extra flag.',
       type: 'boolean',
       group: WEBSITE,
       initialValue: false,
@@ -151,17 +140,6 @@ export const propertyType = defineType({
     defineField({
       name: 'signature',
       title: 'Signature collection',
-      description:
-        'Turn on for Signature collection marketing. Use the desk view “Signature collection” to find these. Can combine with Buy and Featured.',
-      type: 'boolean',
-      group: WEBSITE,
-      initialValue: false,
-    }),
-    defineField({
-      name: 'newDevelopment',
-      title: 'New development (property listing)',
-      description:
-        'Turn on for off-plan / new-build units shown with new-development listings. Separate from “Development projects” (which are full development documents). Usually used with Buy (for sale).',
       type: 'boolean',
       group: WEBSITE,
       initialValue: false,
@@ -172,223 +150,13 @@ export const propertyType = defineType({
       type: 'text',
       group: WEBSITE,
       rows: 8,
-      description:
-        'Plain text. Max 10 000 characters for Bazaraki. Export will escape XML entities (&, <, quotes).',
       validation: (rule) => rule.max(10000),
     }),
-
-    defineField({
-      name: 'publishToBazaraki',
-      title: 'Include in Bazaraki XML feed',
-      description:
-        'When enabled, this document should be exported to the Bazaraki XML (stable external ID + rubric + district required).',
-      type: 'boolean',
-      group: BAZARAKI,
-      initialValue: false,
-    }),
-    defineField({
-      name: 'bazarakiExternalId',
-      title: 'External ID (Bazaraki)',
-      description:
-        'Stable unique ID from your side. Never change it for the same listing — new IDs are treated as new ads. Required for feed.',
-      type: 'string',
-      group: BAZARAKI,
-      validation: (rule) =>
-        rule.custom((value, context) => {
-          const doc = context.document as {publishToBazaraki?: boolean} | undefined
-          if (doc?.publishToBazaraki && (!value || String(value).trim() === '')) {
-            return 'Required when the listing is included in the Bazaraki feed.'
-          }
-          return true
-        }),
-    }),
-    defineField({
-      name: 'bazarakiListingStatus',
-      title: 'Bazaraki status',
-      description:
-        'New ads: use Active (or Active B2B). Archive / Remove only after the ad already exists on Bazaraki.',
-      type: 'string',
-      group: BAZARAKI,
-      initialValue: 'active',
-      options: {
-        list: [
-          {title: 'Active — Bazaraki + agents (real estate)', value: 'active'},
-          {title: 'Active B2B only — agents.bazaraki.com', value: 'active_b2b'},
-          {title: 'Archive (existing ad only)', value: 'archive'},
-          {title: 'Remove from Bazaraki (existing ad only)', value: 'remove'},
-        ],
-      },
-    }),
-    defineField({
-      name: 'bazarakiRubric',
-      title: 'Rubric (category ID)',
-      description: 'One category ID per ad — see Bazaraki business XML guide.',
-      type: 'number',
-      group: BAZARAKI,
-      validation: (rule) =>
-        rule.custom((value, context) => {
-          const doc = context.document as {publishToBazaraki?: boolean} | undefined
-          if (doc?.publishToBazaraki && (value === undefined || value === null)) {
-            return 'Rubric ID is required for the Bazaraki feed.'
-          }
-          return true
-        }),
-    }),
-    defineField({
-      name: 'bazarakiDistrict',
-      title: 'District (location ID)',
-      description: 'One location ID per ad — locations list in the business guide / API.',
-      type: 'number',
-      group: BAZARAKI,
-      validation: (rule) =>
-        rule.custom((value, context) => {
-          const doc = context.document as {publishToBazaraki?: boolean} | undefined
-          if (doc?.publishToBazaraki && (value === undefined || value === null)) {
-            return 'District ID is required for the Bazaraki feed.'
-          }
-          return true
-        }),
-    }),
-    defineField({
-      name: 'lastUpdatedForFeed',
-      title: 'Last update (feed)',
-      description:
-        'Optional. If set, XML export can use this for &lt;last_update&gt; so Bazaraki knows when to refresh fields and photos.',
-      type: 'datetime',
-      group: BAZARAKI,
-    }),
-    defineField({
-      name: 'bazarakiAttrs',
-      title: 'Bazaraki attributes',
-      type: 'object',
-      group: BAZARAKI,
-      description:
-        'Keys must match your rubric in the business guide (e.g. type, pool, parking, air-conditioning). Leave blank if unknown; export can fall back to bedrooms/bathrooms where applicable.',
-      fields: [
-        defineField({name: 'type', title: 'type', type: 'number'}),
-        defineField({name: 'pool', title: 'pool', type: 'number'}),
-        defineField({name: 'parking', title: 'parking', type: 'number'}),
-        defineField({name: 'airConditioning', title: 'air-conditioning', type: 'number'}),
-        defineField({
-          name: 'numberOfBedrooms',
-          title: 'number-of-bedrooms (override)',
-          type: 'number',
-        }),
-        defineField({
-          name: 'numberOfBathrooms',
-          title: 'number-of-bathrooms (override)',
-          type: 'number',
-        }),
-        defineField({name: 'postalcode', title: 'postalcode', type: 'string'}),
-        defineField({
-          name: 'mustHaves',
-          title: 'must-haves',
-          description: 'Comma-separated keys if multiple values are allowed.',
-          type: 'string',
-        }),
-      ],
-    }),
-    defineField({
-      name: 'geometry',
-      title: 'Map coordinates',
-      type: 'object',
-      group: BAZARAKI,
-      fields: [
-        defineField({name: 'latitude', title: 'Latitude', type: 'number'}),
-        defineField({name: 'longitude', title: 'Longitude', type: 'number'}),
-      ],
-    }),
-    defineField({
-      name: 'phoneHide',
-      title: 'Hide phone on Bazaraki',
-      type: 'boolean',
-      group: BAZARAKI,
-      initialValue: false,
-    }),
-    defineField({
-      name: 'negotiablePrice',
-      title: 'Negotiable price (show label)',
-      type: 'boolean',
-      group: BAZARAKI,
-      initialValue: false,
-    }),
-    defineField({
-      name: 'exchange',
-      title: 'Swap / exchange label',
-      type: 'boolean',
-      group: BAZARAKI,
-      initialValue: false,
-    }),
-    defineField({
-      name: 'disallowChat',
-      title: 'Disallow chat',
-      type: 'boolean',
-      group: BAZARAKI,
-      initialValue: false,
-    }),
-    defineField({
-      name: 'whatsapp',
-      title: 'WhatsApp number',
-      description: 'Shown on Bazaraki if supported for the category.',
-      type: 'string',
-      group: BAZARAKI,
-    }),
-    defineField({
-      name: 'chosenPhone',
-      title: 'Chosen / extra phone',
-      description: 'Must be added in Bazaraki profile settings first.',
-      type: 'string',
-      group: BAZARAKI,
-    }),
-    defineField({
-      name: 'itemLink',
-      title: 'Link to this listing on your site',
-      description:
-        'For categories that support “Buy it” / external link. Real estate may ignore this — still useful for automation.',
-      type: 'url',
-      group: BAZARAKI,
-    }),
-    defineField({
-      name: 'videoLink',
-      title: 'YouTube video URL',
-      type: 'url',
-      group: BAZARAKI,
-    }),
-    defineField({
-      name: 'videoUploadByUrl',
-      title: 'Video file URL',
-      description: 'Direct link to .mp4 / .mov etc. — not a YouTube page.',
-      type: 'url',
-      group: BAZARAKI,
-    }),
-    defineField({
-      name: 'condition',
-      title: 'Condition',
-      type: 'number',
-      group: BAZARAKI,
-      options: {
-        list: [
-          {title: 'Used', value: 1},
-          {title: 'New', value: 2},
-        ],
-      },
-    }),
-    defineField({
-      name: 'delivery',
-      title: 'Delivery option',
-      description: 'Most real estate categories do not use this; set 0 if not applicable.',
-      type: 'number',
-      initialValue: 0,
-      group: BAZARAKI,
-    }),
-
     defineField({
       name: 'mainImage',
       title: 'Cover / hero image',
       type: 'image',
       group: MEDIA_PHOTOS,
-      description:
-        'Main photo for cards, hero, and SEO. Bulk-upload once via **Media** (left sidebar → grid icon), then **Select** here — no need to re-upload.',
       options: {hotspot: true, metadata: ['blurhash', 'lqip', 'palette']},
     }),
     defineField({
@@ -396,8 +164,6 @@ export const propertyType = defineType({
       title: 'Featured gallery image (optional)',
       type: 'image',
       group: MEDIA_PHOTOS,
-      description:
-        'Optional. The image you want **first** in the on-site gallery (e.g. best interior shot). Pick the same file from **Media** as one of your gallery images, or any asset. If empty, the **first image in the gallery list** (below) is used.',
       options: {hotspot: true, metadata: ['blurhash', 'lqip', 'palette']},
     }),
     defineField({
@@ -406,8 +172,7 @@ export const propertyType = defineType({
       type: 'array',
       group: MEDIA_PHOTOS,
       description:
-        '**Bulk upload (recommended):** use the **Upload multiple images** box at the top — **Add photos (multiple)** or **Add from Media library** — to select many files at once (any common image type: PNG, JPEG, WebP, HEIC, etc.). Do not rely on the per-image “Upload” under each row for batches. Up to **30** images, or **16** with Bazaraki feed on.',
-      /** Custom array input replaces default list; no grid layout so Sanity does not show duplicate per-item pickers. */
+        'Use the upload box to add multiple photos together, or select from Media library.',
       components: {input: PropertyGalleryInput},
       of: [
         defineArrayMember({
@@ -425,28 +190,18 @@ export const propertyType = defineType({
               name: 'alt',
               title: 'Alt text',
               type: 'string',
-              description: 'Short description for accessibility and SEO (e.g. “Sea view from living room”).',
+              description: 'Short description for accessibility and SEO.',
             }),
           ],
         }),
       ],
-      validation: (rule) =>
-        rule.max(30).custom((value, context) => {
-          const doc = context.document as {publishToBazaraki?: boolean} | undefined
-          const n = Array.isArray(value) ? value.length : 0
-          if (doc?.publishToBazaraki && n > 16) {
-            return 'Bazaraki allows at most 16 images per ad.'
-          }
-          return true
-        }),
+      validation: (rule) => rule.max(30),
     }),
     defineField({
       name: 'floorPlanImage',
       title: 'Floor plan',
       type: 'image',
       group: MEDIA_DOCS,
-      description:
-        'Optional. Plan drawing or screenshot (PNG/JPEG). Choose an existing upload from **Media** or add a new file — it stays in the library for reuse.',
       options: {hotspot: true, metadata: ['blurhash', 'lqip', 'palette']},
     }),
     defineField({
@@ -454,8 +209,6 @@ export const propertyType = defineType({
       title: 'Brochure or PDF',
       type: 'file',
       group: MEDIA_DOCS,
-      description:
-        'Optional. PDF brochure for visitors to download. Upload once; the file is stored in Sanity and can be linked from other listings too via **Select**.',
       options: {
         accept: 'application/pdf,.pdf',
       },
@@ -480,19 +233,194 @@ export const propertyType = defineType({
       group: SEO,
       rows: 3,
     }),
+
+    /* --- Legacy fields (older listings / Bazaraki / new-development) — keep until documents are migrated --- */
+    defineField({
+      name: 'newDevelopment',
+      title: 'Legacy: new development flag',
+      type: 'boolean',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'publishToBazaraki',
+      title: 'Legacy: publishToBazaraki',
+      type: 'boolean',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'bazarakiExternalId',
+      title: 'Legacy: bazarakiExternalId',
+      type: 'string',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'bazarakiListingStatus',
+      title: 'Legacy: bazarakiListingStatus',
+      type: 'string',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'bazarakiRubric',
+      title: 'Legacy: bazarakiRubric',
+      type: 'number',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'bazarakiDistrict',
+      title: 'Legacy: bazarakiDistrict',
+      type: 'number',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'lastUpdatedForFeed',
+      title: 'Legacy: lastUpdatedForFeed',
+      type: 'datetime',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'bazarakiAttrs',
+      title: 'Legacy: bazarakiAttrs',
+      type: 'object',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+      fields: [
+        defineField({name: 'type', type: 'number'}),
+        defineField({name: 'pool', type: 'number'}),
+        defineField({name: 'parking', type: 'number'}),
+        defineField({name: 'airConditioning', type: 'number'}),
+        defineField({name: 'numberOfBedrooms', type: 'number'}),
+        defineField({name: 'numberOfBathrooms', type: 'number'}),
+        defineField({name: 'postalcode', type: 'string'}),
+        defineField({name: 'mustHaves', type: 'string'}),
+      ],
+    }),
+    defineField({
+      name: 'geometry',
+      title: 'Legacy: geometry',
+      type: 'object',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+      fields: [
+        defineField({name: 'latitude', type: 'number'}),
+        defineField({name: 'longitude', type: 'number'}),
+      ],
+    }),
+    defineField({
+      name: 'phoneHide',
+      title: 'Legacy: phoneHide',
+      type: 'boolean',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'negotiablePrice',
+      title: 'Legacy: negotiablePrice',
+      type: 'boolean',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'exchange',
+      title: 'Legacy: exchange',
+      type: 'boolean',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'disallowChat',
+      title: 'Legacy: disallowChat',
+      type: 'boolean',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'whatsapp',
+      title: 'Legacy: whatsapp',
+      type: 'string',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'chosenPhone',
+      title: 'Legacy: chosenPhone',
+      type: 'string',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'itemLink',
+      title: 'Legacy: itemLink',
+      type: 'url',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'videoLink',
+      title: 'Legacy: videoLink',
+      type: 'url',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'videoUploadByUrl',
+      title: 'Legacy: videoUploadByUrl',
+      type: 'url',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'condition',
+      title: 'Legacy: condition',
+      type: 'number',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'delivery',
+      title: 'Legacy: delivery',
+      type: 'number',
+      group: LEGACY,
+      hidden: true,
+      readOnly: true,
+    }),
   ],
   preview: {
     select: {
       title: 'title',
       status: 'status',
       media: 'mainImage',
-      bazaraki: 'publishToBazaraki',
     },
-    prepare({title, status, media, bazaraki}) {
-      const sub = [status, bazaraki ? 'Bazaraki feed' : null].filter(Boolean).join(' · ')
+    prepare({title, status, media}) {
+      const subtitle = status || undefined
       return {
         title: title || 'Property',
-        subtitle: sub || undefined,
+        subtitle,
         media,
       }
     },

@@ -24,7 +24,6 @@ function SearchPanel({ open, onClose, seed = null, seedKey = 0 }) {
       const matchesCategory =
         activeCategory === 'All Listings' ||
         (activeCategory === 'Featured Properties' && property.isFeatured) ||
-        (activeCategory === 'New Developments' && property.isNewDevelopment) ||
         (activeCategory === 'Signature Listings' && property.isSignature)
 
       const matchesQuery =

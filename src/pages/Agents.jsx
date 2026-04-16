@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async'
 import { useMemo, useState } from 'react'
+import { ArrowUpRight, ShieldCheck } from 'lucide-react'
 import SectionHeader from '../components/SectionHeader/SectionHeader'
 import AgentCard from '../components/AgentCard/AgentCard'
 import { agents } from '../data/agents'
@@ -43,7 +44,9 @@ function Agents() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Open Portal
+            <ShieldCheck size={16} aria-hidden />
+            <span>Open Portal</span>
+            <ArrowUpRight size={16} aria-hidden />
           </a>
           <p className="agents-studio-cta__note">
             For United Properties team members: sign in to manage listings and site content. Opens in a new tab.

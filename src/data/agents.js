@@ -7,6 +7,7 @@ export const agents = [
     bio: 'Advises high-net-worth clients across prime Cyprus coastal markets with discreet, data-led guidance.',
     phone: '+357 99 120 210',
     email: 'andreas@unitedproperties.eu',
+    linkedin: 'https://www.linkedin.com/in/andreas-kyriakou-united-properties',
     image:
       'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=80',
   },
@@ -18,6 +19,7 @@ export const agents = [
     bio: 'Focuses on city luxury stock, relocation clients, and premium buy-to-let opportunities.',
     phone: '+357 99 120 211',
     email: 'elena@unitedproperties.eu',
+    linkedin: 'https://www.linkedin.com/in/elena-demetriou-united-properties',
     image:
       'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80',
   },
@@ -29,6 +31,7 @@ export const agents = [
     bio: 'Supports international investors with portfolio strategy, market due diligence, and acquisition structuring.',
     phone: '+357 99 120 212',
     email: 'marios@unitedproperties.eu',
+    linkedin: 'https://www.linkedin.com/in/marios-petrou-united-properties',
     image:
       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80',
   },
@@ -40,6 +43,7 @@ export const agents = [
     bio: 'Coordinates full relocation pathways for families, executives, and overseas buyers moving to Cyprus.',
     phone: '+357 99 120 213',
     email: 'sofia@unitedproperties.eu',
+    linkedin: 'https://www.linkedin.com/in/sofia-nicolaou-united-properties',
     image:
       'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=900&q=80',
   },

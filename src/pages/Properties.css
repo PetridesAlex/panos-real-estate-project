@@ -1,8 +1,14 @@
 .properties__result-count {
-  color: rgba(200, 192, 178, 0.78);
+  color: rgba(23, 38, 59, 0.78);
   margin-bottom: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.02em;
+}
+
+#properties-discovery {
+  /* Prevent fixed navbar from covering top of section on anchor jump */
+  scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 7.25rem);
+  overflow: visible;
 }
 
 .properties-discovery__header {
@@ -24,14 +30,14 @@
 
 .properties-discovery__header h2 {
   margin: 0.36rem 0 0;
-  color: #ffffff;
+  color: #17263b;
   font-size: clamp(1.95rem, 3.8vw, 3rem);
 }
 
 .properties-discovery__description {
   margin: 0.75rem 0 0;
   max-width: 60rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(23, 38, 59, 0.86);
 }
 
 .properties-discovery__header--limassol {

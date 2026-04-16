@@ -14,13 +14,43 @@ import ScrollStack, { ScrollStackItem } from '../components/ScrollStack/ScrollSt
 import { properties } from '../data/properties'
 import { services } from '../data/services'
 import { agents } from '../data/agents'
-import { developments } from '../data/developments'
 import { testimonials } from '../data/testimonials'
 import { homeCenterFlowLinks } from '../data/homeCenterFlow'
 import { useMergedProperties } from '../hooks/useMergedProperties'
 import './Home.css'
 
 const MotionDiv = motion.div
+const HOME_SCROLL_STACK_PREVIEW_COUNT = 6
+/** Featured ModalCards: max cards; prefer featured flag, then fill from pool for layout preview */
+const FEATURED_MODAL_PREVIEW_COUNT = 12
+
+/** Cinematic “render-style” hero art (preview / marketing — not tied to listing photos). */
+const SIGNATURE_SCROLL_STACK_IMAGES = [
+  'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1920&q=85',
+  'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1920&q=85',
+  'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1920&q=85',
+  'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1920&q=85',
+  'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1920&q=85',
+  'https://images.unsplash.com/photo-1600047509807-ba61f281090b?auto=format&fit=crop&w=1920&q=85',
+]
+
+const FEATURED_MODAL_CINEMATIC_IMAGES = [
+  ...SIGNATURE_SCROLL_STACK_IMAGES,
+  'https://images.unsplash.com/photo-1600585154087-4e5fe7c90381?auto=format&fit=crop&w=1920&q=85',
+  'https://images.unsplash.com/photo-1600566753089-00f18fb6b442?auto=format&fit=crop&w=1920&q=85',
+  'https://images.unsplash.com/photo-1600573472592-401b3a6e6939?auto=format&fit=crop&w=1920&q=85',
+  'https://images.unsplash.com/photo-1613490493578-7fde639acd22?auto=format&fit=crop&w=1920&q=85',
+  'https://images.unsplash.com/photo-1600047509358-9dc87607ebfa?auto=format&fit=crop&w=1920&q=85',
+  'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1920&q=85',
+]
+
+function takeFeaturedWithFill(pool, maxCount) {
+  const featured = pool.filter((p) => p.featured)
+  if (featured.length >= maxCount) return featured.slice(0, maxCount)
+  const seen = new Set(featured.map((p) => String(p.id)))
+  const filler = pool.filter((p) => !seen.has(String(p.id)))
+  return [...featured, ...filler].slice(0, maxCount)
+}
 
 function isSignatureProperty(property) {
   if (!property) return false
@@ -44,20 +74,19 @@ function Home() {
     [mergedProperties],
   )
   const fallbackFeaturedProperties = useMemo(
-    () => properties.filter((property) => property.featured).slice(0, 3),
+    () => takeFeaturedWithFill(properties, FEATURED_MODAL_PREVIEW_COUNT),
     [],
   )
   const featuredProperties = useMemo(() => {
     if (!sanityOnly.length) return fallbackFeaturedProperties
-    const featured = sanityOnly.filter((property) => property.featured)
-    const source = featured.length ? featured : sanityOnly
-    return source.slice(0, 3)
+    return takeFeaturedWithFill(sanityOnly, FEATURED_MODAL_PREVIEW_COUNT)
   }, [sanityOnly, fallbackFeaturedProperties])
   const featuredModalCards = useMemo(
     () =>
-      featuredProperties.map((property) => ({
+      featuredProperties.map((property, index) => ({
         id: String(property.id),
-        imageUrl: property.image,
+        imageUrl:
+          FEATURED_MODAL_CINEMATIC_IMAGES[index % FEATURED_MODAL_CINEMATIC_IMAGES.length],
         title: property.title,
         description:
           property.description ||
@@ -70,12 +99,30 @@ function Home() {
     const source = sanityOnly.length ? sanityOnly : properties
     const signatureOnly = source.filter(isSignatureProperty)
 
-    // Keep the stack alive even before signature flags are set in CMS/data.
-    if (signatureOnly.length) return signatureOnly
+    // Keep stack rich in preview mode: prefer signature, then featured, then fill from remaining.
+    if (signatureOnly.length >= HOME_SCROLL_STACK_PREVIEW_COUNT) {
+      return signatureOnly.slice(0, HOME_SCROLL_STACK_PREVIEW_COUNT)
+    }
 
     const featuredFallback = source.filter((property) => property.featured)
-    return featuredFallback.length ? featuredFallback : source
+    const prioritized = signatureOnly.length ? signatureOnly : featuredFallback
+    const remainder = source.filter(
+      (property) => !prioritized.some((candidate) => candidate.id === property.id),
+    )
+
+    return [...prioritized, ...remainder].slice(0, HOME_SCROLL_STACK_PREVIEW_COUNT)
   }, [sanityOnly])
+
+  const signatureScrollStackItems = useMemo(
+    () =>
+      signatureCollectionProperties.map((property, index) => ({
+        ...property,
+        scrollStackCoverImage:
+          SIGNATURE_SCROLL_STACK_IMAGES[index % SIGNATURE_SCROLL_STACK_IMAGES.length],
+      })),
+    [signatureCollectionProperties],
+  )
+
   const featuredAgents = agents.slice(0, 3)
   const homeServices = services.slice(0, 8)
 
@@ -114,7 +161,7 @@ function Home() {
             headingId="home-network-heading"
             eyebrow="United Properties"
             title="Connected expertise across every property service"
-            description="From acquisition and sales to rentals, new developments, and property management—one team linking you to Cyprus’s luxury market with clarity and continuity."
+            description="From acquisition and sales to rentals and property management—one team linking you to Cyprus’s luxury market with clarity and continuity."
             className="section-header--center-flow"
           />
           <CenterFlow
@@ -186,9 +233,14 @@ function Home() {
             baseScale={0.82}
             rotationAmount={0}
           >
-            {signatureCollectionProperties.map((property) => (
+            {signatureScrollStackItems.map((property) => (
               <ScrollStackItem key={`stack-${property.id}`} itemClassName="home-scroll-stack-card">
-                <img src={property.image} alt={property.title} />
+                <img
+                  src={property.scrollStackCoverImage}
+                  alt={property.title}
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div className="home-scroll-stack-card__overlay" />
                 <div className="home-scroll-stack-card__content">
                   <p>{property.location}</p>
@@ -201,32 +253,6 @@ function Home() {
               </ScrollStackItem>
             ))}
           </ScrollStack>
-        </div>
-      </section>
-
-      <section className="section section--dark">
-        <div className="container">
-          <SectionHeader
-            eyebrow="New Developments"
-            title="Off-Plan and Next-Generation Residences"
-            description="Position early in standout projects designed for lifestyle prestige and future capital growth."
-          />
-          <div className="home-dev-grid">
-            {developments.map((development) => (
-              <article key={development.id} className="home-dev-card">
-                <img src={development.image} alt={development.name} />
-                <div>
-                  <p className="home-dev-card__status">{development.status}</p>
-                  <h3>{development.name}</h3>
-                  <p>{development.area}</p>
-                  <p>{development.description}</p>
-                  <Link to="/developments" className="btn btn-outline-light">
-                    Inquire
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
         </div>
       </section>
 

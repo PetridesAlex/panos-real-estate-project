@@ -23,13 +23,6 @@ const categoryCards = [
     group: 'All Listings',
   },
   {
-    id: 'new-dev',
-    title: 'New Developments',
-    description: 'View the latest projects and upcoming residential launches.',
-    to: '/new-developments',
-    group: 'New Developments',
-  },
-  {
     id: 'signature',
     title: 'Signature Listings',
     description: 'Enter our exclusive portfolio of iconic residences.',

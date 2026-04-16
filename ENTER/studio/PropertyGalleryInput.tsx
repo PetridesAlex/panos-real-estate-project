@@ -48,6 +48,7 @@ type GalleryImageValue = {
 }
 
 type AssetRow = {_id: string; originalFilename?: string; url?: string}
+type AssetUsageRow = {_id: string; refs: number}
 
 /** iOS HEIC + some PNG exports use empty or generic MIME — still allow upload */
 function isLikelyImageFile(f: File) {
@@ -183,6 +184,9 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
   const [libRows, setLibRows] = useState<AssetRow[]>([])
   const [libLoading, setLibLoading] = useState(false)
   const [libSelected, setLibSelected] = useState<Set<string>>(() => new Set())
+  const [gallerySelected, setGallerySelected] = useState<Set<string>>(() => new Set())
+  const [libActionBusy, setLibActionBusy] = useState(false)
+  const [libActionMessage, setLibActionMessage] = useState<string | null>(null)
 
   const sensors = useSensors(
     useSensor(PointerSensor, {activationConstraint: {distance: 6}}),
@@ -199,6 +203,15 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
   useEffect(() => {
     fetchLibCount()
   }, [fetchLibCount])
+
+  useEffect(() => {
+    setGallerySelected((prev) => {
+      if (prev.size === 0) return prev
+      const validKeys = new Set(items.map((item) => item._key))
+      const next = new Set([...prev].filter((key) => validKeys.has(key)))
+      return next.size === prev.size ? prev : next
+    })
+  }, [items])
 
   useEffect(() => {
     if (!libOpen) return
@@ -315,6 +328,13 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
     [items, onChange],
   )
 
+  const removeSelectedGallery = useCallback(() => {
+    if (gallerySelected.size === 0) return
+    const next = items.filter((item) => !gallerySelected.has(item._key))
+    onChange(set(next))
+    setGallerySelected(new Set())
+  }, [gallerySelected, items, onChange])
+
   const libInsert = useCallback(() => {
     const ids = [...libSelected]
     if (ids.length === 0) return
@@ -329,6 +349,43 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
     setLibOpen(false)
     setLibPage(1)
   }, [appendImages, libSelected, remainingSlots])
+
+  const libDeleteSelectedSafe = useCallback(async () => {
+    const ids = [...libSelected]
+    if (ids.length === 0 || libActionBusy) return
+
+    setLibActionBusy(true)
+    setLibActionMessage(null)
+    try {
+      const usageRows = await client.fetch<AssetUsageRow[]>(
+        '*[_type == "sanity.imageAsset" && _id in $ids]{_id, "refs": count(*[references(^._id)])}',
+        {ids},
+      )
+
+      const unusedIds = usageRows.filter((row) => row.refs === 0).map((row) => row._id)
+      const skippedCount = ids.length - unusedIds.length
+
+      if (unusedIds.length > 0) {
+        const tx = client.transaction()
+        for (const id of unusedIds) tx.delete(id)
+        await tx.commit()
+      }
+
+      setLibSelected(new Set())
+      fetchLibCount()
+      setLibRows((prev) => prev.filter((row) => !unusedIds.includes(row._id)))
+      setLibActionMessage(
+        skippedCount > 0
+          ? `Deleted ${unusedIds.length} image(s). Skipped ${skippedCount} image(s) because they are still used in listings.`
+          : `Deleted ${unusedIds.length} image(s).`,
+      )
+    } catch (e) {
+      const message = e instanceof Error ? e.message : 'Could not delete selected images'
+      setLibActionMessage(message)
+    } finally {
+      setLibActionBusy(false)
+    }
+  }, [client, fetchLibCount, libActionBusy, libSelected])
 
   const libToggle = useCallback((id: string) => {
     setLibSelected((prev) => {
@@ -387,9 +444,10 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
           </Flex>
           <Stack space={2}>
             <Text muted size={1}>
-              <strong>iPhone:</strong> tap <strong>Add photos</strong> below, then in Photos use <strong>Select</strong>{' '}
-              and choose several images, then <strong>Add</strong>. Avoid <strong>Take Photo</strong> if you need many —
-              that flow is usually one at a time.
+              <strong>iPhone / iPad:</strong> tap <strong>Add photos (multiple)</strong> (or the file-picker link). When
+              Photos opens, tap <strong>Select</strong>, tap several photos (they get a blue check), then tap{' '}
+              <strong>Add</strong>. That uploads many at once. Using <strong>Take Photo</strong> only adds one shot at
+              a time — use Select for batches.
             </Text>
             <Text muted size={1}>
               <strong>Desktop:</strong> drag files onto this box, or use <strong>Add photos</strong>.{' '}
@@ -476,6 +534,7 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
               onClick={() => {
                 setLibOpen(true)
                 setLibPage(1)
+                setLibActionMessage(null)
                 fetchLibCount()
               }}
             />
@@ -492,22 +551,62 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
 
       {items.length > 0 && (
         <Stack space={3}>
-          <Text size={1} weight="semibold">
-            Gallery preview
-          </Text>
+          <Flex align="center" justify="space-between" gap={2} wrap="wrap">
+            <Text size={1} weight="semibold">
+              Gallery preview
+            </Text>
+            <Flex gap={2} wrap="wrap">
+              <Button
+                mode="bleed"
+                text="Select all"
+                onClick={() => setGallerySelected(new Set(items.map((item) => item._key)))}
+              />
+              <Button
+                disabled={gallerySelected.size === 0}
+                mode="bleed"
+                text="Clear selection"
+                onClick={() => setGallerySelected(new Set())}
+              />
+              <Button
+                disabled={gallerySelected.size === 0}
+                mode="default"
+                tone="critical"
+                text={`Remove selected (${gallerySelected.size})`}
+                onClick={removeSelectedGallery}
+              />
+            </Flex>
+          </Flex>
           <DndContext collisionDetection={closestCenter} sensors={sensors} onDragEnd={onDragEnd}>
             <SortableContext items={items.map((i) => i._key)} strategy={rectSortingStrategy}>
               <Grid columns={[2, 3, 3, 4]} gap={3}>
                 {items.map((item, index) => (
-                  <SortableThumb
-                    key={item._key}
-                    id={item._key}
-                    index={index}
-                    alt={typeof item.alt === 'string' ? item.alt : ''}
-                    url={thumbUrl(item)}
-                    onAltChange={(next) => updateAltAt(index, next)}
-                    onRemove={() => removeAt(index)}
-                  />
+                  <Stack key={item._key} space={2}>
+                    <Flex align="center" gap={2}>
+                      <Checkbox
+                        checked={gallerySelected.has(item._key)}
+                        id={`gallery-select-${item._key}`}
+                        onChange={() => {
+                          setGallerySelected((prev) => {
+                            const next = new Set(prev)
+                            if (next.has(item._key)) next.delete(item._key)
+                            else next.add(item._key)
+                            return next
+                          })
+                        }}
+                      />
+                      <label htmlFor={`gallery-select-${item._key}`}>
+                        <Text size={1}>Select</Text>
+                      </label>
+                    </Flex>
+                    <SortableThumb
+                      id={item._key}
+                      index={index}
+                      alt={typeof item.alt === 'string' ? item.alt : ''}
+                      url={thumbUrl(item)}
+                      onAltChange={(next) => updateAltAt(index, next)}
+                      onRemove={() => removeAt(index)}
+                    />
+                  </Stack>
                 ))}
               </Grid>
             </SortableContext>
@@ -523,6 +622,7 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
             setLibOpen(false)
             setLibSelected(new Set())
             setLibPage(1)
+            setLibActionMessage(null)
           }}
           width={100}
         >
@@ -532,6 +632,13 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
                 Page {libPage} of {totalPages} · {libTotal} assets
               </Text>
               <Flex gap={2} wrap="wrap">
+                <Button
+                  disabled={libActionBusy || libSelected.size === 0}
+                  mode="ghost"
+                  text={`Delete selected (${libSelected.size})`}
+                  tone="critical"
+                  onClick={() => void libDeleteSelectedSafe()}
+                />
                 <Button
                   disabled={libPage <= 1}
                   mode="ghost"
@@ -598,6 +705,12 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
               </Grid>
             )}
 
+            {libActionMessage && (
+              <Text size={1} muted>
+                {libActionMessage}
+              </Text>
+            )}
+
             <Flex gap={2} justify="flex-end" wrap="wrap">
               <Button
                 mode="ghost"
@@ -606,6 +719,7 @@ export function PropertyGalleryInput(props: ArrayOfObjectsInputProps) {
                   setLibOpen(false)
                   setLibSelected(new Set())
                   setLibPage(1)
+                  setLibActionMessage(null)
                 }}
               />
               <Button

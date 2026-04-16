@@ -27,9 +27,6 @@ function Footer() {
               <Link to="/properties">Properties</Link>
             </li>
             <li>
-              <Link to="/developments">Developments</Link>
-            </li>
-            <li>
               <Link to="/about">About</Link>
             </li>
             <li>

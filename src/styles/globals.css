@@ -20,13 +20,20 @@ html {
 body {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
-  background: var(--color-bg-dark);
+  background: var(--color-bg-light);
   color: var(--color-ink);
   line-height: 1.58;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: 'Montserrat', sans-serif;
 }
 
 img {
@@ -62,13 +69,6 @@ p {
 
 main {
   min-height: 68vh;
-}
-
-input,
-select,
-textarea,
-button {
-  font-family: inherit;
 }
 
 input,

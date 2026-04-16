@@ -1,25 +1,19 @@
-/* Per-listing image via inline --property-hero-image; fallback matches globals */
+/* Property listing hero: no listing photo — compact premium band under fixed nav */
 .page-hero--property {
-  --property-hero-image: var(--page-hero-image);
   position: relative;
   overflow: hidden;
   isolation: isolate;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  min-height: clamp(22rem, 58vh, 48rem);
-  background-color: #0a0c10;
+  justify-content: flex-start;
+  min-height: 0;
+  background-color: #0e1a2a;
   background-image:
-    radial-gradient(ellipse 85% 90% at 18% 22%, rgba(196, 156, 92, 0.12), transparent 52%),
-    radial-gradient(ellipse 70% 55% at 88% 75%, rgba(20, 45, 72, 0.35), transparent 50%),
-    linear-gradient(165deg, rgba(6, 8, 14, 0.92) 0%, rgba(10, 12, 18, 0.55) 42%, rgba(4, 6, 12, 0.88) 100%),
-    linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, transparent 42%),
-    var(--property-hero-image);
-  background-position: center, center, center, center, center;
-  background-size: auto, auto, auto, auto, cover;
+    radial-gradient(ellipse 90% 80% at 50% -20%, rgba(196, 156, 92, 0.14), transparent 55%),
+    radial-gradient(ellipse 55% 50% at 100% 100%, rgba(36, 74, 118, 0.22), transparent 50%),
+    linear-gradient(168deg, #152a45 0%, #101f33 48%, #0c1626 100%);
   background-repeat: no-repeat;
-  /* Taller hero; title sits low on the image (nav clearance + breathing room) */
-  padding: calc(env(safe-area-inset-top, 0px) + clamp(5.75rem, 10vw, 8rem)) 0 clamp(3.25rem, 7vw, 5.5rem);
+  padding: calc(env(safe-area-inset-top, 0px) + clamp(4.25rem, 7.5vw, 5.75rem)) 0 clamp(1.35rem, 3vw, 2rem);
 }
 
 .page-hero--property::before {
@@ -27,9 +21,12 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  background:
-    linear-gradient(105deg, rgba(4, 8, 16, 0.82) 0%, rgba(4, 8, 16, 0.35) 48%, rgba(4, 8, 16, 0.2) 100%),
-    linear-gradient(to top, rgba(0, 0, 0, 0.62) 0%, transparent 55%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    transparent 42%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
   pointer-events: none;
 }
 
@@ -38,7 +35,7 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  opacity: 0.35;
+  opacity: 0.22;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
   mix-blend-mode: overlay;
   pointer-events: none;
@@ -80,11 +77,22 @@
 }
 
 .property-details__hero-inner {
-  max-width: min(52rem, 100%);
+  max-width: min(56rem, 100%);
   margin-inline: auto;
   text-align: left;
   padding-inline: clamp(1.15rem, 4.5vw, 2rem);
+  padding-block: clamp(1rem, 2.6vw, 1.45rem);
   box-sizing: border-box;
+  border-radius: clamp(18px, 3vw, 24px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background:
+    radial-gradient(ellipse 120% 100% at 0% 0%, rgba(196, 156, 92, 0.18), transparent 58%),
+    linear-gradient(152deg, rgba(10, 18, 32, 0.62) 0%, rgba(6, 12, 24, 0.52) 100%);
+  backdrop-filter: blur(8px) saturate(1.06);
+  -webkit-backdrop-filter: blur(8px) saturate(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 20px 42px rgba(0, 0, 0, 0.28);
 }
 
 .property-details__hero-eyebrow {
@@ -98,8 +106,17 @@
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(232, 212, 176, 0.95);
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
+  color: rgba(245, 233, 212, 0.96);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.5);
+}
+
+.property-details__hero-eyebrow > span {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.32rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(196, 156, 92, 0.34);
+  background: rgba(8, 12, 22, 0.38);
 }
 
 .property-details__hero-eyebrow-sep {
@@ -113,6 +130,21 @@
 .property-details {
   display: grid;
   gap: 1.4rem;
+}
+
+/* Make the listing gallery feel immersive: near full-viewport width + taller stage. */
+.property-details > .gallery {
+  width: min(1840px, calc(100vw - clamp(10px, 2.2vw, 28px)));
+  margin-inline: auto;
+}
+
+.property-details > .gallery .gallery__stage {
+  border-radius: clamp(14px, 1.8vw, 24px);
+}
+
+.property-details > .gallery .gallery__slides {
+  aspect-ratio: 16 / 8.7;
+  max-height: min(84vh, 860px);
 }
 
 /* #root uses text-align: center; restore editorial left alignment from tablet up */
@@ -146,8 +178,8 @@
   margin: 0 0 1rem;
   max-width: min(40ch, 100%);
   font-family: 'Montserrat', var(--font-sans), system-ui, sans-serif;
-  font-size: clamp(1.85rem, 3.2vw, 2.85rem);
-  font-weight: 500;
+  font-size: clamp(1.95rem, 3.5vw, 3.15rem);
+  font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.12;
   text-wrap: balance;
@@ -163,7 +195,7 @@
   gap: 0.5rem;
   margin: 0;
   padding: 0.5rem 1rem 0.5rem 0.85rem;
-  border: 1px solid rgba(196, 156, 92, 0.35);
+  border: 1px solid rgba(219, 188, 140, 0.44);
   border-radius: 999px;
   background: rgba(8, 12, 22, 0.45);
   backdrop-filter: blur(10px);
@@ -173,8 +205,8 @@
   font-weight: 500;
   letter-spacing: 0.04em;
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.06) inset,
-    0 12px 40px rgba(0, 0, 0, 0.25);
+    0 1px 0 rgba(255, 255, 255, 0.1) inset,
+    0 14px 34px rgba(0, 0, 0, 0.3);
 }
 
 .property-details__brochure {
@@ -487,25 +519,26 @@
 }
 
 .property-details__overview {
-  padding: clamp(0.5rem, 1.2vw, 0.85rem) 0 clamp(1.1rem, 2vw, 1.5rem);
+  padding: clamp(0.8rem, 1.6vw, 1.1rem);
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.85rem 1.25rem;
-  background: transparent;
-  border: none;
-  box-shadow: none;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: linear-gradient(160deg, rgba(9, 16, 28, 0.48) 0%, rgba(6, 12, 22, 0.62) 100%);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.22);
 }
 
 .property-details__overview .property-details__stat {
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  padding: 0.35rem 0;
+  padding: 0.62rem 0.7rem;
   font-weight: 500;
   color: rgba(248, 246, 241, 0.88);
-  border: none;
-  border-radius: 0;
-  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .property-details__overview .property-details__stat svg {
@@ -527,11 +560,11 @@
 
 .property-details__description {
   position: relative;
-  padding: clamp(0.35rem, 1.2vw, 0.65rem) 0 clamp(1.5rem, 2.8vw, 2.25rem);
-  border-radius: 0;
-  border: none;
-  background: transparent;
-  box-shadow: none;
+  padding: clamp(1rem, 2vw, 1.25rem) clamp(1rem, 2vw, 1.25rem) clamp(1.6rem, 2.8vw, 2.25rem);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(160deg, rgba(9, 16, 28, 0.44) 0%, rgba(6, 12, 22, 0.6) 100%);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.2);
 }
 
 .property-details__description-header {
@@ -692,10 +725,10 @@
   flex-wrap: wrap;
   align-items: flex-start;
   gap: 0.65rem 0.75rem;
-  padding: 0.25rem 0;
-  border-radius: 0;
-  border: none;
-  background: transparent;
+  padding: 0.7rem 0.78rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
   cursor: default;
   transition: opacity 0.2s ease;
 }
@@ -805,8 +838,7 @@
 
 @media (max-width: 680px) {
   .page-hero--property {
-    min-height: clamp(19rem, 52vh, 34rem);
-    padding: calc(env(safe-area-inset-top, 0px) + clamp(6.25rem, 16vw, 8.5rem)) 0 clamp(2.25rem, 6vw, 3.25rem);
+    padding: calc(env(safe-area-inset-top, 0px) + clamp(4.5rem, 12vw, 6rem)) 0 clamp(1.15rem, 4vw, 1.75rem);
   }
 
   .property-details__hero-eyebrow {
@@ -849,6 +881,19 @@
   .property-details__amenities-list,
   .property-details__info-tiles {
     grid-template-columns: 1fr;
+  }
+
+  .property-details > .gallery {
+    width: calc(100vw - 8px);
+  }
+
+  .property-details > .gallery .gallery__stage {
+    border-radius: clamp(12px, 4vw, 18px);
+  }
+
+  .property-details > .gallery .gallery__slides {
+    aspect-ratio: 4 / 5;
+    max-height: min(76vh, 700px);
   }
 
   .property-details__info-tile-hint {

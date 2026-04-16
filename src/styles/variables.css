@@ -1,15 +1,15 @@
 :root {
-  --color-bg-dark: #0c1626;
-  --color-bg-dark-soft: #101c31;
-  --color-bg-light: #0c1626;
-  --color-bg-alt: #121f35;
-  --color-ink: #ffffff;
+  --color-bg-dark: #11223a;
+  --color-bg-dark-soft: #173052;
+  --color-bg-light: #f6f0e6;
+  --color-bg-alt: #1a3153;
+  --color-ink: #17263b;
   --color-white: #ffffff;
-  --color-muted: #848494;
+  --color-muted: #5f6470;
   --color-accent: #bf9875;
   --color-accent-strong: #bf9875;
   --color-accent-light: #d5b59a;
-  --color-line: #6b625d;
+  --color-line: rgba(23, 38, 59, 0.26);
 
   --font-serif: 'Montserrat', 'Segoe UI', sans-serif;
   --font-sans: 'Montserrat', 'Segoe UI', sans-serif;
@@ -27,4 +27,10 @@
 
   /* Shared inner-page hero (Home uses its own layout, not .page-hero) */
   --page-hero-image: url('/images/hero-backgrounds/high-building.webp');
+
+  /* Hero video inset + matching “Serhant” gutters on the next home block (keep in sync with Hero.css) */
+  --layout-hero-gutter: clamp(5px, 0.85vw, 12px);
+  --layout-hero-radius: clamp(10px, 1.35vw, 18px);
+  /* Large radius for the panel that sits under the hero video */
+  --layout-poster-radius: clamp(28px, 3.2vw, 52px);
 }

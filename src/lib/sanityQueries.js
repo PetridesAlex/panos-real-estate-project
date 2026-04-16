@@ -17,7 +17,6 @@ const PROPERTY_PROJECTION = `
     yearBuilt,
     featured,
     signature,
-    newDevelopment,
     mainImage,
     galleryLeadImage,
     gallery,
@@ -31,26 +30,7 @@ const PROPERTY_PROJECTION = `
     description,
     amenities,
     seoTitle,
-    seoDescription,
-    publishToBazaraki,
-    bazarakiExternalId,
-    bazarakiListingStatus,
-    bazarakiRubric,
-    bazarakiDistrict,
-    lastUpdatedForFeed,
-    bazarakiAttrs,
-    geometry,
-    phoneHide,
-    negotiablePrice,
-    exchange,
-    disallowChat,
-    whatsapp,
-    chosenPhone,
-    itemLink,
-    videoLink,
-    videoUploadByUrl,
-    condition,
-    delivery
+    seoDescription
 `
 
 export const ALL_PROPERTIES_QUERY = `

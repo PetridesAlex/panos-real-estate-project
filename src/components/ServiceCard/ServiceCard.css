@@ -24,14 +24,45 @@
 }
 
 .service-card p {
-  color: var(--color-muted);
+  color: rgba(242, 247, 255, 0.9);
   margin: 0 0 1rem;
+  line-height: 1.6;
 }
 
 .service-card__cta {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  color: var(--color-ink);
-  font-weight: 600;
+  gap: 0.38rem;
+  margin-top: 0.15rem;
+  padding: 0.4rem 0.72rem;
+  border-radius: 999px;
+  border: 1px solid rgba(217, 182, 128, 0.46);
+  background: linear-gradient(135deg, rgba(217, 182, 128, 0.16), rgba(217, 182, 128, 0.05));
+  color: #f8efe2;
+  font-size: 0.79rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 6px 14px rgba(4, 10, 20, 0.24);
+  transition:
+    transform 0.24s ease,
+    border-color 0.24s ease,
+    background 0.24s ease,
+    box-shadow 0.24s ease;
+}
+
+.service-card__cta:hover {
+  transform: translateY(-1px);
+  border-color: rgba(236, 208, 162, 0.72);
+  background: linear-gradient(135deg, rgba(217, 182, 128, 0.26), rgba(217, 182, 128, 0.1));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 10px 20px rgba(4, 10, 20, 0.32);
+}
+
+.service-card__cta:focus-visible {
+  outline: 2px solid rgba(217, 182, 128, 0.75);
+  outline-offset: 2px;
 }

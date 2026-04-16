@@ -11,7 +11,7 @@ function SearchBar({ value, onChange }) {
         enterKeyHint="search"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        placeholder="Search properties, locations, developments..."
+        placeholder="Search properties, locations, featured..."
         aria-label="Search properties and locations"
         autoComplete="off"
       />

@@ -26,12 +26,6 @@ export const heroSearchSuggestionGroups = [
         seed: { category: 'Featured Properties' },
       },
       {
-        id: 'cat-new-dev',
-        label: 'New developments',
-        variant: 'category',
-        seed: { category: 'New Developments' },
-      },
-      {
         id: 'cat-signature',
         label: 'Signature',
         variant: 'category',

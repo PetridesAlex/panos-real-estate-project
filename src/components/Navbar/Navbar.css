@@ -26,14 +26,13 @@
   max-width: 100%;
   margin-bottom: 0.35rem;
   border-top: none;
-  border-bottom: 1px solid rgba(211, 179, 129, 0.36);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   background:
-    radial-gradient(ellipse 140% 120% at 50% -40%, rgba(205, 168, 109, 0.2) 0%, transparent 58%),
-    linear-gradient(176deg, rgba(13, 24, 42, 0.96) 0%, rgba(9, 16, 30, 0.98) 48%, rgba(7, 12, 24, 0.99) 100%);
+    radial-gradient(ellipse 120% 140% at 50% -60%, rgba(197, 164, 109, 0.07) 0%, transparent 55%),
+    linear-gradient(180deg, #101012 0%, #060606 48%, #000000 100%);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    inset 0 -1px 0 rgba(205, 168, 109, 0.2),
-    0 10px 24px rgba(2, 7, 15, 0.26);
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 1px 0 rgba(0, 0, 0, 0.5);
   font-family: 'Montserrat', var(--font-sans), system-ui, sans-serif;
   font-feature-settings: 'kern' 1;
   -webkit-font-smoothing: antialiased;
@@ -45,25 +44,35 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(90deg, transparent 0%, rgba(255, 245, 225, 0.08) 50%, transparent 100%);
-  opacity: 0.72;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 250, 242, 0.04) 50%, transparent 100%);
+  opacity: 0.55;
 }
 
 .navbar > .navbar__ticker:first-child {
-  border-top: 1px solid rgba(255, 255, 255, 0.13);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* Home over black hero: flat black family, whisper of gold, light edge */
 .navbar--transparent .navbar__ticker {
+  margin-bottom: 0.28rem;
+  border-bottom: 1px solid rgba(197, 164, 109, 0.2);
   background:
-    radial-gradient(ellipse 132% 120% at 50% -48%, rgba(205, 168, 109, 0.16) 0%, transparent 58%),
-    linear-gradient(176deg, rgba(8, 16, 30, 0.62) 0%, rgba(6, 12, 24, 0.72) 100%);
-  backdrop-filter: blur(16px) saturate(1.14);
-  -webkit-backdrop-filter: blur(16px) saturate(1.14);
-  border-bottom-color: rgba(226, 198, 155, 0.38);
+    radial-gradient(ellipse 100% 160% at 50% -80%, rgba(197, 164, 109, 0.06) 0%, transparent 52%),
+    linear-gradient(180deg, #0a0a0a 0%, #000000 100%);
+  backdrop-filter: blur(10px) saturate(1.05);
+  -webkit-backdrop-filter: blur(10px) saturate(1.05);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(206, 173, 118, 0.18),
-    0 12px 28px rgba(0, 0, 0, 0.22);
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+}
+
+.navbar--transparent .navbar__ticker::before {
+  opacity: 0.35;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.035) 50%, transparent 100%);
+}
+
+.navbar--transparent > .navbar__ticker:first-child {
+  border-top-color: rgba(255, 255, 255, 0.05);
 }
 
 .navbar__ticker-viewport {
@@ -89,39 +98,58 @@
   flex-wrap: nowrap;
   align-items: center;
   flex-shrink: 0;
-  padding: 0.45rem 3rem 0.48rem 0;
+  padding: clamp(0.58rem, 1.35vw, 0.72rem) 3rem clamp(0.6rem, 1.4vw, 0.75rem) 0;
   gap: 0;
 }
 
 .navbar__ticker-chip {
   flex-shrink: 0;
   font-family: 'Montserrat', var(--font-sans), system-ui, sans-serif;
-  font-size: clamp(0.62rem, 0.15rem + 0.55vw, 0.76rem);
-  font-weight: 650;
-  letter-spacing: 0.12em;
+  font-size: clamp(0.68rem, 0.18rem + 0.58vw, 0.84rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(251, 246, 237, 0.98);
+  color: rgba(252, 248, 240, 0.96);
   text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.44),
-    0 0 18px rgba(195, 158, 99, 0.16);
+    0 1px 2px rgba(0, 0, 0, 0.65),
+    0 0 20px rgba(0, 0, 0, 0.35);
   white-space: nowrap;
+}
+
+.navbar--transparent .navbar__ticker-chip {
+  color: rgba(255, 251, 243, 0.94);
+  font-weight: 700;
+  letter-spacing: 0.095em;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.7),
+    0 0 1px rgba(0, 0, 0, 0.5);
 }
 
 .navbar__ticker-chip + .navbar__ticker-chip::before {
   content: '';
   display: inline-block;
-  width: 2px;
-  height: 0.6em;
-  margin: 0 1.12rem;
+  width: 1px;
+  height: 0.72em;
+  margin: 0 1.1rem;
   border-radius: 1px;
   background: linear-gradient(
     180deg,
-    rgba(241, 223, 192, 0.24) 0%,
-    rgba(204, 166, 106, 0.82) 50%,
-    rgba(241, 223, 192, 0.24) 100%
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(197, 164, 109, 0.42) 50%,
+    rgba(255, 255, 255, 0.06) 100%
   );
   vertical-align: -0.08em;
-  opacity: 1;
+  opacity: 0.95;
+}
+
+.navbar--transparent .navbar__ticker-chip + .navbar__ticker-chip::before {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(197, 164, 109, 0.32) 50%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  opacity: 0.85;
 }
 
 @keyframes navbar-ticker-marquee {
@@ -141,7 +169,7 @@
     width: 100%;
     max-width: min(1180px, 100%);
     margin-inline: auto;
-    padding: 0.42rem 0.85rem 0.48rem;
+    padding: 0.52rem 0.85rem 0.56rem;
     box-sizing: border-box;
   }
 
@@ -159,7 +187,7 @@
   .navbar__ticker-chip {
     white-space: normal;
     text-align: center;
-    font-size: 0.64rem;
+    font-size: 0.7rem;
     letter-spacing: 0.08em;
     font-weight: 600;
     max-width: 16rem;
@@ -186,11 +214,13 @@
 
 @media (max-width: 600px) {
   .navbar__ticker-chip {
-    font-size: clamp(0.58rem, 1.9vw, 0.64rem);
-    letter-spacing: 0.07em;
+    font-size: clamp(0.62rem, 2.1vw, 0.7rem);
+    letter-spacing: 0.075em;
   }
 
   .navbar__ticker-row {
+    padding-top: clamp(0.5rem, 2vw, 0.62rem);
+    padding-bottom: clamp(0.52rem, 2vw, 0.64rem);
     padding-right: 2rem;
   }
 }
@@ -500,10 +530,10 @@
   padding: 0.08rem;
 }
 
-/* Transparent hero: main row layout */
+/* Transparent hero: main row layout — logo column `auto` so tall wordmark is never squeezed by 1fr */
 .navbar--transparent .navbar__inner {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   min-height: 80px;
   padding-left: max(24px, env(safe-area-inset-left, 0px));
@@ -511,11 +541,11 @@
   gap: clamp(0.5rem, 1.35vw, 1.15rem);
 }
 
-/* Hero top: no glass capsule — float logo + controls on video; glass applies on scroll only */
+/* Hero top: min-height fits clamp(66px…100px) logo + vertical padding (avoids top/bottom clip) */
 .navbar--transparent:not(.navbar--home-scrolled) .navbar__inner {
-  padding-top: 0.28rem;
-  padding-bottom: 0.26rem;
-  min-height: 84px;
+  padding-top: clamp(0.32rem, 1vw, 0.5rem);
+  padding-bottom: clamp(0.32rem, 1vw, 0.5rem);
+  min-height: clamp(6.75rem, 12vh, 8.25rem);
 }
 
 .navbar__logo {
@@ -544,6 +574,8 @@
   gap: 0;
   max-width: min(440px, 84vw);
   flex-shrink: 0;
+  min-width: min-content;
+  align-self: center;
   overflow: visible;
   z-index: 2;
 }
@@ -566,12 +598,12 @@
     drop-shadow(0 2px 10px rgba(0, 0, 0, 0.2));
 }
 
-/* Home hero: larger lockup — only while transparent (pre-scroll) */
+/* Home hero: larger lockup — only while transparent (pre-scroll); slight drop for optical fit on video */
 .navbar--transparent .navbar__logo img {
   height: clamp(66px, 9.4vw, 100px);
   width: auto;
   max-width: min(440px, 84vw);
-  transform: translate3d(0, 0, 0) scale(1);
+  transform: translate3d(0, clamp(0.28rem, 0.75vh, 0.55rem), 0) scale(1);
   transform-origin: center center;
   filter: drop-shadow(0 3px 14px rgba(0, 0, 0, 0.35)) drop-shadow(0 0 1px rgba(255, 255, 255, 0.12));
 }
@@ -1325,11 +1357,12 @@
 
   .navbar--transparent .navbar__inner {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
     row-gap: 0.35rem;
-    padding-top: 0.2rem;
-    padding-bottom: 0.28rem;
+    padding-top: clamp(0.22rem, 1.5vw, 0.42rem);
+    padding-bottom: clamp(0.22rem, 1.5vw, 0.42rem);
+    min-height: clamp(5.75rem, 11vw, 7rem);
     padding-left: max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(12px, env(safe-area-inset-right, 0px));
   }
@@ -1364,7 +1397,7 @@
   .navbar--transparent .navbar__logo img {
     height: clamp(58px, 11.2vw, 90px);
     max-width: min(82vw, 400px);
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, clamp(0.2rem, 0.65vh, 0.45rem), 0) scale(1);
   }
 
   .navbar--home-scrolled .navbar__logo img {

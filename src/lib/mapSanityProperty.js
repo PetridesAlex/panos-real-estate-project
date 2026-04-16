@@ -88,7 +88,6 @@ export function mapSanityProperty(item, index) {
     brochureUrl,
     brochureFilename,
     featured: Boolean(item.featured),
-    isNewDevelopment: Boolean(item.newDevelopment),
     isSignature: Boolean(item.signature),
     category: formatPropertyType(item.propertyType),
     yearBuilt: toNumber(item.yearBuilt),
@@ -107,7 +106,6 @@ export function mergeSanityAndStaticProperties(staticItems, sanityMapped) {
   for (const p of staticItems) {
     bySlug.set(p.slug, {
       ...p,
-      isNewDevelopment: Boolean(p.isNewDevelopment),
       source: 'static',
     })
   }

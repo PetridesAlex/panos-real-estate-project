@@ -1,7 +1,14 @@
 import type {StructureResolver} from 'sanity/structure'
 import {HomeIcon, ImagesIcon} from '@sanity/icons'
 
-const HIDDEN_TYPES = new Set(['property', 'development', 'bazarakiSettings', 'mediaCleanupHelp', 'media.tag'])
+/** Hide desk duplicates + legacy types (even if an old dataset still contains those documents). */
+const HIDDEN_TYPES = new Set([
+  'property',
+  'mediaCleanupHelp',
+  'media.tag',
+  'development',
+  'bazarakiSettings',
+])
 
 /**
  * Desk sidebar: same `property` documents appear in more than one list when they match
@@ -12,15 +19,6 @@ export const structure: StructureResolver = (S) =>
   S.list()
     .title('Content')
     .items([
-      S.listItem()
-        .title('Bazaraki integration')
-        .id('bazarakiSettingsSingleton')
-        .child(
-          S.document().schemaType('bazarakiSettings').documentId('bazarakiSettings').title('Bazaraki integration'),
-        ),
-
-      S.divider(),
-
       S.listItem()
         .title('Properties')
         .icon(HomeIcon)
@@ -75,27 +73,6 @@ export const structure: StructureResolver = (S) =>
                     .title('Signature collection — “Signature listing” is on')
                     .filter('_type == "property" && signature == true'),
                 ),
-
-              S.listItem()
-                .title('New development (off-plan units)')
-                .id('properties-new-development')
-                .schemaType('property')
-                .child(
-                  S.documentList()
-                    .title('New development listings — flag on the property')
-                    .filter('_type == "property" && newDevelopment == true'),
-                ),
-
-              S.divider(),
-
-              S.listItem()
-                .title('Bazaraki feed (flagged)')
-                .schemaType('property')
-                .child(
-                  S.documentList()
-                    .title('Include in Bazaraki XML')
-                    .filter('_type == "property" && publishToBazaraki == true'),
-                ),
             ]),
         ),
 
@@ -129,13 +106,6 @@ export const structure: StructureResolver = (S) =>
         .title('Media cleanup help')
         .id('mediaCleanupHelpSingleton')
         .child(S.document().schemaType('mediaCleanupHelp').documentId('mediaCleanupHelp').title('Media cleanup help')),
-
-      S.divider(),
-
-      S.listItem()
-        .title('Development projects')
-        .schemaType('development')
-        .child(S.documentTypeList('development').title('Development projects (schemas)')),
 
       S.divider(),
 

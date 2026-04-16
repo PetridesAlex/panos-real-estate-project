@@ -39,6 +39,7 @@ function PropertyCard({
   const streetAddress = property.address || property.title
   const showSignaturePill = Boolean(property.featured || property.isSignature)
   const sqft = sqmToSqft(property.sqm)
+  const coverDescription = (property.description || '').trim()
 
   const coverLinkLabel = `View listing: ${property.title}`
 
@@ -75,6 +76,9 @@ function PropertyCard({
               {streetAddress}
               {property.location ? `, ${property.location}` : ''}
             </p>
+            {coverDescription ? (
+              <p className="property-card__cover-description">{coverDescription}</p>
+            ) : null}
             <p className="property-card__specs-line" aria-label="Bedrooms, bathrooms, and size">
               <span>{property.bedrooms} BEDS</span>
               <span className="property-card__specs-dot" aria-hidden="true">

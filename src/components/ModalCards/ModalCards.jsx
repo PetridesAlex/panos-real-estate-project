@@ -83,7 +83,7 @@ export default function ModalCards({ cards = [], className }) {
                 <img
                   className="modal-expanded-image"
                   src={selected.imageUrl}
-                  alt=""
+                  alt={selected.title}
                   loading="eager"
                 />
                 <div className="modal-expanded-overlay">
@@ -157,7 +157,7 @@ export default function ModalCards({ cards = [], className }) {
               }
             }}
           >
-            <img className="modal-card-image" src={card.imageUrl} alt="" loading="lazy" />
+            <img className="modal-card-image" src={card.imageUrl} alt={card.title} loading="lazy" />
             <div className="modal-card-overlay">
               <div className="modal-card-content">
                 <h3 className="modal-card-title">{card.title}</h3>

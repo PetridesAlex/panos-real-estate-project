@@ -38,7 +38,7 @@ const PREMIUM_SERVICES_TICKER = [
   'Luxury sales & long-term lettings',
   'Private valuations & viewings',
   'Investment & relocation advisory',
-  'Off-plan & new developments',
+  'Featured listings & signature collection',
   'International private clients',
   'Concierge property management',
 ]
@@ -184,7 +184,6 @@ function Navbar() {
                 { label: 'About', link: '/about' },
                 { label: 'Contact', link: '/contact' },
                 { label: 'Properties', link: '/properties' },
-                { label: 'New Development', link: '/new-developments' },
                 { label: 'Agents', link: '/agents' },
               ]}
               socialItems={[
