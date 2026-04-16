@@ -177,7 +177,7 @@
 @media (max-width: 640px) {
   .hero-section {
     --hero-media-radius: clamp(8px, 2.2vw, 14px);
-    --hero-frame-top-gap: max(env(safe-area-inset-top, 0px), clamp(3.05rem, 9vw, 4.1rem));
+    --hero-frame-top-gap: max(env(safe-area-inset-top, 0px), clamp(2.4rem, 7vw, 3.2rem));
     --hero-frame-gap: 0px;
     --hero-frame-bottom-gap: 0.28rem;
   }
