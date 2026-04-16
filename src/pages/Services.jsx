@@ -4,6 +4,14 @@ import ServiceCard from '../components/ServiceCard/ServiceCard'
 import CTASection from '../components/CTASection/CTASection'
 import { services } from '../data/services'
 
+const serviceAnchorByTitle = {
+  'Property Sales': 'buy-with-us',
+  'Luxury Portfolio Representation': 'sell-with-us',
+  'Investment Advisory': 'invest-with-us',
+  'Luxury Rentals': 'rent-your-property',
+  'Property Management': 'property-management',
+}
+
 function Services() {
   return (
     <>
@@ -33,7 +41,7 @@ function Services() {
               <ServiceCard
                 key={service.id}
                 service={service}
-                id={service.title === 'Property Management' ? 'property-management' : undefined}
+                id={serviceAnchorByTitle[service.title]}
               />
             ))}
           </div>

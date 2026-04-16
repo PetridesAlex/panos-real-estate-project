@@ -346,11 +346,11 @@
   text-decoration: none;
   font-family: 'Montserrat', var(--font-sans), system-ui, sans-serif;
   font-feature-settings: 'kern' 1;
-  font-weight: 700;
-  font-size: clamp(1.5rem, 3.2vw, 2.2rem);
-  line-height: 1.18;
-  letter-spacing: 0.02em;
-  text-transform: none;
+  font-weight: 750;
+  font-size: clamp(1.22rem, 2.2vw, 1.7rem);
+  line-height: 1.1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   padding: 0.42rem 0;
   transition: color var(--transition-fast), transform var(--transition-fast);
 }
@@ -489,7 +489,7 @@
   }
 
   .smenu-panel-item {
-    font-size: clamp(1.45rem, 5.4vw, 2.1rem);
+    font-size: clamp(1.14rem, 3.4vw, 1.48rem);
   }
 }
 
@@ -513,6 +513,7 @@
   }
 
   .smenu-panel-item {
-    font-size: clamp(1.22rem, 7.4vw, 1.75rem);
+    font-size: clamp(1.02rem, 5.6vw, 1.24rem);
+    letter-spacing: 0.09em;
   }
 }

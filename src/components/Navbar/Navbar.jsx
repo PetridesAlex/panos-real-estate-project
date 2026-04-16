@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Search } from 'lucide-react'
+import { ChevronDown, Search } from 'lucide-react'
 import StaggeredMenu from '../StaggeredMenu/StaggeredMenu'
 import { TELEGRAM_CHAT_URL, WHATSAPP_CHAT_URL } from '../../config/externalLinks'
 import './Navbar.css'
@@ -13,6 +13,13 @@ const CENTER_NAV_LINKS = [
   { label: 'Property Management', to: '/services#property-management' },
   { label: 'About', to: '/about' },
   { label: 'Contact', to: '/contact' },
+]
+
+const SERVICES_DROPDOWN_LINKS = [
+  { label: 'Buy with us', to: '/buy' },
+  { label: 'Sell with us', to: '/services#sell-with-us' },
+  { label: 'Invest with us', to: '/services#invest-with-us' },
+  { label: 'Rent your property', to: '/services#rent-your-property' },
 ]
 
 function isCenterNavActive(pathname, hash, to) {
@@ -97,14 +104,58 @@ function Navbar() {
           <ul className="navbar__center-list">
             {CENTER_NAV_LINKS.map((item) => {
               const active = isCenterNavActive(location.pathname, location.hash, item.to)
+              const isServicesItem = item.to === '/services'
               return (
-                <li key={item.to}>
-                  <Link
-                    className={`navbar__center-link${active ? ' navbar__center-link--active' : ''}`}
-                    to={item.to}
-                  >
-                    {item.label}
-                  </Link>
+                <li
+                  key={item.to}
+                  className={`navbar__center-item${
+                    isServicesItem ? ' navbar__center-item--has-dropdown' : ''
+                  }`}
+                >
+                  {isServicesItem ? (
+                    <div className="navbar__center-dropdown">
+                      <Link
+                        className={`navbar__center-link navbar__center-link--with-caret${
+                          active ? ' navbar__center-link--active' : ''
+                        }`}
+                        to={item.to}
+                        aria-haspopup="true"
+                      >
+                        <span>{item.label}</span>
+                        <ChevronDown size={14} aria-hidden="true" />
+                      </Link>
+
+                      <div className="navbar__center-dropdown-menu" role="menu" aria-label="Services links">
+                        {SERVICES_DROPDOWN_LINKS.map((serviceLink) => {
+                          const serviceActive = isCenterNavActive(
+                            location.pathname,
+                            location.hash,
+                            serviceLink.to,
+                          )
+
+                          return (
+                            <Link
+                              key={serviceLink.to}
+                              className={`navbar__center-dropdown-item${
+                                serviceActive ? ' navbar__center-dropdown-item--active' : ''
+                              }`}
+                              to={serviceLink.to}
+                              role="menuitem"
+                            >
+                              {serviceLink.label}
+                            </Link>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    <Link
+                      className={`navbar__center-link${active ? ' navbar__center-link--active' : ''}`}
+                      to={item.to}
+                    >
+                      {item.label}
+                    </Link>
+                  )}
                 </li>
               )
             })}
