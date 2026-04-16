@@ -21,33 +21,49 @@
 
 /* Premium services — strip above main nav; marquee scrolls right → left */
 .navbar__ticker {
+  position: relative;
   width: 100%;
   max-width: 100%;
   margin-bottom: 0.35rem;
   border-top: none;
-  border-bottom: 1px solid rgba(191, 152, 117, 0.2);
-  background: linear-gradient(180deg, rgba(7, 12, 22, 0.96) 0%, rgba(5, 9, 16, 0.98) 100%);
+  border-bottom: 1px solid rgba(211, 179, 129, 0.36);
+  background:
+    radial-gradient(ellipse 140% 120% at 50% -40%, rgba(205, 168, 109, 0.2) 0%, transparent 58%),
+    linear-gradient(176deg, rgba(13, 24, 42, 0.96) 0%, rgba(9, 16, 30, 0.98) 48%, rgba(7, 12, 24, 0.99) 100%);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.045),
-    0 4px 14px rgba(0, 0, 0, 0.12);
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(205, 168, 109, 0.2),
+    0 10px 24px rgba(2, 7, 15, 0.26);
   font-family: 'Montserrat', var(--font-sans), system-ui, sans-serif;
   font-feature-settings: 'kern' 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+.navbar__ticker::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 245, 225, 0.08) 50%, transparent 100%);
+  opacity: 0.72;
+}
+
 .navbar > .navbar__ticker:first-child {
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  border-top: 1px solid rgba(255, 255, 255, 0.13);
 }
 
 .navbar--transparent .navbar__ticker {
-  background: rgba(4, 10, 20, 0.58);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom-color: rgba(255, 255, 255, 0.1);
+  background:
+    radial-gradient(ellipse 132% 120% at 50% -48%, rgba(205, 168, 109, 0.16) 0%, transparent 58%),
+    linear-gradient(176deg, rgba(8, 16, 30, 0.62) 0%, rgba(6, 12, 24, 0.72) 100%);
+  backdrop-filter: blur(16px) saturate(1.14);
+  -webkit-backdrop-filter: blur(16px) saturate(1.14);
+  border-bottom-color: rgba(226, 198, 155, 0.38);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 6px 20px rgba(0, 0, 0, 0.18);
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(206, 173, 118, 0.18),
+    0 12px 28px rgba(0, 0, 0, 0.22);
 }
 
 .navbar__ticker-viewport {
@@ -81,31 +97,31 @@
   flex-shrink: 0;
   font-family: 'Montserrat', var(--font-sans), system-ui, sans-serif;
   font-size: clamp(0.62rem, 0.15rem + 0.55vw, 0.76rem);
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-weight: 650;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(248, 242, 232, 0.94);
+  color: rgba(251, 246, 237, 0.98);
   text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.45),
-    0 0 20px rgba(0, 0, 0, 0.15);
+    0 1px 2px rgba(0, 0, 0, 0.44),
+    0 0 18px rgba(195, 158, 99, 0.16);
   white-space: nowrap;
 }
 
 .navbar__ticker-chip + .navbar__ticker-chip::before {
   content: '';
   display: inline-block;
-  width: 1px;
-  height: 0.65em;
-  margin: 0 1.05rem;
+  width: 2px;
+  height: 0.6em;
+  margin: 0 1.12rem;
   border-radius: 1px;
   background: linear-gradient(
     180deg,
-    rgba(216, 196, 166, 0.15) 0%,
-    rgba(191, 152, 117, 0.55) 50%,
-    rgba(216, 196, 166, 0.15) 100%
+    rgba(241, 223, 192, 0.24) 0%,
+    rgba(204, 166, 106, 0.82) 50%,
+    rgba(241, 223, 192, 0.24) 100%
   );
   vertical-align: -0.08em;
-  opacity: 0.95;
+  opacity: 1;
 }
 
 @keyframes navbar-ticker-marquee {
@@ -382,7 +398,7 @@
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   min-height: 80px;
-  padding-left: max(15px, env(safe-area-inset-left, 0px));
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
   padding-right: max(15px, env(safe-area-inset-right, 0px));
   gap: clamp(0.5rem, 1.35vw, 1.15rem);
 }
@@ -444,7 +460,7 @@
 
 /* Home hero: larger lockup — only while transparent (pre-scroll) */
 .navbar--transparent .navbar__logo img {
-  height: clamp(76px, 11vw, 118px);
+  height: clamp(66px, 9.4vw, 100px);
   width: auto;
   max-width: min(440px, 84vw);
   transform: translate3d(0, 0, 0) scale(1);
@@ -1206,7 +1222,7 @@
     row-gap: 0.35rem;
     padding-top: 0.2rem;
     padding-bottom: 0.28rem;
-    padding-left: max(12px, env(safe-area-inset-left, 0px));
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(12px, env(safe-area-inset-right, 0px));
   }
 
@@ -1238,7 +1254,7 @@
   }
 
   .navbar--transparent .navbar__logo img {
-    height: clamp(64px, 13vw, 100px);
+    height: clamp(58px, 11.2vw, 90px);
     max-width: min(82vw, 400px);
     transform: translate3d(0, 0, 0) scale(1);
   }

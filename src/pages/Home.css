@@ -113,25 +113,12 @@
   font-size: clamp(1rem, 1.15vw, 1.075rem);
 }
 
-/* Center hub: soft gold halo behind logo (static; animated glow stays subtle in JS) */
+/* Center hub: keep logo presentation clean, no decorative halo */
 .home-center-flow-section .center-flow-center.home-center-flow__center-hub {
   overflow: visible;
-}
-
-.home-center-flow-section .center-flow-center.home-center-flow__center-hub::after {
-  content: '';
-  position: absolute;
-  inset: -36%;
-  border-radius: inherit;
-  background: radial-gradient(
-    circle at 50% 50%,
-    rgba(226, 194, 134, 0.42) 0%,
-    rgba(197, 164, 109, 0.3) 34%,
-    rgba(168, 152, 184, 0.12) 56%,
-    transparent 74%
-  );
-  pointer-events: none;
-  z-index: 0;
+  border: 1.5px solid rgba(255, 255, 255, 0.9) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
 }
 
 .home-center-flow-section .center-flow-center {
@@ -145,17 +132,17 @@
 
 .home-center-flow__logo {
   display: block;
-  width: 70%;
+  width: 76%;
   height: auto;
-  max-width: 7.75rem;
-  min-width: 4.25rem;
-  min-height: 2.75rem;
+  max-width: 8.25rem;
+  min-width: 4.65rem;
+  min-height: 3rem;
   object-fit: contain;
   object-position: center;
   flex-shrink: 0;
   position: relative;
   z-index: 1;
-  filter: drop-shadow(0 2px 14px rgba(197, 164, 109, 0.22));
+  filter: none;
 }
 
 .home-center-flow-section .center-flow-node {
@@ -213,6 +200,53 @@
     transform 0.28s ease;
 }
 
+.home-center-flow__node-link--rent {
+  color: #f7f2e7;
+  background:
+    radial-gradient(circle at 90% 4%, rgba(219, 183, 124, 0.24) 0%, transparent 48%),
+    radial-gradient(circle at 8% 88%, rgba(102, 195, 174, 0.2) 0%, transparent 42%),
+    linear-gradient(156deg, #163743 0%, #1e5053 54%, #225d5f 100%);
+  border-color: rgba(210, 176, 120, 0.58);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(9, 28, 30, 0.48),
+    0 0 0 1px rgba(214, 184, 132, 0.16),
+    0 16px 36px rgba(3, 12, 14, 0.42),
+    0 8px 18px rgba(20, 74, 77, 0.32);
+}
+
+.home-center-flow__node-link--rent::before,
+.home-center-flow__node-link--rent::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.home-center-flow__node-link--rent::before {
+  width: 88%;
+  height: 88%;
+  top: -42%;
+  right: -34%;
+  border-radius: 26px;
+  transform: rotate(24deg);
+  background: linear-gradient(
+    145deg,
+    rgba(236, 216, 182, 0.46) 0%,
+    rgba(236, 216, 182, 0.12) 52%,
+    transparent 100%
+  );
+}
+
+.home-center-flow__node-link--rent::after {
+  width: 70%;
+  height: 70%;
+  left: -28%;
+  bottom: -32%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(118, 218, 196, 0.24) 0%, transparent 72%);
+}
+
 .home-center-flow__node-link:hover {
   color: var(--ucf-text);
   /* Hover: shift to warm champagne + gold rim (clear contrast from ice blue) */
@@ -234,6 +268,21 @@
   transform: translateY(-3px);
 }
 
+.home-center-flow__node-link--rent:hover {
+  color: #fff8ee;
+  background:
+    radial-gradient(circle at 92% 10%, rgba(234, 205, 156, 0.36) 0%, transparent 54%),
+    radial-gradient(circle at 8% 94%, rgba(123, 218, 199, 0.26) 0%, transparent 48%),
+    linear-gradient(156deg, #1b4348 0%, #245e61 54%, #2c6d67 100%);
+  border-color: rgba(224, 194, 146, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    inset 0 -1px 0 rgba(10, 30, 33, 0.52),
+    0 0 0 1px rgba(234, 207, 163, 0.34),
+    0 22px 48px rgba(3, 12, 14, 0.46),
+    0 10px 24px rgba(44, 109, 103, 0.38);
+}
+
 .home-center-flow__node-link:active {
   transform: translateY(0);
   box-shadow:
@@ -248,6 +297,14 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.9),
     0 0 0 3px rgba(130, 175, 220, 0.35),
     0 14px 36px rgba(7, 12, 22, 0.26);
+}
+
+.home-center-flow__node-link--rent:focus-visible {
+  border-color: rgba(224, 194, 146, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 0 0 3px rgba(214, 184, 132, 0.34),
+    0 16px 38px rgba(3, 12, 14, 0.4);
 }
 
 .home-center-flow__node-title {
@@ -277,6 +334,23 @@
 
 .home-center-flow__node-link:hover .home-center-flow__node-phrase {
   color: rgba(95, 85, 70, 0.88);
+}
+
+.home-center-flow__node-link--rent .home-center-flow__node-title {
+  color: #f7f2e7;
+  text-shadow: 0 2px 8px rgba(6, 19, 22, 0.34);
+}
+
+.home-center-flow__node-link--rent .home-center-flow__node-phrase {
+  color: rgba(241, 234, 220, 0.86);
+}
+
+.home-center-flow__node-link--rent:hover .home-center-flow__node-title {
+  color: #fff8ee;
+}
+
+.home-center-flow__node-link--rent:hover .home-center-flow__node-phrase {
+  color: rgba(255, 249, 239, 0.92);
 }
 
 @media (max-width: 640px) {

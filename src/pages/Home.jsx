@@ -84,7 +84,7 @@ function Home() {
       homeCenterFlowLinks.map((item) => ({
         content: (
           <Link
-            className="home-center-flow__node-link"
+            className="home-center-flow__node-link home-center-flow__node-link--rent"
             to={item.to}
             aria-label={`${item.title}: ${item.phrase}`}
           >
