@@ -395,6 +395,12 @@
   }
 }
 
+@media (max-width: 1023px) {
+  .home-center-flow-section {
+    display: none;
+  }
+}
+
 .home-featured-container {
   width: min(1820px, 96vw);
 }
