@@ -1,6 +1,7 @@
 /**
- * Rasterizes the brand SVG onto a square canvas and writes PNGs under public/favicon_io/
- * (matches index.html + site.webmanifest). Run: npm run generate:favicons
+ * Rasterizes public/images/logo/United_Properties_v2.1.svg (same asset as index.html SVG favicon)
+ * onto a transparent square and writes PNGs under public/favicon_io/ for fallbacks, Open Graph,
+ * apple-touch-icon, and site.webmanifest. Run: npm run generate:favicons
  */
 import fs from "fs";
 import path from "path";
