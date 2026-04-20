@@ -1,30 +1,38 @@
 /**
- * Rasterizes public/images/logo/United_Properties_v2.1.svg (same asset as index.html SVG favicon)
- * onto a transparent square and writes PNGs under public/favicon_io/ for fallbacks, Open Graph,
- * apple-touch-icon, and site.webmanifest. Run: npm run generate:favicons
+ * Builds favicon and PWA/social PNGs from the canonical mark:
+ * public/favicon_io/United_Properties_symbol_v1.png
+ *
+ * Writes:
+ * - public/favicon.ico (16+32 for browsers / Google)
+ * - public/favicon.png (32×32)
+ * - public/favicon_io/*.png (16, 32, 180 apple-touch, 192, 512 for manifest & sharing)
+ *
+ * Run: npm run generate:favicons
  */
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
+import toIco from "to-ico";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 const publicDir = path.join(root, "public");
-const svgPath = path.join(publicDir, "images/logo/United_Properties_v2.1.svg");
 const faviconDir = path.join(publicDir, "favicon_io");
+const sourcePng = path.join(faviconDir, "United_Properties_symbol_v1.png");
 
-const TRANSPARENT = { r: 0, g: 0, b: 0, alpha: 0 };
+/** Matches the mark’s solid background so letterboxing stays invisible */
+const BG = { r: 0, g: 0, b: 0, alpha: 1 };
 /** Inset so the mark does not touch the square edge */
 const PADDING = 0.1;
 
 async function pngSquare(size) {
-  const svg = fs.readFileSync(svgPath);
-  const inner = Math.round(size * (1 - 2 * PADDING));
-  const foreground = await sharp(svg)
+  const input = fs.readFileSync(sourcePng);
+  const inner = Math.max(1, Math.round(size * (1 - 2 * PADDING)));
+  const foreground = await sharp(input)
     .resize(inner, inner, {
       fit: "contain",
-      background: TRANSPARENT,
+      background: BG,
     })
     .png()
     .toBuffer();
@@ -34,7 +42,7 @@ async function pngSquare(size) {
       width: size,
       height: size,
       channels: 4,
-      background: TRANSPARENT,
+      background: BG,
     },
   })
     .composite([{ input: foreground, gravity: "center" }])
@@ -43,8 +51,8 @@ async function pngSquare(size) {
 }
 
 async function main() {
-  if (!fs.existsSync(svgPath)) {
-    console.error("Missing SVG:", svgPath);
+  if (!fs.existsSync(sourcePng)) {
+    console.error("Missing source PNG:", sourcePng);
     process.exit(1);
   }
   fs.mkdirSync(faviconDir, { recursive: true });
@@ -62,6 +70,14 @@ async function main() {
     fs.writeFileSync(path.join(faviconDir, name), buf);
     console.log("wrote", path.join("public/favicon_io", name));
   }
+
+  const favicon16 = await pngSquare(16);
+  const favicon32 = await pngSquare(32);
+  fs.writeFileSync(path.join(publicDir, "favicon.png"), favicon32);
+  console.log("wrote public/favicon.png");
+  const icoBuf = await toIco([favicon16, favicon32]);
+  fs.writeFileSync(path.join(publicDir, "favicon.ico"), icoBuf);
+  console.log("wrote public/favicon.ico");
 }
 
 main().catch((err) => {
