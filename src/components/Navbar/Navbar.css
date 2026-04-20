@@ -24,7 +24,7 @@
   position: relative;
   width: 100%;
   max-width: 100%;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.1rem;
   border-top: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   background:
@@ -54,7 +54,7 @@
 
 /* Home over black hero: flat black family, whisper of gold, light edge */
 .navbar--transparent .navbar__ticker {
-  margin-bottom: 0.28rem;
+  margin-bottom: 0.08rem;
   border-bottom: 1px solid rgba(197, 164, 109, 0.2);
   background:
     radial-gradient(ellipse 100% 160% at 50% -80%, rgba(197, 164, 109, 0.06) 0%, transparent 52%),
@@ -98,14 +98,14 @@
   flex-wrap: nowrap;
   align-items: center;
   flex-shrink: 0;
-  padding: clamp(0.58rem, 1.35vw, 0.72rem) 3rem clamp(0.6rem, 1.4vw, 0.75rem) 0;
+  padding: clamp(0.78rem, 1.85vw, 1.05rem) 3rem clamp(0.82rem, 1.9vw, 1.08rem) 0;
   gap: 0;
 }
 
 .navbar__ticker-chip {
   flex-shrink: 0;
   font-family: 'Montserrat', var(--font-sans), system-ui, sans-serif;
-  font-size: clamp(0.68rem, 0.18rem + 0.58vw, 0.84rem);
+  font-size: clamp(0.74rem, 0.2rem + 0.62vw, 0.9rem);
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -169,7 +169,7 @@
     width: 100%;
     max-width: min(1180px, 100%);
     margin-inline: auto;
-    padding: 0.52rem 0.85rem 0.56rem;
+    padding: 0.68rem 0.85rem 0.72rem;
     box-sizing: border-box;
   }
 
@@ -214,13 +214,13 @@
 
 @media (max-width: 600px) {
   .navbar__ticker-chip {
-    font-size: clamp(0.62rem, 2.1vw, 0.7rem);
+    font-size: clamp(0.66rem, 2.35vw, 0.76rem);
     letter-spacing: 0.075em;
   }
 
   .navbar__ticker-row {
-    padding-top: clamp(0.5rem, 2vw, 0.62rem);
-    padding-bottom: clamp(0.52rem, 2vw, 0.64rem);
+    padding-top: clamp(0.66rem, 2.6vw, 0.82rem);
+    padding-bottom: clamp(0.68rem, 2.65vw, 0.85rem);
     padding-right: 2rem;
   }
 }

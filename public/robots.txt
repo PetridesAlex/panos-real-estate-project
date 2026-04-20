@@ -1,6 +1,12 @@
 User-agent: *
 Allow: /
 
+# Favicon: single file at site root (matches <link rel="icon" href="/favicon.ico" />)
+Allow: /favicon.ico
+
+# Static images under /public/images (e.g. Open Graph / Twitter hero image paths)
+Allow: /images/
+
 # Optional crawler budget protection for query-heavy URLs
 Disallow: /*?*mode=
 Disallow: /*?*featured=
