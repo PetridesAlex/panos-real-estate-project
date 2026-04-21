@@ -300,7 +300,7 @@ function Home() {
           <SectionHeader
             eyebrow="Advisory Team"
             title="Experienced Professionals"
-            description="Specialist consultants in prime residential, development, and cross-border transactions."
+            description="Specialist consultants in prime residential, investment sales, and cross-border transactions."
           />
           <div className="grid-3">
             {featuredAgents.map((agent) => (

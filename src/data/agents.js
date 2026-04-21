@@ -27,7 +27,7 @@ export const agents = [
     id: 3,
     name: 'Marios Petrou',
     role: 'Investment Advisor',
-    specialization: 'Development and Yield Investments',
+    specialization: 'Project & Yield Investments',
     bio: 'Supports international investors with portfolio strategy, market due diligence, and acquisition structuring.',
     phone: '+357 99 120 212',
     email: 'marios@unitedproperties.eu',

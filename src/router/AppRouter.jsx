@@ -19,6 +19,8 @@ function AppRouter() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/new-developments" element={<Navigate to="/properties" replace />} />
+      <Route path="/developments" element={<Navigate to="/properties" replace />} />
       <Route path="/buy" element={<Properties />} />
       <Route path="/rent" element={<Properties />} />
       <Route path="/featured-properties" element={<Properties />} />

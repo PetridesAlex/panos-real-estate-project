@@ -69,9 +69,9 @@ export const services = [
   },
   {
     id: 9,
-    title: 'Development Marketing',
+    title: 'Project Marketing',
     description:
-      'Brand-to-market launch strategy and sales execution for new developments.',
+      'Brand-to-market launch strategy and sales execution for residential projects and launches.',
     icon: BriefcaseBusiness,
   },
 ]

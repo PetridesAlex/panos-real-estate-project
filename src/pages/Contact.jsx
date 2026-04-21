@@ -49,7 +49,7 @@ function Contact() {
           <p>Contact</p>
           <h1>Start a Private Real Estate Consultation</h1>
           <p>
-            Connect with our team for sales, rentals, developments, relocation, and
+            Connect with our team for sales, rentals, relocation, and
             investment strategy in Cyprus.
           </p>
         </div>

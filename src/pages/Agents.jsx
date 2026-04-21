@@ -30,7 +30,7 @@ function Agents() {
           <p>Advisory Team</p>
           <h1>Meet Our Real Estate Professionals</h1>
           <p>
-            Specialists in luxury homes, investments, developments, and international
+            Specialists in luxury homes, investments, portfolio strategy, and international
             client guidance across Cyprus.
           </p>
         </div>

@@ -1,4 +1,16 @@
 {
+  "redirects": [
+    {
+      "source": "/new-developments",
+      "destination": "/properties",
+      "permanent": true
+    },
+    {
+      "source": "/developments",
+      "destination": "/properties",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/sitemap.xml",
