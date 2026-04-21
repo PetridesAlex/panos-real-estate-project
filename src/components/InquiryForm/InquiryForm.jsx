@@ -1,5 +1,6 @@
 import {useState} from 'react'
 import {Clock, Lock, Send, Sparkles} from 'lucide-react'
+import {getInquiryPostUrl} from '../../lib/inquiryEndpoint'
 import './InquiryForm.css'
 
 function InquiryForm({ className = '' }) {
@@ -16,7 +17,7 @@ function InquiryForm({ className = '' }) {
     setResult({type: '', message: ''})
 
     try {
-      const res = await fetch('/api/inquiries', {
+      const res = await fetch(getInquiryPostUrl(), {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(payload),

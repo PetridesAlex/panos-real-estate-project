@@ -5,7 +5,22 @@ const SANITY_DATASET = process.env.SANITY_DATASET || 'production'
 const SANITY_API_VERSION = process.env.SANITY_API_VERSION || '2024-01-01'
 const SANITY_API_WRITE_TOKEN = process.env.SANITY_API_WRITE_TOKEN
 
-function json(res, status, payload) {
+function applyCors(req, res) {
+  const origin = typeof req.headers?.origin === 'string' ? req.headers.origin : ''
+  const allowed =
+    /^https:\/\/(www\.)?unitedproperties\.eu$/i.test(origin) ||
+    /^http:\/\/localhost(:\d+)?$/i.test(origin) ||
+    /^http:\/\/127\.0\.0\.1(:\d+)?$/i.test(origin)
+  if (allowed && origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin)
+    res.setHeader('Vary', 'Origin')
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+}
+
+function json(req, res, status, payload) {
+  applyCors(req, res)
   res.status(status).setHeader('Content-Type', 'application/json; charset=utf-8')
   res.end(JSON.stringify(payload))
 }
@@ -45,16 +60,17 @@ function validatePayload(raw) {
 
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') {
+    applyCors(req, res)
     res.status(204).end()
     return
   }
 
   if (req.method !== 'POST') {
-    return json(res, 405, {ok: false, error: 'Method not allowed'})
+    return json(req, res, 405, {ok: false, error: 'Method not allowed'})
   }
 
   if (!SANITY_API_WRITE_TOKEN) {
-    return json(res, 500, {
+    return json(req, res, 500, {
       ok: false,
       error: 'Server is missing SANITY_API_WRITE_TOKEN',
     })
@@ -62,7 +78,7 @@ export default async function handler(req, res) {
 
   const parsed = validatePayload(req.body || {})
   if (parsed.error) {
-    return json(res, 400, {ok: false, error: parsed.error})
+    return json(req, res, 400, {ok: false, error: parsed.error})
   }
 
   const client = createClient({
@@ -100,9 +116,9 @@ export default async function handler(req, res) {
       createdAt: new Date().toISOString(),
     })
 
-    return json(res, 201, {ok: true, id: created?._id})
+    return json(req, res, 201, {ok: true, id: created?._id})
   } catch (error) {
     console.error('Failed to create Sanity inquiry', error)
-    return json(res, 500, {ok: false, error: 'Failed to create inquiry'})
+    return json(req, res, 500, {ok: false, error: 'Failed to create inquiry'})
   }
 }

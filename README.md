@@ -38,3 +38,17 @@ Set these in your deployment provider (for example Vercel project settings):
 - `SANITY_API_VERSION` (optional, defaults to `2024-01-01`)
 
 Never expose `SANITY_API_WRITE_TOKEN` in client-side `VITE_*` variables.
+
+### Local development: contact form (`/api/inquiries`)
+
+`npm run dev` runs only the Vite app — there is **no** local `/api/inquiries` serverless route.
+
+By default in dev the form POSTs to `https://www.unitedproperties.eu/api/inquiries` (CORS allowed).
+
+Override origin with `.env.local`:
+
+```bash
+VITE_INQUIRY_API_URL=https://www.unitedproperties.eu
+```
+
+Or install Vercel CLI and run `vercel dev` to emulate serverless APIs locally.
