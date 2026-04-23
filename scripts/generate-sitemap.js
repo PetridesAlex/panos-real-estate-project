@@ -36,7 +36,7 @@ const STATIC_PATHS = [
 ]
 
 /** Region hubs only (no duplicate region redirects). */
-const REGION_PATHS = ['/properties/limassol']
+const REGION_PATHS = []
 
 /**
  * Property slugs to omit from the sitemap (demo data, typos, or removed listings still in CMS).
