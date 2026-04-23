@@ -1,5 +1,4 @@
-import { useMemo } from 'react'
-import { Helmet } from 'react-helmet-async'
+import { useEffect, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Hero from '../components/Hero/Hero'
@@ -143,12 +142,12 @@ function Home() {
     [],
   )
 
+  useEffect(() => {
+    document.title = 'United Properties | Luxury Real Estate in Cyprus'
+  }, [])
+
   return (
     <>
-      <Helmet>
-        <title>United Properties | Luxury Real Estate in Cyprus</title>
-      </Helmet>
-
       <Hero />
 
       <section
