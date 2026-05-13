@@ -408,7 +408,7 @@
 }
 
 .navbar__center-dropdown:focus-within .navbar__center-dropdown-menu,
-.navbar__center-item--has-dropdown:hover .navbar__center-dropdown-menu {
+.navbar__center-item--has-dropdown.navbar__center-item--services-open .navbar__center-dropdown-menu {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -420,7 +420,7 @@
 }
 
 .navbar__center-dropdown:focus-within .navbar__center-link--with-caret svg,
-.navbar__center-item--has-dropdown:hover .navbar__center-link--with-caret svg {
+.navbar__center-item--has-dropdown.navbar__center-item--services-open .navbar__center-link--with-caret svg {
   opacity: 1;
   transform: translateY(1px) rotate(180deg);
 }

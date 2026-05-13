@@ -4,6 +4,7 @@ import Properties from '../pages/Properties'
 import PropertyDetails from '../pages/PropertyDetails'
 import About from '../pages/About'
 import Services from '../pages/Services'
+import SellWithUs from '../pages/SellWithUs'
 import Concierge from '../pages/Concierge'
 import Agents from '../pages/Agents'
 import Contact from '../pages/Contact'
@@ -36,6 +37,7 @@ function AppRouter() {
       <Route path="/properties/:slug" element={<PropertyDetails />} />
       <Route path="/about" element={<About />} />
       <Route path="/services" element={<Services />} />
+      <Route path="/sell-with-us" element={<SellWithUs />} />
       <Route path="/concierge" element={<Concierge />} />
       <Route path="/agents" element={<Agents />} />
       <Route path="/contact" element={<Contact />} />

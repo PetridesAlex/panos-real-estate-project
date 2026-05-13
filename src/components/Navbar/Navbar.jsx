@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { ChevronDown, Search } from 'lucide-react'
 import StaggeredMenu from '../StaggeredMenu/StaggeredMenu'
@@ -15,7 +15,7 @@ const CENTER_NAV_LINKS = [
 ]
 
 const SERVICES_DROPDOWN_LINKS = [
-  { label: 'Sell with us', to: '/services#sell-with-us' },
+  { label: 'Sell with us', to: '/sell-with-us' },
   { label: 'Invest with us', to: '/services#invest-with-us' },
   { label: 'Property Management', to: '/services#property-management' },
   { label: 'Rent your property', to: '/services#rent-your-property' },
@@ -28,7 +28,7 @@ function isCenterNavActive(pathname, hash, to) {
     return pathname === path && hash === `#${h}`
   }
   if (to === '/services') {
-    return pathname === '/services'
+    return pathname === '/services' || pathname === '/sell-with-us'
   }
   return pathname === to
 }
@@ -45,6 +45,8 @@ const PREMIUM_SERVICES_TICKER = [
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false)
+  const servicesDropdownRef = useRef(null)
   const location = useLocation()
   const navigate = useNavigate()
   const isHome = location.pathname === '/'
@@ -60,6 +62,10 @@ function Navbar() {
     setIsScrolled(window.scrollY > 40)
   }, [location.pathname])
 
+  useEffect(() => {
+    setServicesDropdownOpen(false)
+  }, [location.pathname, location.hash])
+
   const navClass = `navbar ${isScrolled || !isHome ? 'navbar--solid' : 'navbar--transparent'} ${
     isHome && isScrolled ? 'navbar--home-scrolled' : ''
   } ${isScrolled ? 'navbar--scrolled' : ''}`.trim()
@@ -70,6 +76,17 @@ function Navbar() {
       return
     }
     navigate('/?openSearch=1')
+  }
+
+  function closeUnitedServicesMenu() {
+    setServicesDropdownOpen(false)
+    requestAnimationFrame(() => {
+      const root = servicesDropdownRef.current
+      const active = document.activeElement
+      if (root && active instanceof HTMLElement && root.contains(active)) {
+        active.blur()
+      }
+    })
   }
 
   return (
@@ -110,16 +127,25 @@ function Navbar() {
                   key={item.to}
                   className={`navbar__center-item${
                     isServicesItem ? ' navbar__center-item--has-dropdown' : ''
+                  }${
+                    isServicesItem && servicesDropdownOpen ? ' navbar__center-item--services-open' : ''
                   }`}
+                  onMouseEnter={() => {
+                    if (isServicesItem) setServicesDropdownOpen(true)
+                  }}
+                  onMouseLeave={() => {
+                    if (isServicesItem) setServicesDropdownOpen(false)
+                  }}
                 >
                   {isServicesItem ? (
-                    <div className="navbar__center-dropdown">
+                    <div ref={servicesDropdownRef} className="navbar__center-dropdown">
                       <Link
                         className={`navbar__center-link navbar__center-link--with-caret${
                           active ? ' navbar__center-link--active' : ''
                         }`}
                         to={item.to}
                         aria-haspopup="true"
+                        onClick={closeUnitedServicesMenu}
                       >
                         <span>{item.label}</span>
                         <ChevronDown size={14} aria-hidden="true" />
@@ -141,6 +167,7 @@ function Navbar() {
                               }`}
                               to={serviceLink.to}
                               role="menuitem"
+                              onClick={closeUnitedServicesMenu}
                             >
                               {serviceLink.label}
                             </Link>

@@ -31,6 +31,7 @@ const STATIC_PATHS = [
   '/signature-listings',
   '/about',
   '/services',
+  '/sell-with-us',
   '/concierge',
   '/agents',
 ]

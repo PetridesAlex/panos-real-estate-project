@@ -1,52 +1,49 @@
 import { Helmet } from 'react-helmet-async'
-import SectionHeader from '../components/SectionHeader/SectionHeader'
-import ServiceCard from '../components/ServiceCard/ServiceCard'
+import { Navigate, useLocation } from 'react-router-dom'
+import InvestWithUsSection from '../components/InvestWithUsSection/InvestWithUsSection'
 import CTASection from '../components/CTASection/CTASection'
-import { services } from '../data/services'
-
-const serviceAnchorByTitle = {
-  'Property Sales': 'buy-with-us',
-  'Luxury Portfolio Representation': 'sell-with-us',
-  'Investment Advisory': 'invest-with-us',
-  'Luxury Rentals': 'rent-your-property',
-  'Property Management': 'property-management',
-}
+import './Services.css'
 
 function Services() {
+  const location = useLocation()
+
+  if (location.pathname === '/services' && location.hash === '#sell-with-us') {
+    return <Navigate to="/sell-with-us" replace />
+  }
+
+  const investDeepLink = location.hash === '#invest-with-us'
+
   return (
     <>
       <Helmet>
         <title>Services | United Properties</title>
       </Helmet>
 
-      <section className="page-hero">
+      <section className={`page-hero${investDeepLink ? ' page-hero--services-invest' : ''}`}>
         <div className="container">
-          <p>Services</p>
-          <h1>Premium Real Estate Services</h1>
-          <p>
-            Comprehensive support for sales, rentals, investment, management, and
-            international relocation in Cyprus.
-          </p>
+          {investDeepLink ? (
+            <div className="services-invest-hero">
+              <p className="services-invest-hero__eyebrow">United Services</p>
+              <h1 className="services-invest-hero__title">Invest with us</h1>
+              <p className="services-invest-hero__lead">
+                Real plots, clear concepts and accountable numbers—coordinated with our legal, design and construction
+                partners from day one, not off-the-shelf products.
+              </p>
+            </div>
+          ) : (
+            <>
+              <p>Services</p>
+              <h1>Premium Real Estate Services</h1>
+              <p>
+                Comprehensive support for sales, rentals, investment, management, and international relocation in
+                Cyprus.
+              </p>
+            </>
+          )}
         </div>
       </section>
 
-      <section className="section section--light">
-        <div className="container">
-          <SectionHeader
-            title="Tailored Service Lines"
-            description="Every service is designed for precision execution and premium client experience."
-          />
-          <div className="grid-3">
-            {services.map((service) => (
-              <ServiceCard
-                key={service.id}
-                service={service}
-                id={serviceAnchorByTitle[service.title]}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
+      <InvestWithUsSection />
 
       <CTASection title="Discuss Your Property Goals With Our Advisory Team" />
     </>

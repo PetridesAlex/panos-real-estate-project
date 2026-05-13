@@ -1,0 +1,178 @@
+.invest-with-us {
+  scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 6.5rem);
+}
+
+.invest-with-us .container {
+  max-width: min(72rem, 100%);
+}
+
+.invest-with-us__article {
+  margin-bottom: 2.75rem;
+}
+
+.invest-with-us__header {
+  margin-bottom: 1.5rem;
+  max-width: 44rem;
+}
+
+.invest-with-us__eyebrow {
+  margin: 0 0 0.65rem;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.invest-with-us__header h2 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 3rem);
+  font-weight: 650;
+  color: rgba(248, 246, 241, 0.97);
+  text-wrap: balance;
+}
+
+.invest-with-us__prose {
+  max-width: 44rem;
+}
+
+.invest-with-us__prose p {
+  margin: 0 0 1.15rem;
+  font-size: 1.02rem;
+  font-weight: 520;
+  line-height: 1.72;
+  color: rgba(248, 246, 241, 0.88);
+}
+
+.invest-with-us__prose p:last-child {
+  margin-bottom: 0;
+}
+
+.invest-with-us__network {
+  margin-top: 2.25rem;
+  max-width: min(48rem, 100%);
+}
+
+/* Premium ticket / promo-code styling */
+.invest-with-us__network--ticket {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  border-radius: calc(var(--radius-md) + 2px);
+  border: 1px solid rgba(217, 182, 128, 0.38);
+  background:
+    radial-gradient(ellipse 120% 90% at 0% 0%, rgba(191, 152, 117, 0.12), transparent 55%),
+    radial-gradient(ellipse 80% 70% at 100% 100%, rgba(26, 49, 83, 0.55), transparent 50%),
+    linear-gradient(155deg, rgba(16, 28, 48, 0.96) 0%, rgba(8, 14, 26, 0.98) 100%);
+  box-shadow:
+    0 0 0 1px rgba(191, 152, 117, 0.06),
+    0 26px 52px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.invest-with-us__network-glare {
+  position: absolute;
+  inset: -45% -25%;
+  rotate: -12deg;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.055) 49.5%,
+    transparent 61%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.invest-with-us__network-ticket-head {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.88rem 1.35rem;
+  border-bottom: 1px dashed rgba(217, 182, 128, 0.32);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0.12));
+}
+
+.invest-with-us__network-badge {
+  flex-shrink: 0;
+  font-size: 0.66rem;
+  font-weight: 750;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.42rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(191, 152, 117, 0.48);
+  background: linear-gradient(165deg, rgba(191, 152, 117, 0.22), rgba(191, 152, 117, 0.05));
+  color: rgba(248, 246, 241, 0.96);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.invest-with-us__network-ticket-body {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0;
+  align-items: stretch;
+  padding: 1.55rem 1.65rem 1.65rem 1.35rem;
+}
+
+.invest-with-us__network-perf {
+  width: 1.35rem;
+  margin-right: 0.35rem;
+  align-self: stretch;
+  border-radius: 6px;
+  background-image: radial-gradient(circle, rgba(217, 182, 128, 0.35) 1.5px, transparent 1.6px);
+  background-size: 100% 14px;
+  background-position: center top;
+  background-repeat: repeat-y;
+  opacity: 0.85;
+}
+
+.invest-with-us__network-ticket-copy {
+  min-width: 0;
+  padding-left: 0.35rem;
+  border-left: 1px dashed rgba(217, 182, 128, 0.22);
+}
+
+.invest-with-us__network-title {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.28rem, 2.1vw, 1.62rem);
+  font-weight: 680;
+  letter-spacing: -0.018em;
+  color: rgba(248, 246, 241, 0.97);
+  line-height: 1.32;
+}
+
+.invest-with-us__network-body {
+  margin: 0;
+  font-size: 1.01rem;
+  font-weight: 520;
+  line-height: 1.74;
+  color: rgba(242, 247, 255, 0.9);
+}
+
+@media (max-width: 520px) {
+  .invest-with-us__network-ticket-body {
+    grid-template-columns: 1fr;
+    padding: 1.35rem 1.2rem 1.45rem;
+  }
+
+  .invest-with-us__network-perf {
+    display: none;
+  }
+
+  .invest-with-us__network-ticket-copy {
+    padding-left: 0;
+    border-left: none;
+  }
+
+}
+
+@media (max-width: 640px) {
+  .invest-with-us__article {
+    margin-bottom: 2rem;
+  }
+}
