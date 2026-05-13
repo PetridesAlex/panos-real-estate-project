@@ -28,13 +28,10 @@ const STAGGERED_MENU_ITEMS = [
   { label: 'Rent', link: '/rent' },
   {
     label: 'United Services',
-    link: '/services',
     subItems: SERVICES_DROPDOWN_LINKS.map((s) => ({ label: s.label, link: s.to })),
   },
   { label: 'About', link: '/about' },
   { label: 'Contact', link: '/contact' },
-  { label: 'Properties', link: '/properties' },
-  { label: 'Agents', link: '/agents' },
 ]
 
 function isCenterNavActive(pathname, hash, to) {
