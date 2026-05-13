@@ -22,6 +22,21 @@ const SERVICES_DROPDOWN_LINKS = [
   { label: 'Concierge', to: '/concierge' },
 ]
 
+/** Hamburger menu — mirrors United Services dropdown links under one heading */
+const STAGGERED_MENU_ITEMS = [
+  { label: 'Buy', link: '/buy' },
+  { label: 'Rent', link: '/rent' },
+  {
+    label: 'United Services',
+    link: '/services',
+    subItems: SERVICES_DROPDOWN_LINKS.map((s) => ({ label: s.label, link: s.to })),
+  },
+  { label: 'About', link: '/about' },
+  { label: 'Contact', link: '/contact' },
+  { label: 'Properties', link: '/properties' },
+  { label: 'Agents', link: '/agents' },
+]
+
 function isCenterNavActive(pathname, hash, to) {
   if (to.includes('#')) {
     const [path, h] = to.split('#')
@@ -203,16 +218,7 @@ function Navbar() {
             <StaggeredMenu
               className="navbar__staggered"
               position="right"
-              items={[
-                { label: 'Buy', link: '/buy' },
-                { label: 'Rent', link: '/rent' },
-                { label: 'United Services', link: '/services' },
-                { label: 'Property Management', link: '/services#property-management' },
-                { label: 'About', link: '/about' },
-                { label: 'Contact', link: '/contact' },
-                { label: 'Properties', link: '/properties' },
-                { label: 'Agents', link: '/agents' },
-              ]}
+              items={STAGGERED_MENU_ITEMS}
               socialItems={[
                 { label: 'Instagram', link: '#' },
                 { label: 'LinkedIn', link: '#' },

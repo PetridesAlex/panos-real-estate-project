@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { gsap } from 'gsap'
-import { Instagram, Linkedin, MessageCircle, X } from 'lucide-react'
+import { Instagram, Linkedin, MessageCircle, X, ChevronDown } from 'lucide-react'
 import './StaggeredMenu.css'
 
 const ICON_SPRITE = `${import.meta.env.BASE_URL}icons.svg`
@@ -35,6 +35,7 @@ function StaggeredMenu({
   onMenuClose,
 }) {
   const [open, setOpen] = useState(false)
+  const [accordionOpenIndices, setAccordionOpenIndices] = useState(() => new Set())
   const location = useLocation()
   const openRef = useRef(false)
   const panelRef = useRef(null)
@@ -50,7 +51,11 @@ function StaggeredMenu({
     if (!openRef.current) return
     openRef.current = false
     setOpen(false)
-  }, [location.pathname])
+  }, [location.pathname, location.hash])
+
+  useEffect(() => {
+    if (!open) setAccordionOpenIndices(new Set())
+  }, [open])
 
   useEffect(() => {
     if (!open) return undefined
@@ -85,8 +90,13 @@ function StaggeredMenu({
     openTlRef.current?.kill()
     closeTweenRef.current?.kill()
 
-    const itemEls = Array.from(panel.querySelectorAll('.smenu-panel-itemLabel'))
-    const numberEls = Array.from(panel.querySelectorAll('.smenu-panel-list[data-numbering] .smenu-panel-item'))
+    const itemEls = Array.from(panel.querySelectorAll('.smenu-panel-itemLabel')).filter((el) => {
+      const closedAccordion = el.closest('.smenu-panel-accordion-panel:not(.smenu-panel-accordion-panel--open)')
+      return !closedAccordion
+    })
+    const numberEls = Array.from(
+      panel.querySelectorAll('.smenu-panel-list[data-numbering] .smenu-panel-item:not(.smenu-panel-item--sub)'),
+    )
     const socialTitle = panel.querySelector('.smenu-socials-title')
     const socialLinks = Array.from(panel.querySelectorAll('.smenu-socials-link'))
     const logoEl = panel.querySelector('.smenu-panel-logo')
@@ -318,19 +328,103 @@ function StaggeredMenu({
           <span className="sr-only">Press Escape to close this menu.</span>
           <nav className="smenu-panel-nav" aria-label="Pages">
             <ul className="smenu-panel-list" role="list" data-numbering={displayItemNumbering || undefined}>
-              {items.map((item, idx) => (
-                <li className="smenu-panel-itemWrap" key={`${item.label}-${idx}`}>
-                  {isExternal(item.link) ? (
-                    <a className="smenu-panel-item" href={item.link} target="_blank" rel="noreferrer" data-index={idx + 1}>
-                      <span className="smenu-panel-itemLabel">{item.label}</span>
-                    </a>
-                  ) : (
-                    <Link className="smenu-panel-item" to={item.link} data-index={idx + 1} onClick={closeMenu}>
-                      <span className="smenu-panel-itemLabel">{item.label}</span>
-                    </Link>
-                  )}
-                </li>
-              ))}
+              {items.map((item, idx) => {
+                const subItems = Array.isArray(item.subItems) ? item.subItems : null
+                const keyBase = `${item.label}-${idx}`
+
+                if (subItems?.length) {
+                  const expanded = accordionOpenIndices.has(idx)
+                  return (
+                    <li className="smenu-panel-itemWrap smenu-panel-itemWrap--group" key={keyBase}>
+                      <div className="smenu-panel-group">
+                        <button
+                          type="button"
+                          className="smenu-panel-item smenu-panel-item--group-parent smenu-panel-item--accordion-trigger"
+                          aria-expanded={expanded}
+                          aria-controls={`smenu-acc-panel-${idx}`}
+                          id={`smenu-acc-trigger-${idx}`}
+                          data-index={idx + 1}
+                          onClick={() => {
+                            setAccordionOpenIndices((prev) => {
+                              const next = new Set(prev)
+                              if (next.has(idx)) next.delete(idx)
+                              else next.add(idx)
+                              return next
+                            })
+                          }}
+                        >
+                          <span className="smenu-panel-itemLabel">{item.label}</span>
+                          <ChevronDown className="smenu-panel-accordion-icon" size={22} strokeWidth={2} aria-hidden />
+                        </button>
+                        <div
+                          id={`smenu-acc-panel-${idx}`}
+                          role="region"
+                          aria-labelledby={`smenu-acc-trigger-${idx}`}
+                          className={`smenu-panel-accordion-panel${expanded ? ' smenu-panel-accordion-panel--open' : ''}`}
+                          inert={!expanded}
+                        >
+                          <div className="smenu-panel-accordion-inner">
+                            <ul className="smenu-panel-sublist" role="list">
+                              {subItems.map((sub, j) => (
+                                <li className="smenu-panel-sublist-item" key={`${sub.link}-${j}`}>
+                                  {isExternal(sub.link) ? (
+                                    <a
+                                      className="smenu-panel-item smenu-panel-item--sub"
+                                      href={sub.link}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      <span className="smenu-panel-itemLabel">{sub.label}</span>
+                                    </a>
+                                  ) : (
+                                    <Link className="smenu-panel-item smenu-panel-item--sub" to={sub.link} onClick={closeMenu}>
+                                      <span className="smenu-panel-itemLabel">{sub.label}</span>
+                                    </Link>
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+                            {item.link ? (
+                              isExternal(item.link) ? (
+                                <a
+                                  className="smenu-panel-item smenu-panel-item--sub smenu-panel-item--overview"
+                                  href={item.link}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  <span className="smenu-panel-itemLabel">All services</span>
+                                </a>
+                              ) : (
+                                <Link
+                                  className="smenu-panel-item smenu-panel-item--sub smenu-panel-item--overview"
+                                  to={item.link}
+                                  onClick={closeMenu}
+                                >
+                                  <span className="smenu-panel-itemLabel">All services</span>
+                                </Link>
+                              )
+                            ) : null}
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  )
+                }
+
+                return (
+                  <li className="smenu-panel-itemWrap" key={keyBase}>
+                    {isExternal(item.link) ? (
+                      <a className="smenu-panel-item" href={item.link} target="_blank" rel="noreferrer" data-index={idx + 1}>
+                        <span className="smenu-panel-itemLabel">{item.label}</span>
+                      </a>
+                    ) : (
+                      <Link className="smenu-panel-item" to={item.link} data-index={idx + 1} onClick={closeMenu}>
+                        <span className="smenu-panel-itemLabel">{item.label}</span>
+                      </Link>
+                    )}
+                  </li>
+                )
+              })}
             </ul>
           </nav>
 
